@@ -1,0 +1,2 @@
+# Ghosts
+Ghosts board game
