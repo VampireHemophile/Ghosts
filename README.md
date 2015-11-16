@@ -1,5 +1,5 @@
 # Ghosts [![Build Status](https://travis-ci.org/VampireHemophile/Ghosts.svg)](https://travis-ci.org/VampireHemophile/Ghosts)
-[Ghosts](https://en.wikipedia.org/wiki/Ghosts_%28board_game%29) board game, in Java.
+[Ghosts](https://en.wikipedia.org/wiki/Ghosts_%28board_game%29) board game, in Java 8.
 
 ## Build & Run
 This project uses [Maven](https://maven.apache.org) as its build tool.
@@ -10,7 +10,7 @@ Read [Maven in five minutes](https://maven.apache.org/guides/getting-started/mav
 mvn package
 
 # run (where $version is the project's current version):
-java -cp target/Ghosts-${version}.jar com.vampirehemophile.ghosts.App
+java -jar target/Ghosts-0.0.1.jar
 ```
 
 ### Eclipse
