@@ -1,4 +1,4 @@
-package com.vampirehemophile.ghosts;
+package com.vampirehemophile.ghosts.math;
 
 import org.junit.Test;
 import org.junit.Ignore;
@@ -217,7 +217,6 @@ public class CoordinatesTest {
     Coordinates c2 = new Coordinates(c1);
     Coordinates c3 = new Coordinates(0, 0, 2);
     c2.moveEast();
-    System.out.println("1" + c1.x() + ":" + c2.x());
     assertEquals(c1.x(), c2.x());
     assertTrue(c1.equals(c2));
     c3.moveEast();
@@ -231,7 +230,6 @@ public class CoordinatesTest {
     Coordinates c2 = new Coordinates(c1);
     Coordinates c3 = new Coordinates(1, 0, 2);
     c2.moveWest();
-    System.out.println("2" + c1.x() + ":" + c2.x());
     assertEquals(c1.x(), c2.x());
     assertTrue(c1.equals(c2));
     c3.moveWest();

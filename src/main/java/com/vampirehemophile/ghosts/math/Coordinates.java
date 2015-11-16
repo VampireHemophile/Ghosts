@@ -1,4 +1,4 @@
-package com.vampirehemophile.ghosts;
+package com.vampirehemophile.ghosts.math;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
