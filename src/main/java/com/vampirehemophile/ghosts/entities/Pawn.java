@@ -8,11 +8,17 @@ import java.util.HashSet;
  * Abstract class for pawns.
  */
 public abstract class Pawn {
+
   /** The pawn's player. */
   protected Player player;
 
+  /** Constructs a new Pawn. */
+  public Pawn() {
+    this.player = null;
+  }
+
   /**
-   * Construcs a new Pawn.
+   * Constructs a new Pawn. Adds itself to the player's pawn set.
    *
    * @param player Pawn's player.
    * @throws NullPointerException if player is null.
@@ -22,6 +28,7 @@ public abstract class Pawn {
       throw new NullPointerException();
     }
     this.player = player;
+    player.add(this);
   }
 
   /**
