@@ -59,7 +59,7 @@ public class BoardManager {
    * Tests if a pawn can move to a new location.
    * A pawn can move to another location if it is within the board,
    * in its movement range, if the location is free or if it is occupied by
-   * a pawn of the other player.
+   * a pawn of the other player and the pawn is aggressive.
    *
    * @param pawn the pawn.
    * @param loc the new location.
@@ -75,8 +75,8 @@ public class BoardManager {
     }
 
     Square square = board.squareAt(loc);
-    return isInRange && (square.isFree()
-        || (square.isOccupied() && square.pawn().player() != pawn.player()));
+    return isInRange && (square.isFree() || (square.isOccupied()
+        && pawn.player() != pawn.player() && pawn.isAggressive()));
   }
 
   /**

@@ -76,4 +76,14 @@ public abstract class Pawn {
 
     return set;
   }
+
+  /**
+   * Tells if a pawn is aggressive or not. Aggressive means that it can take
+   * the opponents pawns.
+   *
+   * @return true if it is aggressive (default).
+   */
+  public boolean isAggressive() {
+    return true;
+  }
 }
