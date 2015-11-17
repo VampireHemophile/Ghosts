@@ -6,6 +6,7 @@ import com.vampirehemophile.ghosts.math.Coordinates;
 
 
 public class CliGame {
+  
   public void start() {
 
   }

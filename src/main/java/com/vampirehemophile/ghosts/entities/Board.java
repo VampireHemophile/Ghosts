@@ -176,4 +176,6 @@ public class Board {
   public int size() {
     return size;
   }
+
+  
 }

@@ -7,6 +7,7 @@ import java.util.HashSet;
  * Represents a player.
  */
 public class Player {
+
   private Set<Pawn> pawns;
   private char charIcon;
 
@@ -18,4 +19,5 @@ public class Player {
   public char charIcon() {
     return charIcon;
   }
+  
 }
