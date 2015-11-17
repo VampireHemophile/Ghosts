@@ -39,9 +39,6 @@ public class Coordinates {
   /** y-axis coordinate. */
   private int yMatrix;
 
-  /** index. */
-  private int index;
-
 
   /** Pattern to match coordinates. */
   private static final Pattern pattern = Pattern.compile(
@@ -62,31 +59,6 @@ public class Coordinates {
     this.yWorld = c.yWorld;
     this.xMatrix = c.xMatrix;
     this.yMatrix = c.yMatrix;
-    this.index = c.index;
-  }
-
-  /**
-   * Contructs a coord object from an array index.
-   *
-   * @param index array index.
-   * @param size size of the board.
-   * @throws OutOfBoardCoordinatesException if the coordnates are outside
-   * of the board.
-   * @throws BoardTooSmallException if the size is inferior to 6.
-   */
-  public Coordinates(int index, int size) {
-    testMinimumSize(size);
-
-    if (index < 0 || size * size <= index) {
-      throw new OutOfBoardCoordinatesException("(" + index +") is out of the board.");
-    }
-
-    this.index = index;
-    this.xMatrix = index % size;
-    this.yMatrix = index / size;
-    this.size = size;
-    genXWorld();
-    genYWorld();
   }
 
   /**
@@ -111,7 +83,6 @@ public class Coordinates {
     this.size = size;
     genXWorld();
     genYWorld();
-    genIndex();
   }
 
   /**
@@ -137,7 +108,6 @@ public class Coordinates {
     this.size = size;
     genXMatrix();
     genYMatrix();
-    genIndex();
 
     if (!isIn()) {
       throw new OutOfBoardCoordinatesException(xy);
@@ -168,7 +138,6 @@ public class Coordinates {
     this.size = size;
     genXMatrix();
     genYMatrix();
-    genIndex();
 
     if (!isIn()) {
       throw new OutOfBoardCoordinatesException(x, y);
@@ -225,22 +194,13 @@ public class Coordinates {
   }
 
   /**
-   * Creates array index from matrix coordinates.
-   *
-   * @return array index.
-  */
-  private void genIndex() {
-    index = yMatrix * size + xMatrix;
-  }
-
-  /**
    * Returns true if the two coordinates point the same location.
    *
    * @param coord second coordinate.
    * @return true if they points the same location.
    */
   public boolean equals(Coordinates coord) {
-    return coord.index == this.index;
+    return coord.xMatrix == this.xMatrix && coord.yMatrix == this.yMatrix;
   }
 
   /**
@@ -249,7 +209,8 @@ public class Coordinates {
    * @return true if this is in.
    */
   private boolean isIn() {
-    return 0 <= index && index < size * size;
+    return 0 <= xMatrix && xMatrix < size
+        && 0 <= yMatrix && yMatrix < size;
   }
 
   /**
@@ -451,7 +412,6 @@ public class Coordinates {
     if (!canMoveNorth()) { return; }
     yMatrix--;
     genYWorld();
-    genIndex();
   }
 
   /**
@@ -461,7 +421,6 @@ public class Coordinates {
     if (!canMoveSouth()) { return; }
     yMatrix++;
     genYWorld();
-    genIndex();
   }
 
   /**
@@ -471,7 +430,6 @@ public class Coordinates {
     if (!canMoveEast()) { return ; }
     xMatrix++;
     genXWorld();
-    genIndex();
   }
 
   /**
@@ -481,7 +439,6 @@ public class Coordinates {
     if (!canMoveWest()) { return; }
     xMatrix--;
     genXWorld();
-    genIndex();
   }
 
   /**
@@ -553,16 +510,8 @@ public class Coordinates {
   }
 
   /**
-   * Gets the index in the (matrix-to-one-dimension) array.
-   * @return the coordinate.
-   */
-  public int index() {
-    return index;
-  }
-
-  /**
    * Builds a String description of this, of this format:
-   * <code>xWorld:yWorld xMatrix:yMatrix index</code>.
+   * <code>xWorld:yWorld xMatrix:yMatrix</code>.
    *
    * @return String description.
    */
@@ -575,8 +524,6 @@ public class Coordinates {
     sb.append(xMatrix);
     sb.append(":");
     sb.append(yMatrix);
-    sb.append(" ");
-    sb.append(index);
     return sb.toString();
   }
 }

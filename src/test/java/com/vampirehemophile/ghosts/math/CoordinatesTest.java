@@ -19,32 +19,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class CoordinatesTest {
   @Test
-  public void testCoordinatesConstructorIndex() {
-    Coordinates c1 = new Coordinates(0, 6);
-    assertEquals(0, c1.xMatrix());
-    assertEquals(0, c1.yMatrix());
-    assertEquals(0, c1.index());
-
-    try {
-      new Coordinates(2, 6);
-    } catch (OutOfBoardCoordinatesException expected) {}
-  }
-
-  @Test
-  public void testCoordinatesConstructorMatrix() {
-    Coordinates c1 = new Coordinates(0, 0, 6);
-    assertEquals(0, c1.xMatrix());
-    assertEquals(0, c1.yMatrix());
-
-    try {
-      new Coordinates(2, 0, 6);
-    } catch (OutOfBoardCoordinatesException expected) {}
-    try {
-      new Coordinates(0, 2, 6);
-    } catch (OutOfBoardCoordinatesException expected) {}
-  }
-
-  @Test
   public void testCoordinatesConstructorWorld1() {
     Coordinates c = new Coordinates("a1", 6);
     assertEquals("a", c.x());
@@ -110,25 +84,11 @@ public class CoordinatesTest {
     assertEquals(26, (new Coordinates("aa27", 27)).yMatrix());
   }
 
-  @Test
-  public void testGenIndex() {
-    assertEquals(0, (new Coordinates(0, 0, 6)).index());
-    assertEquals(7, (new Coordinates(1, 1, 6)).index());
-    assertEquals(14, (new Coordinates(2, 2, 6)).index());
-    assertEquals(728, (new Coordinates(26, 26, 27)).index());
-
-    assertEquals(0, (new Coordinates("a1", 6)).index());
-    assertEquals(7, (new Coordinates("b2", 6)).index());
-    assertEquals(14, (new Coordinates("c3", 6)).index());
-    assertEquals(728, (new Coordinates("aa27", 27)).index());
-  }
-
   public void testEquality(Coordinates c1, Coordinates c2) {
     assertEquals(c1.x(), c2.x());
     assertEquals(c1.y(), c2.y());
     assertEquals(c1.xMatrix(), c2.xMatrix());
     assertEquals(c1.yMatrix(), c2.yMatrix());
-    assertEquals(c1.index(), c2.index());
     assertTrue(c1.equals(c2));
     assertTrue(c2.equals(c1));
   }
@@ -136,7 +96,6 @@ public class CoordinatesTest {
   public void testNonEquality(Coordinates c1, Coordinates c2) {
     assertTrue(!c1.x().equals(c2.x()) || c1.y() != c2.y());
     assertTrue(c1.xMatrix() != c2.xMatrix() || c1.yMatrix() != c2.yMatrix());
-    assertNotEquals(c1.index(), c2.index());
     assertFalse(c1.equals(c2));
     assertFalse(c2.equals(c1));
   }
@@ -144,8 +103,6 @@ public class CoordinatesTest {
   @Ignore @Test
   public void testEquals() {
     Coordinates[] equalCoords = {
-      new Coordinates(0, 6),
-      new Coordinates(0, 6),
       new Coordinates(0, 0, 6),
       new Coordinates(0, 0, 6),
       new Coordinates("a1", 6),
@@ -162,8 +119,6 @@ public class CoordinatesTest {
     }
 
     Coordinates[] notEqualCoords = {
-      new Coordinates(0, 6),
-      new Coordinates(1, 6),
       new Coordinates(2, 0, 6),
       new Coordinates(0, 1, 6),
       new Coordinates("b2", 6),
@@ -182,7 +137,7 @@ public class CoordinatesTest {
 
   @Test
   public void testCopyConstructor() {
-    Coordinates c1 = new Coordinates(0, 6);
+    Coordinates c1 = new Coordinates(0, 0, 6);
     Coordinates c2 = new Coordinates(c1);
     assertTrue(c1.equals(c2));
     testEquality(c1, c2);

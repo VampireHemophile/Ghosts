@@ -12,7 +12,7 @@ public class Board {
   /**
    * Represents the board as a square matrix in an array.
    */
-  private Square[] board;
+  private Square[][] board;
 
   /**
    * Length of one side of the board (it's a square matrix).
@@ -31,11 +31,11 @@ public class Board {
       throw new BoardTooSmallException(size);
     }
 
-    this.board = new Square[size * size];
-    Coordinates c = null;
-    for (int i = 0; i < size * size; i++) {
-      c = new Coordinates(i, size);
-      board[c.index()] = new Square(c);
+    this.board = new Square[size][size];
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        board[x][y] = new Square(new Coordinates(x, y, size));
+      }
     }
   }
 
@@ -46,7 +46,7 @@ public class Board {
    * @return the square.
    */
   public Square squareAt(Coordinates c) {
-    return board[c.index()];
+    return board[c.xMatrix()][c.yMatrix()];
   }
 
   /**
@@ -87,6 +87,4 @@ public class Board {
   public int size() {
     return size;
   }
-
-  
 }

@@ -5,10 +5,6 @@ package com.vampirehemophile.ghosts.exceptions;
  */
 @SuppressWarnings("serial")
 public class InvalidCoordinatesException extends RuntimeException {
-  public InvalidCoordinatesException(int index) {
-    super("(" + index + ") is an invalid index.");
-  }
-
   public InvalidCoordinatesException(String xy) {
     super("(" + xy + ") are invalid coordinates.");
   }
