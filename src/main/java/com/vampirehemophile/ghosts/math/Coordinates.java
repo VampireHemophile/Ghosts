@@ -1,16 +1,20 @@
 package com.vampirehemophile.ghosts.math;
 
+import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
+import com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException;
+import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 /**
  * <p>Coordinates provides a way of storing and manipulating coordinates.
- * Coordinates always makes sure its coordinates are valid.
- * The format is valid, and they are located inside the board.
- * But is does not check wether the square it might represents on the board is
+ * Coordinates are immutable and always makes sure its coordinates are valid.
+ * The format is valid, and they are located inside the board,
+ * but is does not check wether the square it might represents on the board is
  * free or not. Assumes the board is a square.</p>
  *
  * <p>Let size be the size of one side of the board (size = 6 if board is 6x6).
+ * The size must always be superior or equals to 6.
  * There are three types of coordinates :</p><ul>
  * <li>"real-world" coordinates indexing the board like a chessboard,</li>
  * <li>"matrix" coordinates indexing the board like a matrix,
@@ -68,8 +72,11 @@ public class Coordinates {
    * @param size size of the board.
    * @throws OutOfBoardCoordinatesException if the coordnates are outside
    * of the board.
+   * @throws BoardTooSmallException if the size is inferior to 6.
    */
   public Coordinates(int index, int size) {
+    testMinimumSize(size);
+
     if (index < 0 || size * size <= index) {
       throw new OutOfBoardCoordinatesException("(" + index +") is out of the board.");
     }
@@ -90,8 +97,11 @@ public class Coordinates {
    * @param size size of the board.
    * @throws OutOfBoardCoordinatesException if the coordnates are outside
    * of the board.
+   * @throws BoardTooSmallException if the size is inferior to 6.
    */
   public Coordinates(int x, int y, int size) {
+    testMinimumSize(size);
+
     if (x < 0 || size <= x || y < 0 || size <= y) {
       throw new OutOfBoardCoordinatesException(x, y);
     }
@@ -112,8 +122,11 @@ public class Coordinates {
    * @throws InvalidCoordinatesException if the coordinates are invalid.
    * @throws OutOfBoardCoordinatesException if the coordnates are outside
    * of the board.
+   * @throws BoardTooSmallException if the size is inferior to 6.
    */
   public Coordinates(String xy, int size) {
+    testMinimumSize(size);
+
     Matcher matcher = pattern.matcher(xy);
     if (!matcher.matches()) {
       throw new InvalidCoordinatesException(xy);
@@ -140,8 +153,11 @@ public class Coordinates {
    * @throws InvalidCoordinatesException if the coordinates are invalid.
    * @throws OutOfBoardCoordinatesException if the coordnates are outside
    * of the board.
+   * @throws BoardTooSmallException if the size is inferior to 6.
    */
   public Coordinates(String x, int y, int size) {
+    testMinimumSize(size);
+
     Matcher xMatcher = xPattern.matcher(x);
     if (!xMatcher.matches()) {
       throw new InvalidCoordinatesException(x, y);
@@ -156,6 +172,18 @@ public class Coordinates {
 
     if (!isIn()) {
       throw new OutOfBoardCoordinatesException(x, y);
+    }
+  }
+
+  /**
+   * Tests minimum size requirements.
+   *
+   * @param size size of the board.
+   * @throws BoardTooSmallException if the size is inferior to 6.
+   */
+  private void testMinimumSize(int size) {
+    if (size < 6) {
+      throw new BoardTooSmallException(size);
     }
   }
 
@@ -419,7 +447,7 @@ public class Coordinates {
   /**
    * Move this north. Won't move if this can't.
    */
-  public void moveNorth() {
+  private void moveNorth() {
     if (!canMoveNorth()) { return; }
     yMatrix--;
     genYWorld();
@@ -429,7 +457,7 @@ public class Coordinates {
   /**
    * Move this south. Won't move if this can't.
    */
-  public void moveSouth() {
+  private void moveSouth() {
     if (!canMoveSouth()) { return; }
     yMatrix++;
     genYWorld();
@@ -439,7 +467,7 @@ public class Coordinates {
   /**
    * Move this east. Won't move if this can't.
    */
-  public void moveEast() {
+  private void moveEast() {
     if (!canMoveEast()) { return ; }
     xMatrix++;
     genXWorld();
@@ -449,7 +477,7 @@ public class Coordinates {
   /**
    * Move this west. Won't move if this can't.
    */
-  public void moveWest() {
+  private void moveWest() {
     if (!canMoveWest()) { return; }
     xMatrix--;
     genXWorld();
@@ -459,7 +487,7 @@ public class Coordinates {
   /**
    * Move this nort-east. Won't move if this can't.
    */
-  public void moveNorthEast() {
+  private void moveNorthEast() {
     if (!(canMoveNorth() && canMoveEast())) { return; }
     moveNorth();
     moveEast();
@@ -468,7 +496,7 @@ public class Coordinates {
   /**
    * Move this nort-west. Won't move if this can't.
    */
-  public void moveNorthWest() {
+  private void moveNorthWest() {
     if (!(canMoveNorth() && canMoveWest())) { return; }
     moveNorth();
     moveWest();
@@ -477,7 +505,7 @@ public class Coordinates {
   /**
    * Move this south-east. Won't move if this can't.
    */
-  public void moveSouthEast() {
+  private void moveSouthEast() {
     if (!(canMoveSouth() && canMoveEast())) { return; }
     moveSouth();
     moveEast();
@@ -486,7 +514,7 @@ public class Coordinates {
   /**
    * Move this south-west. Won't move if this can't.
    */
-  public void moveSouthWest() {
+  private void moveSouthWest() {
     if (!(canMoveNorth() && canMoveWest())) { return; }
     moveSouth();
     moveWest();

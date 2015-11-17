@@ -10,11 +10,16 @@ Read [Maven in five minutes](https://maven.apache.org/guides/getting-started/mav
 mvn package
 
 # run (where $version is the project's current version):
-java -jar target/Ghosts-0.0.1.jar
+java -jar target/Ghosts-${version}.jar
 ```
 
-### Eclipse
-To generate an [Eclipse](https://eclipse.org) project, run `mvn eclipse:eclipse`.
+### Options
+
+```
+Ghosts options:
+    -h --help
+    --nogui
+```
 
 ## Documentation
 To generate the documentation, run `mvn site`. Informations about the project are accessible at `target/site/index.html`, documentation of Ghosts and its tests can be found in the "Project Reports" section.  

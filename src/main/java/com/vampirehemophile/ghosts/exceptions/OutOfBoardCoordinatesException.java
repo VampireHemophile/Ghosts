@@ -1,4 +1,4 @@
-package com.vampirehemophile.ghosts.math;
+package com.vampirehemophile.ghosts.exceptions;
 
 /**
  * Thrown when the coordinates points a location outside of the board.
