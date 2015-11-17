@@ -9,23 +9,26 @@ import java.util.function.Consumer;
 /**
  * Represents a player.
  */
-<<<<<<< HEAD
-public class Player {
-
-=======
 public class Player implements Iterable<Pawn> {
   /**
    * Set of player's pawns.
    */
->>>>>>> a2ca5df2141659a78bfe45ef900604c6642fcb75
   private Set<Pawn> pawns;
 
   /** Player's char for CLI. */
   private char charIcon;
 
+  /**
+   * Constructs a new player.
+   */
+  public Player() {
+    this('\0');
+  }
 
   /**
    * Constructs a new player.
+   *
+   * @param charIcon Player's char for CLI displaying.
    */
   public Player(char charIcon) {
     this.pawns = new HashSet<>();
@@ -40,9 +43,6 @@ public class Player implements Iterable<Pawn> {
   public char charIcon() {
     return charIcon;
   }
-<<<<<<< HEAD
-  
-=======
 
   /**
    * Add a pawn to the player's pawn set.
@@ -80,5 +80,4 @@ public class Player implements Iterable<Pawn> {
   @Override public Spliterator<Pawn> spliterator() {
     return pawns.spliterator();
   }
->>>>>>> a2ca5df2141659a78bfe45ef900604c6642fcb75
 }

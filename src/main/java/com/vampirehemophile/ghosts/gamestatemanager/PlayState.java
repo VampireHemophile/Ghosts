@@ -3,10 +3,11 @@ package com.vampirehemophile.ghosts.gamestatemanager;
 import java.awt.Graphics;
 
 import com.vampirehemophile.ghosts.entities.*;
-
+import com.vampirehemophile.ghosts.managers.BoardManager;
 
 public class PlayState extends State {
 
+  private BoardManager boardManager;
   private Board board;
 
   private Player playerOne;
@@ -18,8 +19,8 @@ public class PlayState extends State {
     this.playerOne = new Player();
     this.playerTwo = new Player();
 
-    this.board = new Board(playerOne, playerTwo, size);
-
+    this.boardManager = new BoardManager(playerOne, playerTwo, size);
+    this.board = boardManager.board();
 
   }
 
