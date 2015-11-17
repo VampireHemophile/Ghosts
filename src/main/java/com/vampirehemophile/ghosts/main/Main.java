@@ -8,17 +8,14 @@ public class Main {
   public static void main(String[] args) {
 
     boolean help = false;
-    boolean gui = false;
-    boolean cli = false;
-
+    boolean gui = true;
 
     for (String opt : args) {
       if (opt.equals("-h") || opt.equals("--help")) {
         help = true;
         break;
       } else if (opt.equals("--nogui")) {
-        cli = true;
-
+        gui = false;
       } else {
         System.err.println("Unrecognized option.");
         System.exit(1);
@@ -26,15 +23,13 @@ public class Main {
     }
 
     if (help) {
-      System.out.println("Ghosts options:\n    -h --help\n    --nogui\n     --gui");
-    } else if (cli) {
-      CliGame cg = new CliGame();
-      cg.start();
-    } else {
+      System.out.println("Ghosts options:\n    -h --help\n    --nogui");
+    } else if (gui) {
       GuiGame game = new GuiGame("Game Title !", WINDOW_WIDTH, WINDOW_HEIGHT);
       game.start();
+    } else {
+      CliGame game = new CliGame();
+      game.start();
     }
-
   }
-
 }
