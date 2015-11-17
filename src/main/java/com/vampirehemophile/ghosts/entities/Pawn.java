@@ -13,6 +13,8 @@ public abstract class Pawn {
   /** The pawn's player. */
   protected Player player;
 
+  /** Default char icon in CLI for an hidden pawn. */
+  public final static char defaultCharIcon = '~';
 
   /** Constructs a new Pawn. */
   public Pawn() {
