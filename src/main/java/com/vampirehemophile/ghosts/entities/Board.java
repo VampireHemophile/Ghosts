@@ -1,8 +1,9 @@
 package com.vampirehemophile.ghosts.entities;
 
 import java.util.ArrayList;
-import com.vampirehemophile.ghosts.math.Coordinates;
+
 import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
+import com.vampirehemophile.ghosts.math.Coordinates;
 
 /**
  * Provides a board to play on.
@@ -18,6 +19,7 @@ public class Board {
    * Length of one side of the board (it's a square matrix).
    */
   private final int size;
+
 
   /**
    * Constructs a new size x size square Board.

@@ -1,15 +1,16 @@
 package com.vampirehemophile.ghosts.entities;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Spliterator;
-import java.util.Iterator;
 import java.util.function.Consumer;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Spliterator;
 
 /**
  * Represents a player.
  */
 public class Player implements Iterable<Pawn> {
+
   /**
    * Set of player's pawns.
    */
@@ -17,6 +18,7 @@ public class Player implements Iterable<Pawn> {
 
   /** Player's char for CLI. */
   private char charIcon;
+
 
   /**
    * Constructs a new player.

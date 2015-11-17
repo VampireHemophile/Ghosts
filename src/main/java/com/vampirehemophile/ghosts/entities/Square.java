@@ -3,9 +3,10 @@ package com.vampirehemophile.ghosts.entities;
 import com.vampirehemophile.ghosts.math.Coordinates;
 
 /**
- * A Square in the board
+ * A Square in the {@link Board Board}.
  */
 public class Square {
+
   /**
    * The pawn on this square. If null, it means that the board is empty.
    */

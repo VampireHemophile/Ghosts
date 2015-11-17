@@ -1,8 +1,9 @@
 package com.vampirehemophile.ghosts.entities;
 
-import com.vampirehemophile.ghosts.math.Coordinates;
 import java.util.Set;
 import java.util.HashSet;
+
+import com.vampirehemophile.ghosts.math.Coordinates;
 
 /**
  * Abstract class for pawns.
@@ -11,6 +12,7 @@ public abstract class Pawn {
 
   /** The pawn's player. */
   protected Player player;
+
 
   /** Constructs a new Pawn. */
   public Pawn() {

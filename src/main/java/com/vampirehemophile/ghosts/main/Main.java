@@ -1,10 +1,20 @@
 package com.vampirehemophile.ghosts.main;
 
+/** Main starting class. */
 public class Main {
 
-  public static int WINDOW_WIDTH = 500, WINDOW_HEIGHT = 500;
+  /** Game window width. */
+  public static int WINDOW_WIDTH = 500;
+
+  /** Game windows height. */
+  public static int WINDOW_HEIGHT = 500;
 
 
+  /**
+   * Ghosts point of entry.
+   *
+   * @param args console arguments.
+   */
   public static void main(String[] args) {
 
     boolean help = false;

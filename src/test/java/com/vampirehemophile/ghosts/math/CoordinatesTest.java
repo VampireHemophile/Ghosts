@@ -1,8 +1,5 @@
 package com.vampirehemophile.ghosts.math;
 
-import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
-import com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException;
-import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
 import org.junit.Test;
 import org.junit.Ignore;
 import static org.junit.Assert.assertEquals;
@@ -12,12 +9,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 
+import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
+import com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException;
+import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
+
 /**
  * Unit test for @{link Coordinates} class.
  *
  * All the constructors are tested to ensure coordinates validity.
  */
 public class CoordinatesTest {
+
   @Test
   public void testCoordinatesConstructorWorld1() {
     Coordinates c = new Coordinates("a1", 6);

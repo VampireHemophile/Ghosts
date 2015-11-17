@@ -1,15 +1,15 @@
 package com.vampirehemophile.ghosts.managers;
 
-import com.vampirehemophile.ghosts.math.Coordinates;
 import com.vampirehemophile.ghosts.entities.Board;
 import com.vampirehemophile.ghosts.entities.Player;
 import com.vampirehemophile.ghosts.entities.Pawn;
 import com.vampirehemophile.ghosts.entities.GoodPawn;
 import com.vampirehemophile.ghosts.entities.Square;
 import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
+import com.vampirehemophile.ghosts.math.Coordinates;
 
 /**
- * Provides a Manager to handle a board, the pawns movements functions on it,
+ * Provides a manager to handle a board, the pawns movements functions on it,
  * and a set of functions to analyse the game's state.
  */
 public class BoardManager {
@@ -26,6 +26,15 @@ public class BoardManager {
   /** Black player. */
   private Player black;
 
+  /**
+   * Constructs a new BoardManager where the board size is 6.
+   *
+   * @param white white player [b1 x e2] minimum.
+   * @param black black player [b5 x e6] minimum.
+   * @throws NullPointerException if one or both of the players are null.
+   * @throws RuntimeException if players represents the same instance.
+   * @throws BoardTooSmallException if the size is inferior to 6.
+   */
   public BoardManager(Player white, Player black) {
     this(white, black, 6);
   }
@@ -35,6 +44,7 @@ public class BoardManager {
    *
    * @param white white player [b1 x e2] minimum.
    * @param black black player [b5 x e6] minimum.
+   * @param size size of the board.
    * @throws NullPointerException if one or both of the players are null.
    * @throws RuntimeException if players represents the same instance.
    * @throws BoardTooSmallException if the size is inferior to 6.
@@ -97,7 +107,8 @@ public class BoardManager {
   /**
   * Check if a player can exit one of its pawns, and thus win the game.
   * A player can exit one of its pawns if the pawn is an instance of
-  * @{link GoodPawn} and if the pawn is located on the opponent's side corner of
+  * {@link  com.vampirehemophile.ghosts.entities.GoodPawn GoodPawn}
+  * and if the pawn is located on the opponent's side corner of
   * the board.
   *
   * @param player the player.

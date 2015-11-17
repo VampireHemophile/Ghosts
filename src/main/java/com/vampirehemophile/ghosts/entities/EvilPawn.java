@@ -26,9 +26,9 @@ public class EvilPawn extends Pawn {
    */
   @Override public char charIcon() {
     if (player == null) {
-      return 'G';
+      return 'B';
     } else {
-      return player.charIcon();
+      return (char)(player.charIcon() - 'a' + 'A');
     }
   }
 }

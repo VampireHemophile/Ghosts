@@ -1,10 +1,11 @@
 package com.vampirehemophile.ghosts.math;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
 import com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException;
 import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 /**
  * <p>Coordinates provides a way of storing and manipulating coordinates.
