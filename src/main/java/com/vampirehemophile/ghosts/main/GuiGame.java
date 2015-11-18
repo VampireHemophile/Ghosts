@@ -4,7 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 
-import com.vampirehemophile.ghosts.gamestatemanager.*;
+import com.vampirehemophile.ghosts.gamestatemanager.GameStateManager;
+import com.vampirehemophile.ghosts.managers.KeyManager;
 
 public class GuiGame implements Runnable {
 
@@ -32,6 +33,8 @@ public class GuiGame implements Runnable {
   * GameStateManager
   */
   private GameStateManager gsm;
+  
+  private KeyManager km;
 
 
 
@@ -41,14 +44,17 @@ public class GuiGame implements Runnable {
     this.width = width;
     this.height = height;
     this.title = title;
-
-    this.gsm = new GameStateManager();
+    
+    this.km = new KeyManager();
+    this.gsm = new GameStateManager(km);
+   
 
   }
 
   private void init() throws IOException {
 
     display = new Display(title, width, height);
+    display.getFrame().addKeyListener(km); 
 
   }
 
@@ -67,9 +73,10 @@ public class GuiGame implements Runnable {
     try {
       init();
     } catch (IOException e) {
-      // TODO Auto-generated catch block
+      
       e.printStackTrace();
     }
+    
     //calculates the fps
     int fps = 60;
     double timePerTick = 1000000000 / fps; //nano seconds --> 1 sec hehe
@@ -80,7 +87,7 @@ public class GuiGame implements Runnable {
     int ticks = 0;
     //end variables
 
-    while (running) { //game loop
+    while (running) {
       now = System.nanoTime();
       delta += (now - lastTime) / timePerTick;
       timer += now - lastTime;
@@ -93,7 +100,6 @@ public class GuiGame implements Runnable {
       delta--;
       }
       if (timer >= 1000000000){
-        System.out.println("Ticks and Frames: " + ticks);
         ticks = 0;
         timer = 0;
       }
@@ -106,6 +112,8 @@ public class GuiGame implements Runnable {
 
   private void tick() {
 
+	km.tick();
+	
     if(gsm.currentState() != null)
       gsm.currentState().tick();
 
