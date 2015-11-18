@@ -223,18 +223,27 @@ public class CliGame {
       for (int x = 0; x < size; x++) {
         pawn = board.at(new Coordinates(x, y, size));
         if (pawn == null) {
-          // sbBoard.append((char)27 + "[XXm");
           if ((y == 0 || y == size - 1) && (x == 0 || x ==  size - 1)) {
             sbBoard.append("#");
           } else {
             sbBoard.append(".");
           }
         } else if (pawn.player() == player) {
+          if (pawn.player() == white) {
+            sbBoard.append((char)27 + "[1;37m");
+          } else {
+            sbBoard.append((char)27 + "[1;30m");
+          }
           sbBoard.append(pawn.charIcon());
         } else {
+          if (pawn.player() == white) {
+            sbBoard.append((char)27 + "[1;37m");
+          } else {
+            sbBoard.append((char)27 + "[1;30m");
+          }
           sbBoard.append(Pawn.defaultCharIcon);
         }
-        // sbBoard.append((char)27 + "[0m");
+        sbBoard.append((char)27 + "[0m");
       }
       sbBoard.append("| ");
       sbBoard.append(y + 1);
