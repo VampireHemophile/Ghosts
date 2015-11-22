@@ -11,17 +11,25 @@ import java.util.Spliterator;
  */
 public class Player implements Iterable<Pawn> {
 
-  /**
-   * Set of player's pawns.
-   */
+  /** Set of player's pawns. */
   private Set<Pawn> pawns;
+
+  /** Set of captured pawns. */
+  private Set<Pawn> capturedPawns;
 
   /** Player's char for CLI. */
   private char charIcon;
 
+  /** Number of good pawns. */
+  private int goodPawnsNumber;
+
+  /** Number of evil pawns. */
+  private int evilPawnsNumber;
+
 
   /**
    * Constructs a new player.
+   * Player has 8 pawns by default, 4 {@link GoodPawn} and {@link EvilPawn}.
    */
   public Player() {
     this('\0');
@@ -29,12 +37,16 @@ public class Player implements Iterable<Pawn> {
 
   /**
    * Constructs a new player.
+   * Player has 8 pawns by default, 4 {@link GoodPawn} and {@link EvilPawn}.
    *
    * @param charIcon Player's char for CLI displaying.
    */
   public Player(char charIcon) {
     this.pawns = new HashSet<>();
+    this.capturedPawns = new HashSet<>();
     this.charIcon = charIcon;
+    this.goodPawnsNumber = 0;
+    this.evilPawnsNumber = 0;
   }
 
   /**
@@ -47,19 +59,40 @@ public class Player implements Iterable<Pawn> {
   }
 
   /**
-   * Add a pawn to the player's pawn set.
+   * Add a pawn to this player's pawn set.
    *
    * @param p pawn to add.
+   * @return true if the pawn set contained the specified pawn.
    */
-  public void add(Pawn p) {
+  public boolean add(Pawn p) {
     if (p == null) {
       throw new NullPointerException();
     }
-    pawns.add(p);
+
+    if (p instanceof GoodPawn) {
+      goodPawnsNumber++;
+    } else if (p instanceof EvilPawn) {
+      evilPawnsNumber++;
+    }
+    return pawns.add(p);
   }
 
   /**
-   * Remove a pawn from the player's pawn set.
+   * Capture an opponent's pawn. Will remove the opponent's reference to the
+   * pawn.
+   *
+   * @param p captured pawn.
+   */
+  public void capture(Pawn p) {
+    if (p == null) {
+      throw new NullPointerException();
+    }
+    capturedPawns.add(p);
+    p.player().remove(p);
+  }
+
+  /**
+   * Removes a pawn from this player's pawn set.
    *
    * @param p pawn to remove.
    * @return true if the pawn set contained the specified pawn.
@@ -68,7 +101,31 @@ public class Player implements Iterable<Pawn> {
     if (p == null) {
       throw new NullPointerException();
     }
+
+    if (p instanceof GoodPawn) {
+      goodPawnsNumber--;
+    } else if (p instanceof EvilPawn) {
+      evilPawnsNumber--;
+    }
     return pawns.remove(p);
+  }
+
+  /**
+   * Gets the number of good pawns this player has.
+   *
+   * @return number of good pawns.
+   */
+  public int countGoodPawns() {
+    return goodPawnsNumber;
+  }
+
+  /**
+   * Gets the number of evil pawns this player has.
+   *
+   * @return number of evil pawns.
+   */
+  public int countEvilPawns() {
+    return evilPawnsNumber;
   }
 
   @Override public void forEach(Consumer<? super Pawn> action) {
