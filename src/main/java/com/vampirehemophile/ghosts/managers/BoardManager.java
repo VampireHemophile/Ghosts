@@ -6,6 +6,7 @@ import com.vampirehemophile.ghosts.entities.Pawn;
 import com.vampirehemophile.ghosts.entities.GoodPawn;
 import com.vampirehemophile.ghosts.entities.Square;
 import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
+import com.vampirehemophile.ghosts.exceptions.FreeSquareException;
 import com.vampirehemophile.ghosts.math.Coordinates;
 
 /**
@@ -64,6 +65,15 @@ public class BoardManager {
     this.board = new Board(size);
   }
 
+  /**
+   * Gets the player's opponent.
+   *
+   * @param player the player.
+   * @return its opponent.
+   */
+  public Player opponent(Player player) {
+    return player == white ? black : white;
+  }
 
   /**
    * Tests if a pawn can move to a new location.
@@ -71,37 +81,59 @@ public class BoardManager {
    * in its movement range, if the location is free or if it is occupied by
    * a pawn of the other player and the pawn is aggressive.
    *
-   * @param pawn the pawn.
-   * @param loc the new location.
-   * @return true if the pawn can be moved to the new location.
+   * @param start coordinates where the pawn is located.
+   * @param end the new location.
+   * @return true if the pawn can be moved to the new location, false else.
+   * @throws FreeSquareException if there is no pawn at the specified location.
   */
-  public boolean canMoveTo(Pawn pawn, Coordinates loc) {
+  public boolean canMove(Coordinates start, Coordinates end) {
+    if (start.equals(end)) {
+      throw new RuntimeException("Coordinates match the same location.");
+    }
+
+    Pawn pawn = board.at(start);
+    if (pawn == null) {
+      throw new FreeSquareException(start);
+    }
+
     boolean isInRange = false;
-    for (Coordinates mv : pawn.range(loc)) {
-      if (mv.equals(loc)) {
+    for (Coordinates mv : pawn.range(start)) {
+      if (mv.equals(end)) {
         isInRange = true;
         break;
       }
     }
 
-    Square square = board.squareAt(loc);
+    Square square = board.squareAt(end);
     return isInRange && (square.isFree() || (square.isOccupied()
-        && pawn.player() != pawn.player() && pawn.isAggressive()));
+        && !pawn.player().equals(square.pawn().player())
+        && pawn.isAggressive()));
   }
 
   /**
-  * Moves a pawn to a new location, eventually removing an opponent's pawn.
+  * Moves a pawn to a new location, eventually capturing one of the opponent's
+  * pawns.
+  * User must test {@link canMove} before.
   *
-  * @param pawn the pawn.
-  * @param loc the new location.
+  * @param start coordinates where the pawn is located.
+  * @param end the new location.
   * @return the opponent's pawn that may have been taken, or null.
   */
-  public Pawn moveTo(Pawn pawn, Coordinates loc) {
-    if (!canMoveTo(pawn, loc)) {
-      return null;
+  public Pawn move(Coordinates start, Coordinates end) {
+    if (start == null || end == null) {
+      throw new NullPointerException();
+    }
+    if (start.equals(end)) {
+      throw new RuntimeException("Coordinates match the same location.");
     }
 
-    return board.set(pawn, loc);
+    Pawn pawn = board.remove(start);
+    Pawn captured = board.set(pawn, end);
+    if (captured != null) {
+      pawn.player().capture(captured);
+    }
+
+    return captured;
   }
 
   /**
@@ -115,7 +147,7 @@ public class BoardManager {
   * @return true if the player can exit one of his pawns.
   * @throws NullPointerException if player is null.
   */
-  public boolean exitsPawn(Player player) {
+  public boolean canExitPawn(Player player) {
     if (player == null) {
       throw new NullPointerException();
     }
@@ -127,32 +159,66 @@ public class BoardManager {
     square = board.squareAt(topLeft);
     if (square.isOccupied()) {
       pawn = square.pawn();
-      return pawn instanceof GoodPawn && player == pawn.player()
-          && player == black;
+      if (pawn instanceof GoodPawn
+          && player == pawn.player() && player == black) {
+        return true;
+      }
     }
     Coordinates topRight = new Coordinates(size - 1, 0, size);
     square = board.squareAt(topRight);
     if (square.isOccupied()) {
       pawn = square.pawn();
-      return pawn instanceof GoodPawn && player == pawn.player()
-          && player == black;
+      if (pawn instanceof GoodPawn
+          && player == pawn.player() && player == black) {
+        return true;
+      }
     }
     Coordinates bottomLeft = new Coordinates(0, size - 1, size);
     square = board.squareAt(bottomLeft);
     if (square.isOccupied()) {
       pawn = square.pawn();
-      return pawn instanceof GoodPawn && player == pawn.player()
-          && player == white;
+      if (pawn instanceof GoodPawn
+          && player == pawn.player() && player == white) {
+        return true;
+      }
     }
     Coordinates bottomRight = new Coordinates(size - 1, size - 1, size);
     square = board.squareAt(bottomRight);
     if (square.isOccupied()) {
       pawn = square.pawn();
-      return pawn instanceof GoodPawn && player == pawn.player()
-          && player == white;
+      if (pawn instanceof GoodPawn
+          && player == pawn.player() && player == white) {
+        return true;
+      }
     }
 
     return false;
+  }
+
+  /**
+   * Checks if a player has won. The check should happen at the end of the
+   * player's turn.
+   * A player has won if it one of its pawns has reached the other side of the
+   * board {@link canExitPawn} or if all of the opponent's good pawns have been
+   * captured.
+   *
+   * @param player potential winner ?
+   * @return true if the player has won.
+   */
+  public boolean hasWon(Player player) {
+    return canExitPawn(player) || opponent(player).countGoodPawns() == 0;
+  }
+
+  /**
+   * Check if a player has lost. The check should happen at the end of the
+   * player's turn.
+   * A player has lost if is has captured all of the opponent's evil pawns.
+   *
+   * @param player potential looser ?
+   * @return true if the player has lost.
+   */
+  public boolean hasLost(Player player) {
+    return opponent(player).countEvilPawns() == 0;
   }
 
   /**

@@ -76,8 +76,9 @@ public class Board {
    * Removes a pawn from square at coordinates.
    *
    * @param c the location.
+   * @return the removed pawn.
    */
-  private Pawn remove(Coordinates c) {
+  public Pawn remove(Coordinates c) {
     return squareAt(c).free();
   }
 
