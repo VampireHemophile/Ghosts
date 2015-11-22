@@ -17,8 +17,8 @@ public class PawnFactory {
    * @return the created pawn or null if type is unknown.
    */
   public static Pawn makePawn(char c) {
-    GoodPawn g = makeGoodPawn();
-    EvilPawn e = makeEvilPawn();
+    GoodPawn g = new GoodPawn();
+    EvilPawn e = new EvilPawn();
 
     if (c == g.charIcon()) {
       return g;
@@ -36,11 +36,11 @@ public class PawnFactory {
    * @return the created pawn or null if type is unknown.
    */
   public static Pawn makePawn(Player p, char c) {
-    GoodPawn g1 = makeGoodPawn();
-    EvilPawn e1 = makeEvilPawn();
+    GoodPawn g1 = new GoodPawn();
+    EvilPawn e1 = new EvilPawn();
 
-    GoodPawn g = makeGoodPawn(p);
-    EvilPawn e = makeEvilPawn(p);
+    GoodPawn g = new GoodPawn(p);
+    EvilPawn e = new EvilPawn(p);
 
     if (c == g1.charIcon()) {
       return g;
@@ -48,43 +48,5 @@ public class PawnFactory {
       return e;
     }
     return null;
-  }
-
-  /**
-   * Makes a new @{link GoodPawn}.
-   *
-   * @return the created pawn.
-   */
-  public static GoodPawn makeGoodPawn() {
-    return new GoodPawn();
-  }
-
-  /**
-   * Makes a new @{link GoodPawn}.
-   *
-   * @param p the player to whom the pawn belongs.
-   * @return the created pawn.
-   */
-  public static GoodPawn makeGoodPawn(Player p) {
-    return new GoodPawn(p);
-  }
-
-  /**
-   * Makes a new @{link EvilPawn}.
-   *
-   * @return the created pawn.
-   */
-  public static EvilPawn makeEvilPawn() {
-    return new EvilPawn();
-  }
-
-  /**
-   * Makes a new @{link EvilPawn}.
-   *
-   * @param p the player to whom the pawn belongs.
-   * @return the created pawn.
-   */
-  public static EvilPawn makeEvilPawn(Player p) {
-    return new EvilPawn(p);
   }
 }
