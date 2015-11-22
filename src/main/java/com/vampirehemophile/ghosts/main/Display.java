@@ -33,9 +33,10 @@ public class Display {
 		canvas.setFocusable(false);
 
 		frame.add(canvas);
-		frame.pack(); //mb Problem resize
-
+		frame.pack();
 }
+	
+	
 	//getters
 	public Canvas getCanvas() {
 		return this.canvas;
