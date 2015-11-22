@@ -7,7 +7,7 @@ public class GoodPawn extends Pawn {
 
   /** Constructs a new GoodPawn. */
   public GoodPawn() {
-    super();
+    this(null);
   }
 
   /**
@@ -28,10 +28,10 @@ public class GoodPawn extends Pawn {
    * @return pawn's char icon.
    */
   @Override public char charIcon() {
-    if (player == null) {
+    if (player() == null) {
       return 'G';
     } else {
-      return player.charIcon();
+      return player().charIcon();
     }
   }
 }

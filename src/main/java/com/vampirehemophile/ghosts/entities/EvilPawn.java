@@ -7,7 +7,7 @@ public class EvilPawn extends Pawn {
 
   /** Constructs a new EvilPawn. */
   public EvilPawn() {
-    this.player = null;
+    this(null);
   }
 
   /**
@@ -25,10 +25,10 @@ public class EvilPawn extends Pawn {
    * @return pawn's char icon.
    */
   @Override public char charIcon() {
-    if (player == null) {
+    if (player() == null) {
       return 'B';
     } else {
-      return (char)(player.charIcon() - 'a' + 'A');
+      return (char)(player().charIcon() - 'a' + 'A');
     }
   }
 }

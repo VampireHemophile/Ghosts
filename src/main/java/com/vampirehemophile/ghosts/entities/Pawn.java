@@ -11,28 +11,33 @@ import com.vampirehemophile.ghosts.math.Coordinates;
 public abstract class Pawn {
 
   /** The pawn's player. */
-  protected Player player;
+  private Player player;
 
   /** Default char icon in CLI for an hidden pawn. */
   public final static char defaultCharIcon = 'A';
 
+  /**
+   * Pawns's behaviour. Aggressive means that it can take an
+   * opponent's pawn.
+   */
+  private boolean aggressive;
+
   /** Constructs a new Pawn. */
   public Pawn() {
-    this.player = null;
+    this(null);
   }
 
   /**
-   * Constructs a new Pawn. Adds itself to the player's pawn set.
+   * Constructs a new Pawn. Adds this pawn to the player pawn set.
    *
    * @param player Pawn's player.
-   * @throws NullPointerException if player is null.
    */
   public Pawn(Player player) {
-    if (player == null) {
-      throw new NullPointerException();
-    }
     this.player = player;
-    player.add(this);
+    if (player != null) {
+      player.add(this);
+    }
+    this.aggressive = true;
   }
 
   /**
@@ -42,6 +47,15 @@ public abstract class Pawn {
    */
   public Player player() {
     return player;
+  }
+
+  /**
+   * Sets the pawn's player. Won't add this pawn to the player's pawn set.
+   *
+   * @param player pawn's player.
+   */
+  public void setPlayer(Player player) {
+    this.player = player;
   }
 
   /**
@@ -59,7 +73,7 @@ public abstract class Pawn {
    * are possible.
    */
   public Set<Coordinates> range(Coordinates coord) {
-    Set<Coordinates> set = new HashSet<>(4, 0.0f);
+    Set<Coordinates> set = new HashSet<>();
     Coordinates north = coord.north();
     Coordinates south = coord.south();
     Coordinates east = coord.east();
@@ -82,12 +96,21 @@ public abstract class Pawn {
   }
 
   /**
-   * Tells if a pawn is aggressive or not. Aggressive means that it can take
-   * the opponents pawns.
+   * Tells if a pawn is aggressive or not. Aggressive means that it can take an
+   * opponent's pawn.
    *
    * @return true if it is aggressive (default).
    */
   public boolean isAggressive() {
-    return true;
+    return aggressive;
+  }
+
+  /**
+   * Set pawn's behaviour. Aggressive means that it can take an opponent's pawn.
+   *
+   * @param aggressive Pawn's behaviour.
+   */
+  public void setAggressive(boolean aggressive) {
+    this.aggressive = aggressive;
   }
 }
