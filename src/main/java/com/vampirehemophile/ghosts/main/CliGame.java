@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import com.vampirehemophile.ghosts.entities.*;
 import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
+import com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException;
+import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
+import com.vampirehemophile.ghosts.exceptions.FreeSquareException;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.math.Coordinates;
 import static com.vampirehemophile.ghosts.util.PawnFactory.makePawn;
@@ -22,9 +25,6 @@ public class CliGame {
   /** Game board manager. */
   private BoardManager boardManager;
 
-  /** Game board. */
-  private Board board;
-
 
   /** Constructs a game in CLI. */
   public CliGame() {
@@ -34,13 +34,30 @@ public class CliGame {
 
   /** Starts the game. */
   public void start() {
-    boardManager = new BoardManager(white, black, askBoardSize());
-    board = boardManager.board();
+    boardManager = new BoardManager(white, black, 6);
 
     askPawns(white);
     askPawns(black);
 
-    render(white);
+    boolean hasWon = false;
+    boolean hasLost = false;
+    Player current = black;
+    do {
+      current = boardManager.opponent(current);
+      render(current);
+      askMove(current);
+      render(current);
+      try { Thread.sleep(3000); } catch (Exception expected) {}
+      clearScreen();
+      hasWon = boardManager.hasWon(current);
+      hasLost = boardManager.hasLost(current);
+    } while (!hasWon && !hasLost);
+
+    if (hasWon) {
+      System.out.println(((current == white) ? "White" : "Black") + " wins !");
+    } else if (hasLost) {
+      System.out.println(((current == white) ? "Black" : "White") + " wins !");
+    }
   }
 
   /**
@@ -55,7 +72,7 @@ public class CliGame {
     BufferedReader buf = new BufferedReader (new InputStreamReader (System.in));
 
     while (keepAsking) {
-      System.out.print("Board size (>=6): ");
+      System.out.print("Board size (>=6) [6]: ");
       try {
         line = buf.readLine();
       } catch (IOException expected) {};
@@ -86,6 +103,7 @@ public class CliGame {
       throw new NullPointerException();
     }
 
+    Board board = boardManager.board();
     GoodPawn g = new GoodPawn();
     EvilPawn e = new EvilPawn();
 
@@ -99,8 +117,11 @@ public class CliGame {
 
     Coordinates c = null;
     int size = board.size();
-    int topY = (player == white) ? 0 : size - 2;
-    for (int y = topY; y < topY + 2; y++) {
+    boolean isWhite = player == white;
+    int y = (isWhite) ? 0 : size - 1;
+    int endY = (isWhite) ? 2 : size - 3;
+    int incY = (isWhite) ? 1 : -1;
+    do {
       for (int x = 1; x < size - 1; x++) {
         c = new Coordinates(x, y, board.size());
 
@@ -110,12 +131,15 @@ public class CliGame {
         question.append(c.y());
         question.append(end);
 
+        clearScreen();
         render(player);
         Pawn pawn = askPawn(question.toString(), player);
         board.set(pawn, c);
         question.delete(0, question.length());
       }
-    }
+
+      y += incY;
+    } while (y != endY);
   }
 
   /**
@@ -136,17 +160,63 @@ public class CliGame {
       System.out.print(q);
       if (sc.hasNext()) {
         line = sc.next();
-        //System.out.println("HERE " + line);
         if (line.length() == 1) {
-          //System.out.println("There " + line.charAt(0));
           pawn = makePawn(player, line.charAt(0));
           keepAsking = pawn == null;
-          //System.out.println(keepAsking);
         }
       }
     }
 
     return pawn;
+  }
+
+  private void askMove(Player player) {
+    String line = null;
+    String[] coords = null;
+    Coordinates start = null;
+    Coordinates end = null;
+    boolean keepAsking = true;
+    Scanner sc = new Scanner(System.in);
+
+    while (keepAsking) {
+      System.out.print("Move pawn from ij to xy [ij xy]: ");
+      if (sc.hasNextLine()) {
+        line = sc.nextLine();
+        coords = line.split(" ");
+
+        if (coords.length == 2) {
+          try {
+            start = new Coordinates(coords[0], boardManager.size());
+            keepAsking = false;
+          } catch (InvalidCoordinatesException e) {
+            System.out.println(e.getMessage());
+          } catch (OutOfBoardCoordinatesException e) {
+            System.out.println(e.getMessage());
+          }
+          try {
+            end = new Coordinates(coords[1], boardManager.size());
+          } catch (InvalidCoordinatesException e) {
+            System.out.println(e.getMessage());
+            keepAsking = true;
+          } catch (OutOfBoardCoordinatesException e) {
+            System.out.println(e.getMessage());
+            keepAsking = true;
+          }
+
+          try {
+            boolean canMove = boardManager.canMove(start, end);
+            keepAsking = !((!keepAsking) && canMove);
+          } catch (FreeSquareException e) {
+            System.out.println(e.getMessage());
+            keepAsking = true;
+          }
+        } else {
+          System.out.println("No valid coordinates found.");
+        }
+      }
+    }
+
+    boardManager.move(start, end);
   }
 
   /** Clears the screen with ANSI CLEAR sequence. */
@@ -160,8 +230,7 @@ public class CliGame {
    * @param player Player to render the board for.
    */
   private void render(Player player) {
-    clearScreen();
-
+    Board board = boardManager.board();
     int size = board.size();
 
     int headOffsetSize = 1;
