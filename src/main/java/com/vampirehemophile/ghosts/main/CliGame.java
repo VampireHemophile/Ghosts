@@ -104,8 +104,8 @@ public class CliGame {
     }
 
     Board board = boardManager.board();
-    GoodPawn g = new GoodPawn();
-    EvilPawn e = new EvilPawn();
+    Pawn g = new Pawn(true);
+    Pawn e = new Pawn(false);
 
     StringBuilder question = new StringBuilder();
     StringBuilder end = new StringBuilder();

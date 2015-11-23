@@ -29,7 +29,7 @@ public class Player implements Iterable<Pawn> {
 
   /**
    * Constructs a new player.
-   * Player has 8 pawns by default, 4 {@link GoodPawn} and {@link EvilPawn}.
+   * Player has 8 pawns by default, 4 good pawns and evil pawns.
    */
   public Player() {
     this('\0');
@@ -37,7 +37,7 @@ public class Player implements Iterable<Pawn> {
 
   /**
    * Constructs a new player.
-   * Player has 8 pawns by default, 4 {@link GoodPawn} and {@link EvilPawn}.
+   * Player has 8 pawns by default, 4 good pawns and evil pawns.
    *
    * @param charIcon Player's char for CLI displaying.
    */
@@ -69,9 +69,9 @@ public class Player implements Iterable<Pawn> {
       throw new NullPointerException();
     }
 
-    if (p instanceof GoodPawn) {
+    if (p.isGood()) {
       goodPawnsNumber++;
-    } else if (p instanceof EvilPawn) {
+    } else if (p.isEvil()) {
       evilPawnsNumber++;
     }
     return pawns.add(p);
@@ -102,9 +102,9 @@ public class Player implements Iterable<Pawn> {
       throw new NullPointerException();
     }
 
-    if (p instanceof GoodPawn) {
+    if (p.isGood()) {
       goodPawnsNumber--;
-    } else if (p instanceof EvilPawn) {
+    } else if (p.isEvil()) {
       evilPawnsNumber--;
     }
     return pawns.remove(p);

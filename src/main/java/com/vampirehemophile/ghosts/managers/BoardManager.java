@@ -3,7 +3,6 @@ package com.vampirehemophile.ghosts.managers;
 import com.vampirehemophile.ghosts.entities.Board;
 import com.vampirehemophile.ghosts.entities.Player;
 import com.vampirehemophile.ghosts.entities.Pawn;
-import com.vampirehemophile.ghosts.entities.GoodPawn;
 import com.vampirehemophile.ghosts.entities.Square;
 import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
 import com.vampirehemophile.ghosts.exceptions.FreeSquareException;
@@ -138,10 +137,8 @@ public class BoardManager {
 
   /**
   * Check if a player can exit one of its pawns, and thus win the game.
-  * A player can exit one of its pawns if the pawn is an instance of
-  * {@link  com.vampirehemophile.ghosts.entities.GoodPawn GoodPawn}
-  * and if the pawn is located on the opponent's side corner of
-  * the board.
+  * A player can exit one of its pawns if the pawn is a good pawn, and if the
+  * pawn is located on the opponent's side corner of the board.
   *
   * @param player the player.
   * @return true if the player can exit one of his pawns.
@@ -159,8 +156,7 @@ public class BoardManager {
     square = board.squareAt(topLeft);
     if (square.isOccupied()) {
       pawn = square.pawn();
-      if (pawn instanceof GoodPawn
-          && player == pawn.player() && player == black) {
+      if (pawn.isGood() && player == pawn.player() && player == black) {
         return true;
       }
     }
@@ -168,8 +164,7 @@ public class BoardManager {
     square = board.squareAt(topRight);
     if (square.isOccupied()) {
       pawn = square.pawn();
-      if (pawn instanceof GoodPawn
-          && player == pawn.player() && player == black) {
+      if (pawn.isGood() && player == pawn.player() && player == black) {
         return true;
       }
     }
@@ -177,8 +172,7 @@ public class BoardManager {
     square = board.squareAt(bottomLeft);
     if (square.isOccupied()) {
       pawn = square.pawn();
-      if (pawn instanceof GoodPawn
-          && player == pawn.player() && player == white) {
+      if (pawn.isGood() && player == pawn.player() && player == white) {
         return true;
       }
     }
@@ -186,8 +180,7 @@ public class BoardManager {
     square = board.squareAt(bottomRight);
     if (square.isOccupied()) {
       pawn = square.pawn();
-      if (pawn instanceof GoodPawn
-          && player == pawn.player() && player == white) {
+      if (pawn.isGood() && player == pawn.player() && player == white) {
         return true;
       }
     }

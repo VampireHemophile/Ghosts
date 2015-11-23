@@ -1,7 +1,5 @@
 package com.vampirehemophile.ghosts.util;
 
-import com.vampirehemophile.ghosts.entities.EvilPawn;
-import com.vampirehemophile.ghosts.entities.GoodPawn;
 import com.vampirehemophile.ghosts.entities.Pawn;
 import com.vampirehemophile.ghosts.entities.Player;
 
@@ -17,8 +15,8 @@ public class PawnFactory {
    * @return the created pawn or null if type is unknown.
    */
   public static Pawn makePawn(char c) {
-    GoodPawn g = new GoodPawn();
-    EvilPawn e = new EvilPawn();
+    Pawn g = new Pawn(true);
+    Pawn e = new Pawn(false);
 
     if (c == g.charIcon()) {
       return g;
@@ -36,11 +34,11 @@ public class PawnFactory {
    * @return the created pawn or null if type is unknown.
    */
   public static Pawn makePawn(Player p, char c) {
-    GoodPawn g1 = new GoodPawn();
-    EvilPawn e1 = new EvilPawn();
+    Pawn g1 = new Pawn(true);
+    Pawn e1 = new Pawn(false);
 
-    GoodPawn g = new GoodPawn(p);
-    EvilPawn e = new EvilPawn(p);
+    Pawn g = new Pawn(p, true);
+    Pawn e = new Pawn(p, false);
 
     if (c == g1.charIcon()) {
       return g;

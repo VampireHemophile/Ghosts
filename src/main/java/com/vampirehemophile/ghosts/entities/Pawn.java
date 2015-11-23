@@ -6,9 +6,9 @@ import java.util.HashSet;
 import com.vampirehemophile.ghosts.math.Coordinates;
 
 /**
- * Abstract class for pawns.
+ * Pawns.
  */
-public abstract class Pawn {
+public class Pawn {
 
   /** The pawn's player. */
   private Player player;
@@ -22,22 +22,77 @@ public abstract class Pawn {
    */
   private boolean aggressive;
 
+  /**
+   * Pawn's state. A pawn can be good (allows the user to win by exiting the
+   * pawn) or evil.
+   */
+  private boolean good;
+
+
   /** Constructs a new Pawn. */
   public Pawn() {
     this(null);
   }
 
   /**
-   * Constructs a new Pawn. Adds this pawn to the player pawn set.
+   * Constructs a new good and aggressive pawn. Adds this pawn to the player
+   * pawn set.
    *
    * @param player Pawn's player.
    */
   public Pawn(Player player) {
+    this(player, true);
+  }
+
+  /**
+   * Constructs a new aggressive pawn.
+   *
+   * @param good this pawn state, true if good. A pawn can be good (allows the
+   * user to win by exiting the pawn) or evil.
+   */
+  public Pawn(boolean good) {
+    this(null, good);
+  }
+
+  /**
+   * Constructs a new pawn.
+   *
+   * @param good this pawn state, true if good. A pawn can be good (allows the
+   * user to win by exiting the pawn) or evil.
+   * @param aggressive this pawn's behaviour, true if aggressive. Aggressive
+   * means that it can take an opponent's pawn.
+   */
+  public Pawn(boolean good, boolean aggressive) {
+    this(null, good, aggressive);
+  }
+
+  /**
+   * Constructs a new aggressive pawn. Adds this pawn to the player pawn set.
+   *
+   * @param player Pawn's player.
+   * @param good this pawn state, true if good. A pawn can be good (allows the
+   * user to win by exiting the pawn) or evil.
+   */
+  public Pawn(Player player, boolean good) {
+    this(player, good, true);
+  }
+
+  /**
+   * Constructs a new pawn. Adds this pawn to the player pawn set.
+   *
+   * @param player Pawn's player.
+   * @param good this pawn state, true if good. A pawn can be good (allows the
+   * user to win by exiting the pawn) or evil.
+   * @param aggressive this pawn's behaviour, true if aggressive. Aggressive
+   * means that it can take an opponent's pawn.
+   */
+  public Pawn(Player player, boolean good, boolean aggressive) {
     this.player = player;
     if (player != null) {
       player.add(this);
     }
-    this.aggressive = true;
+    this.good = good;
+    this.aggressive = aggressive;
   }
 
   /**
@@ -63,7 +118,21 @@ public abstract class Pawn {
    *
    * @return pawn's char icon.
    */
-  public abstract char charIcon();
+   public char charIcon() {
+     if (good) {
+       if (player() == null) {
+         return 'G';
+       } else {
+         return player().charIcon();
+       }
+     } else {
+       if (player() == null) {
+         return 'B';
+       } else {
+         return (char)(player().charIcon() - 'a' + 'A');
+       }
+     }
+   }
 
   /**
    * Gets the pawn's movement range.
@@ -106,11 +175,51 @@ public abstract class Pawn {
   }
 
   /**
+   * Tells if a pawn is passive or not. Passive means that it can not take an
+   * opponent's pawn.
+   *
+   * @return true if it is passive.
+   */
+  public boolean isPassive() {
+    return !aggressive;
+  }
+
+  /**
    * Set pawn's behaviour. Aggressive means that it can take an opponent's pawn.
    *
    * @param aggressive Pawn's behaviour.
    */
-  public void setAggressive(boolean aggressive) {
+  public void setBehaviour(boolean aggressive) {
     this.aggressive = aggressive;
+  }
+
+  /**
+   * Tells if this pawn is good or not. Good allows the user to win by exiting
+   * this pawn.
+   *
+   * @return true if it is good (default).
+   */
+  public boolean isGood() {
+    return good;
+  }
+
+  /**
+   * Tells if this pawn is evil or not. Evil won't allow the user to win by
+   * exiting this pawn.
+   *
+   * @return true if it is good (default).
+   */
+  public boolean isEvil() {
+    return !good;
+  }
+
+  /**
+   * Set pawn's state. A pawn can be good (allows the user to win by exiting the
+   * pawn) or evil.
+   *
+   * @param good Pawn's state.
+   */
+  public void setState(boolean good) {
+    this.good = good;
   }
 }
