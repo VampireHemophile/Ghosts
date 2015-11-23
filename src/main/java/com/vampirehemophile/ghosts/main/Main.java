@@ -1,6 +1,8 @@
 package com.vampirehemophile.ghosts.main;
 
-/** Main starting class. */
+/**
+ * Main starting class.
+ */
 public class Main {
 
   /** Game window width. */

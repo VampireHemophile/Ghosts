@@ -7,6 +7,12 @@ import com.vampirehemophile.ghosts.math.Coordinates;
  */
 @SuppressWarnings("serial")
 public class FreeSquareException extends RuntimeException {
+
+  /**
+   * Constructor for FreeSquareException.
+   *
+   * @param c a {@link com.vampirehemophile.ghosts.math.Coordinates} object.
+   */
   public FreeSquareException(Coordinates c) {
     super("Trying to move pawn from empty square at " + c.x() + c.y());
   }

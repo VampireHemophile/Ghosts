@@ -14,12 +14,15 @@ import com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException;
 import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
 
 /**
- * Unit test for @{link Coordinates} class.
+ * Unit test for @{link com.vampirehemophile.ghosts.math.Coordinates} class.
  *
  * All the constructors are tested to ensure coordinates validity.
  */
 public class CoordinatesTest {
 
+  /**
+   * testCoordinatesConstructorWorld1.
+   */
   @Test
   public void testCoordinatesConstructorWorld1() {
     Coordinates c = new Coordinates("a1", 6);
@@ -37,6 +40,9 @@ public class CoordinatesTest {
     } catch (OutOfBoardCoordinatesException expected) {}
   }
 
+  /**
+   * testCoordinatesConstructorWorld2.
+   */
   @Test
   public void testCoordinatesConstructorWorld2() {
     Coordinates c = new Coordinates("a", 1, 6);
@@ -54,6 +60,9 @@ public class CoordinatesTest {
     } catch (OutOfBoardCoordinatesException expected) {}
   }
 
+  /**
+   * testGenXWorld.
+   */
   @Test
   public void testGenXWorld() {
     assertEquals("a", (new Coordinates(0, 0, 6)).x());
@@ -62,6 +71,9 @@ public class CoordinatesTest {
     assertEquals("ba", (new Coordinates(26, 26, 27)).x());
   }
 
+  /**
+   * testGenYWorld.
+   */
   @Test
   public void testGenYWorld() {
     assertEquals(1, (new Coordinates(0, 0, 6)).y());
@@ -70,6 +82,9 @@ public class CoordinatesTest {
     assertEquals(27, (new Coordinates(26, 26, 27)).y());
   }
 
+  /**
+   * testGenXMatrix.
+   */
   @Test
   public void testGenXMatrix() {
     assertEquals(0, (new Coordinates("a1", 6)).xMatrix());
@@ -78,6 +93,9 @@ public class CoordinatesTest {
     assertEquals(26, (new Coordinates("aa27", 27)).xMatrix());
   }
 
+  /**
+   * testGenYMatrix.
+   */
   @Test
   public void testGenYMatrix() {
     assertEquals(0, (new Coordinates("a1", 6)).yMatrix());
@@ -86,6 +104,12 @@ public class CoordinatesTest {
     assertEquals(26, (new Coordinates("aa27", 27)).yMatrix());
   }
 
+  /**
+   * testEquality.
+   *
+   * @param c1 a {@link com.vampirehemophile.ghosts.math.Coordinates} object.
+   * @param c2 a {@link com.vampirehemophile.ghosts.math.Coordinates} object.
+   */
   public void testEquality(Coordinates c1, Coordinates c2) {
     assertEquals(c1.x(), c2.x());
     assertEquals(c1.y(), c2.y());
@@ -95,6 +119,12 @@ public class CoordinatesTest {
     assertTrue(c2.equals(c1));
   }
 
+  /**
+   * testNonEquality.
+   *
+   * @param c1 a {@link com.vampirehemophile.ghosts.math.Coordinates} object.
+   * @param c2 a {@link com.vampirehemophile.ghosts.math.Coordinates} object.
+   */
   public void testNonEquality(Coordinates c1, Coordinates c2) {
     assertTrue(!c1.x().equals(c2.x()) || c1.y() != c2.y());
     assertTrue(c1.xMatrix() != c2.xMatrix() || c1.yMatrix() != c2.yMatrix());
@@ -102,6 +132,9 @@ public class CoordinatesTest {
     assertFalse(c2.equals(c1));
   }
 
+  /**
+   * testEquals.
+   */
   @Ignore @Test
   public void testEquals() {
     Coordinates[] equalCoords = {
@@ -137,6 +170,9 @@ public class CoordinatesTest {
     }
   }
 
+  /**
+   * testCopyConstructor.
+   */
   @Test
   public void testCopyConstructor() {
     Coordinates c1 = new Coordinates(0, 0, 6);
@@ -195,6 +231,9 @@ public class CoordinatesTest {
   }
   */
 
+  /**
+   * testNorth.
+   */
   @Test
   public void testNorth() {
     Coordinates c1 = new Coordinates(0, 0, 6);
@@ -204,6 +243,9 @@ public class CoordinatesTest {
     assertTrue(c1.equals(c2.north()));
   }
 
+  /**
+   * testSouth.
+   */
   @Test
   public void testSouth() {
     Coordinates c1 = new Coordinates(0, 5, 6);
@@ -213,6 +255,9 @@ public class CoordinatesTest {
     assertTrue(c1.equals(c2.south()));
   }
 
+  /**
+   * testEast.
+   */
   @Test
   public void testEast() {
     Coordinates c1 = new Coordinates(5, 0, 6);
@@ -222,6 +267,9 @@ public class CoordinatesTest {
     assertTrue(c1.equals(c2.east()));
   }
 
+  /**
+   * testWest.
+   */
   @Test
   public void testWest() {
     Coordinates c1 = new Coordinates(0, 0, 6);

@@ -68,9 +68,10 @@ public class Coordinates {
    * @param x x-axis coordinate.
    * @param y y-axis coordinate.
    * @param size size of the board.
-   * @throws OutOfBoardCoordinatesException if the coordnates are outside
-   * of the board.
-   * @throws BoardTooSmallException if the size is inferior to 6.
+   * @throws com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException
+   *     if the coordinates are outside of the board.
+   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
+   *     the size is inferior to 6.
    */
   public Coordinates(int x, int y, int size) {
     testMinimumSize(size);
@@ -91,10 +92,12 @@ public class Coordinates {
    *
    * @param xy contains the coordinates (ex: "a1", "b9", "ab26").
    * @param size size of the board.
-   * @throws InvalidCoordinatesException if the coordinates are invalid.
-   * @throws OutOfBoardCoordinatesException if the coordnates are outside
-   * of the board.
-   * @throws BoardTooSmallException if the size is inferior to 6.
+   * @throws com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException
+   *     if the coordinates are invalid.
+   * @throws com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException
+   *     if the coordnates are outside f the board.
+   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
+   *     the size is inferior to 6.
    */
   public Coordinates(String xy, int size) {
     testMinimumSize(size);
@@ -121,10 +124,12 @@ public class Coordinates {
    * @param x coordinate on x-axis.
    * @param y coordinate on y-axis.
    * @param size size of the board.
-   * @throws InvalidCoordinatesException if the coordinates are invalid.
-   * @throws OutOfBoardCoordinatesException if the coordnates are outside
-   * of the board.
-   * @throws BoardTooSmallException if the size is inferior to 6.
+   * @throws com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException
+   *     if the coordinates are invalid.
+   * @throws com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException
+   *     if the coordnates are outside of the board.
+   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
+   *     the size is inferior to 6.
    */
   public Coordinates(String x, int y, int size) {
     testMinimumSize(size);
@@ -149,7 +154,8 @@ public class Coordinates {
    * Tests minimum size requirements.
    *
    * @param size size of the board.
-   * @throws BoardTooSmallException if the size is inferior to 6.
+   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
+   *     the size is inferior to 6.
    */
   private void testMinimumSize(int size) {
     if (size < 6) {
@@ -365,47 +371,47 @@ public class Coordinates {
     return xMatrix < size - 1;
   }
 
-    /**
-     * Tests if this can move west.
-     *
-     * @return true if this can move west.
-     */
+  /**
+   * Tests if this can move west.
+   *
+   * @return true if this can move west.
+   */
   public boolean canMoveWest() {
     return xMatrix > 0;
   }
 
-    /**
-     * Tests if this can move north-east.
-     *
-     * @return true if this can move north-east.
-     */
+  /**
+   * Tests if this can move north-east.
+   *
+   * @return true if this can move north-east.
+   */
   public boolean canMoveNorthEast() {
     return canMoveNorth() && canMoveEast();
   }
 
-    /**
-     * Tests if this can move north-west.
-     *
-     * @return true if this can move north-west.
-     */
+  /**
+   * Tests if this can move north-west.
+   *
+   * @return true if this can move north-west.
+   */
   public boolean canMoveNorthWest() {
     return canMoveNorth() && canMoveNorthWest();
   }
 
-    /**
-     * Tests if this can move south-east.
-     *
-     * @return true if this can move south-east.
-     */
+  /**
+   * Tests if this can move south-east.
+   *
+   * @return true if this can move south-east.
+   */
   public boolean canMoveSouthEast() {
     return canMoveSouth() && canMoveEast();
   }
 
-    /**
-     * Tests if this can move south-west.
-     *
-     * @return true if this can move south-west.
-     */
+  /**
+   * Tests if this can move south-west.
+   *
+   * @return true if this can move south-west.
+   */
   public boolean canMoveSouthWest() {
     return canMoveSouth() && canMoveWest();
   }
@@ -484,6 +490,7 @@ public class Coordinates {
 
   /**
    * Gets the world x-axis coordinate.
+   *
    * @return the coordinate.
    */
   public String x() {
@@ -492,6 +499,7 @@ public class Coordinates {
 
   /**
    * Gets the world y-axis coordinate.
+   *
    * @return the coordinate.
    */
   public int y() {
@@ -500,6 +508,7 @@ public class Coordinates {
 
   /**
    * Gets the matrix x-axis coordinate.
+   *
    * @return the coordinate.
    */
   public int xMatrix() {
@@ -508,6 +517,7 @@ public class Coordinates {
 
   /**
    * Gets the matrix y-axis coordinate.
+   *
    * @return the coordinate.
    */
   public int yMatrix() {

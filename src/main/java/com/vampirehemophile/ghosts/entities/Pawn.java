@@ -17,8 +17,7 @@ public class Pawn {
   public final static char defaultCharIcon = 'A';
 
   /**
-   * Pawns's behaviour. Aggressive means that it can take an
-   * opponent's pawn.
+   * Pawns's behaviour. Aggressive means that it can take an opponent's pawn.
    */
   private boolean aggressive;
 
@@ -29,7 +28,9 @@ public class Pawn {
   private boolean good;
 
 
-  /** Constructs a new Pawn. */
+  /**
+   * Constructs a new Pawn.
+   */
   public Pawn() {
     this(null);
   }
@@ -48,7 +49,7 @@ public class Pawn {
    * Constructs a new aggressive pawn.
    *
    * @param good this pawn state, true if good. A pawn can be good (allows the
-   * user to win by exiting the pawn) or evil.
+   *     user to win by exiting the pawn) or evil.
    */
   public Pawn(boolean good) {
     this(null, good);
@@ -58,9 +59,9 @@ public class Pawn {
    * Constructs a new pawn.
    *
    * @param good this pawn state, true if good. A pawn can be good (allows the
-   * user to win by exiting the pawn) or evil.
+   *     user to win by exiting the pawn) or evil.
    * @param aggressive this pawn's behaviour, true if aggressive. Aggressive
-   * means that it can take an opponent's pawn.
+   *     means that it can take an opponent's pawn.
    */
   public Pawn(boolean good, boolean aggressive) {
     this(null, good, aggressive);
@@ -71,7 +72,7 @@ public class Pawn {
    *
    * @param player Pawn's player.
    * @param good this pawn state, true if good. A pawn can be good (allows the
-   * user to win by exiting the pawn) or evil.
+   *     user to win by exiting the pawn) or evil.
    */
   public Pawn(Player player, boolean good) {
     this(player, good, true);
@@ -82,9 +83,9 @@ public class Pawn {
    *
    * @param player Pawn's player.
    * @param good this pawn state, true if good. A pawn can be good (allows the
-   * user to win by exiting the pawn) or evil.
+   *     user to win by exiting the pawn) or evil.
    * @param aggressive this pawn's behaviour, true if aggressive. Aggressive
-   * means that it can take an opponent's pawn.
+   *     means that it can take an opponent's pawn.
    */
   public Pawn(Player player, boolean good, boolean aggressive) {
     this.player = player;
@@ -118,28 +119,28 @@ public class Pawn {
    *
    * @return pawn's char icon.
    */
-   public char charIcon() {
-     if (good) {
-       if (player() == null) {
-         return 'G';
-       } else {
-         return player().charIcon();
-       }
-     } else {
-       if (player() == null) {
-         return 'B';
-       } else {
-         return (char)(player().charIcon() - 'a' + 'A');
-       }
-     }
-   }
+  public char charIcon() {
+    if (good) {
+      if (player() == null) {
+        return 'G';
+      } else {
+        return player().charIcon();
+      }
+    } else {
+      if (player() == null) {
+        return 'B';
+      } else {
+        return (char)(player().charIcon() - 'a' + 'A');
+      }
+    }
+  }
 
   /**
    * Gets the pawn's movement range.
    *
    * @param coord the starting location
    * @return Set of all possible movements. If the set is empty, no movements
-   * are possible.
+   *     are possible.
    */
   public Set<Coordinates> range(Coordinates coord) {
     Set<Coordinates> set = new HashSet<>();

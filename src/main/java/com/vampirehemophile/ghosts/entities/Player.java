@@ -128,14 +128,17 @@ public class Player implements Iterable<Pawn> {
     return evilPawnsNumber;
   }
 
+  /** {@inheritDoc} */
   @Override public void forEach(Consumer<? super Pawn> action) {
     pawns.forEach(action);
   }
 
+  /** {@inheritDoc} */
   @Override public Iterator<Pawn> iterator() {
     return pawns.iterator();
   }
 
+  /** {@inheritDoc} */
   @Override public Spliterator<Pawn> spliterator() {
     return pawns.spliterator();
   }

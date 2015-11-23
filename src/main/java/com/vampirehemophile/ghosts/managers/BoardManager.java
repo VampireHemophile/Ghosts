@@ -31,9 +31,11 @@ public class BoardManager {
    *
    * @param white white player [b1 x e2] minimum.
    * @param black black player [b5 x e6] minimum.
-   * @throws NullPointerException if one or both of the players are null.
-   * @throws RuntimeException if players represents the same instance.
-   * @throws BoardTooSmallException if the size is inferior to 6.
+   * @throws java.lang.NullPointerException if one or both of the players are
+   *     null.
+   * @throws java.lang.RuntimeException if players represents the same instance.
+   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
+   *     the size is inferior to 6.
    */
   public BoardManager(Player white, Player black) {
     this(white, black, 6);
@@ -45,9 +47,11 @@ public class BoardManager {
    * @param white white player [b1 x e2] minimum.
    * @param black black player [b5 x e6] minimum.
    * @param size size of the board.
-   * @throws NullPointerException if one or both of the players are null.
-   * @throws RuntimeException if players represents the same instance.
-   * @throws BoardTooSmallException if the size is inferior to 6.
+   * @throws java.lang.NullPointerException if one or both of the players are
+   *     null.
+   * @throws java.lang.RuntimeException if players represents the same instance.
+   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
+   *     the size is inferior to 6.
    */
   public BoardManager(Player white, Player black, int size) {
     if (white == null || black == null) {
@@ -83,8 +87,9 @@ public class BoardManager {
    * @param start coordinates where the pawn is located.
    * @param end the new location.
    * @return true if the pawn can be moved to the new location, false else.
-   * @throws FreeSquareException if there is no pawn at the specified location.
-  */
+   * @throws com.vampirehemophile.ghosts.exceptions.FreeSquareException if there
+   *     is no pawn at the specified location.
+   */
   public boolean canMove(Coordinates start, Coordinates end) {
     if (start.equals(end)) {
       throw new RuntimeException("Coordinates match the same location.");
@@ -110,14 +115,14 @@ public class BoardManager {
   }
 
   /**
-  * Moves a pawn to a new location, eventually capturing one of the opponent's
-  * pawns.
-  * User must test {@link canMove} before.
-  *
-  * @param start coordinates where the pawn is located.
-  * @param end the new location.
-  * @return the opponent's pawn that may have been taken, or null.
-  */
+   * Moves a pawn to a new location, eventually capturing one of the opponent's
+   * pawns.
+   * User must test {@link canMove} before.
+   *
+   * @param start coordinates where the pawn is located.
+   * @param end the new location.
+   * @return the opponent's pawn that may have been taken, or null.
+   */
   public Pawn move(Coordinates start, Coordinates end) {
     if (start == null || end == null) {
       throw new NullPointerException();
@@ -136,14 +141,14 @@ public class BoardManager {
   }
 
   /**
-  * Check if a player can exit one of its pawns, and thus win the game.
-  * A player can exit one of its pawns if the pawn is a good pawn, and if the
-  * pawn is located on the opponent's side corner of the board.
-  *
-  * @param player the player.
-  * @return true if the player can exit one of his pawns.
-  * @throws NullPointerException if player is null.
-  */
+   * Check if a player can exit one of its pawns, and thus win the game.
+   * A player can exit one of its pawns if the pawn is a good pawn, and if the
+   * pawn is located on the opponent's side corner of the board.
+   *
+   * @param player the player.
+   * @return true if the player can exit one of his pawns.
+   * @throws java.lang.NullPointerException if player is null.
+   */
   public boolean canExitPawn(Player player) {
     if (player == null) {
       throw new NullPointerException();

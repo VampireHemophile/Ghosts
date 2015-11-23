@@ -14,6 +14,9 @@ import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.math.Coordinates;
 import static com.vampirehemophile.ghosts.util.PawnFactory.makePawn;
 
+/**
+ * CliGame class.
+ */
 public class CliGame {
 
   /** White player. */
@@ -26,13 +29,17 @@ public class CliGame {
   private BoardManager boardManager;
 
 
-  /** Constructs a game in CLI. */
+  /**
+   * Constructs a game in CLI.
+   */
   public CliGame() {
     white = new Player('o');
     black = new Player('x');
   }
 
-  /** Starts the game. */
+  /**
+   * Starts the game.
+   */
   public void start() {
     boardManager = new BoardManager(white, black, 6);
 
@@ -244,7 +251,8 @@ public class CliGame {
       sbOffset.append(" ");
     }
 
-    StringBuilder sbColumnsHeader = new StringBuilder(size + sbOffset.length() + 2);
+    StringBuilder sbColumnsHeader = new StringBuilder(
+        size + sbOffset.length() + 2);
     sbColumnsHeader.append(sbOffset);
     sbColumnsHeader.append(" ");
     for (char x = 'a'; x < size + 'a'; x++) {
@@ -252,7 +260,8 @@ public class CliGame {
     }
     sbColumnsHeader.append("\n");
 
-    StringBuilder sbColumnsHyphens = new StringBuilder(size + sbOffset.length() + 3);
+    StringBuilder sbColumnsHyphens = new StringBuilder(
+        size + sbOffset.length() + 3);
     sbColumnsHyphens.append(sbOffset);
     sbColumnsHyphens.append("+");
     for (int i = 0; i < size; i++) {
@@ -260,7 +269,8 @@ public class CliGame {
     }
     sbColumnsHyphens.append("+\n");
 
-    StringBuilder sbBoard = new StringBuilder((size + sbOffset.length() * 2 + 3) * size);
+    StringBuilder sbBoard = new StringBuilder(
+        (size + sbOffset.length() * 2 + 3) * size);
     Pawn pawn = null;
 
     int offsetSize = 0;
@@ -321,8 +331,8 @@ public class CliGame {
       y += incY;
     } while (y != endY);
 
-    StringBuilder sb = new StringBuilder(2 * (sbColumnsHeader.length() + sbColumnsHyphens.length())
-                                         + sbBoard.length());
+    StringBuilder sb = new StringBuilder(2 * (sbColumnsHeader.length()
+        + sbColumnsHyphens.length()) + sbBoard.length());
     sb.append(sbColumnsHeader);
     sb.append(sbColumnsHyphens);
     sb.append(sbBoard);

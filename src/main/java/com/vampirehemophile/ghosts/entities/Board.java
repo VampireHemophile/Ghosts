@@ -25,7 +25,8 @@ public class Board {
    * Constructs a new size x size square Board.
    *
    * @param size size of one side of the board.
-   * @throws BoardTooSmallException if the size is inferior to 6.
+   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
+   *     the size is inferior to 6.
    */
   public Board(int size) {
     this.size = size;

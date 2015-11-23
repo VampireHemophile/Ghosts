@@ -20,7 +20,7 @@ public class Square {
    * Constructs a new Square at coordinates.
    *
    * @param coord this coordinates.
-   * @throws NullPointerException if coord is null.
+   * @throws java.lang.NullPointerException if coord is null.
    */
   public Square(Coordinates coord) {
     if (coord == null) {
@@ -64,7 +64,7 @@ public class Square {
    * Sets this square's pawn.
    *
    * @param pawn new pawn.
-   * @throws NullPointerException if pawn is null.
+   * @throws java.lang.NullPointerException if pawn is null.
    * @return the previous pawn on the square, or null if this was free.
    */
   public Pawn setPawn(Pawn pawn) {
