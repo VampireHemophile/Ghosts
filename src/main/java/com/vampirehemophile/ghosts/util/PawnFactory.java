@@ -47,4 +47,24 @@ public class PawnFactory {
     }
     return null;
   }
+
+  /**
+   * Creates a new good and aggressive pawn.
+   *
+   * @param p this pawn's player.
+   * @return the created pawn.
+   */
+  public static Pawn makeGoodPawn(Player p) {
+    return new Pawn(p, true, true);
+  }
+
+  /**
+   * Creates a new evil and aggressive pawn.
+   *
+   * @param p this pawn's player.
+   * @return the created pawn.
+   */
+  public static Pawn makeEvilPawn(Player p) {
+    return new Pawn(p, false, true);
+  }
 }
