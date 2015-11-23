@@ -25,7 +25,7 @@ public class Pawn {
    * Pawn's state. A pawn can be good (allows the user to win by exiting the
    * pawn) or evil.
    */
-  private boolean good;
+  private final boolean good;
 
 
   /**
@@ -212,15 +212,5 @@ public class Pawn {
    */
   public boolean isEvil() {
     return !good;
-  }
-
-  /**
-   * Set pawn's state. A pawn can be good (allows the user to win by exiting the
-   * pawn) or evil.
-   *
-   * @param good Pawn's state.
-   */
-  public void setState(boolean good) {
-    this.good = good;
   }
 }
