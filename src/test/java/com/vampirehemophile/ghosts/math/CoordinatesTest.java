@@ -59,7 +59,7 @@ public class CoordinatesTest {
     assertEquals("a", (new Coordinates(0, 0, 6)).x());
     assertEquals("b", (new Coordinates(1, 1, 6)).x());
     assertEquals("c", (new Coordinates(2, 2, 6)).x());
-    assertEquals("aa", (new Coordinates(26, 26, 27)).x());
+    assertEquals("ba", (new Coordinates(26, 26, 27)).x());
   }
 
   @Test

@@ -161,13 +161,17 @@ public class Coordinates {
    * Creates x-axis world coordinate from matrix coordinates.
    */
   private void genXWorld() {
+    xWorld = new String();
     int x = xMatrix;
-    char[] value = new char[x / 26 + 1];
-    for (int i = 0; i < value.length; i++) {
-      value[i] = (char)(x % 26 + 'a');
-      x -= 26;
+    int digit = 0;
+    while (x > 0) {
+        digit = x % 26;
+        x /= 26;
+        xWorld = (char)(digit + 'a') + xWorld;
     }
-    xWorld = new String(value);
+    if (xMatrix == 0) {
+        xWorld = "a";
+    }
   }
 
   /**
