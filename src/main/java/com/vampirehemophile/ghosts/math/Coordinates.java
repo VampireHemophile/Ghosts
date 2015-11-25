@@ -168,15 +168,12 @@ public class Coordinates {
    */
   private void genXWorld() {
     xWorld = new String();
-    int x = xMatrix;
+    int x = xMatrix + 1;
     int digit = 0;
     while (x > 0) {
-        digit = x % 26;
-        x /= 26;
-        xWorld = (char)(digit + 'a') + xWorld;
-    }
-    if (xMatrix == 0) {
-        xWorld = "a";
+      digit = x % 26;
+      x /= 26;
+      xWorld = (char)(digit + 'a' - 1) + xWorld;
     }
   }
 
