@@ -1,16 +1,11 @@
 package com.vampirehemophile.ghosts.main;
 
+import javax.swing.SwingUtilities;
+
 /**
  * Main starting class.
  */
 public class Main {
-
-  /** Game window width. */
-  public static int WINDOW_WIDTH = 500;
-
-  /** Game windows height. */
-  public static int WINDOW_HEIGHT = 500;
-
 
   /**
    * Ghosts point of entry.
@@ -37,8 +32,12 @@ public class Main {
     if (help) {
       System.out.println("Ghosts options:\n    -h --help\n    --nogui");
     } else if (gui) {
-      GuiGame game = new GuiGame("Game Title !", WINDOW_WIDTH, WINDOW_HEIGHT);
-      game.start();
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          GuiGame game = new GuiGame();
+          game.start();
+        }
+      });
     } else {
       CliGame game = new CliGame();
       game.start();
