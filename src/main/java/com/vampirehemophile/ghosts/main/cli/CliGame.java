@@ -1,4 +1,4 @@
-package com.vampirehemophile.ghosts.main;
+package com.vampirehemophile.ghosts.main.cli;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -1,4 +1,4 @@
-package com.vampirehemophile.ghosts.main;
+package com.vampirehemophile.ghosts.main.gui;
 
 import javax.swing.JFrame;
 

@@ -1,6 +1,8 @@
 package com.vampirehemophile.ghosts.main;
 
 import javax.swing.SwingUtilities;
+import com.vampirehemophile.ghosts.main.gui.GuiGame;
+import com.vampirehemophile.ghosts.main.cli.CliGame;
 
 /**
  * Main starting class.

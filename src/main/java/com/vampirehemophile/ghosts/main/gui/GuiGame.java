@@ -1,9 +1,10 @@
-package com.vampirehemophile.ghosts.main;
+package com.vampirehemophile.ghosts.main.gui;
 
 /**
  * GuiGame class.
  */
 public class GuiGame {
+
   /** main frame. */
   private Display display;
 
