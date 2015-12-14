@@ -5,94 +5,59 @@ import java.util.HashSet;
 
 import com.vampirehemophile.ghosts.math.Coordinates;
 
+
 /**
  * Pawns.
  */
 public class Pawn {
 
+  /** Pawn's state. */
+  public enum PawnType {
+
+    /**
+     * Allows the user to win by exiting this pawn. A player wins if it captures
+     * all of its opponent's pawns.
+     */
+    GOOD,
+
+    /** A player looses if it captures all of its opponent's pawns. */
+    EVIL,
+
+    /** An unknow type of pawn. */
+    UNKNOWN
+  }
+
+
   /** The pawn's player. */
   private Player player;
-
-  /** Default char icon in CLI for an hidden pawn. */
-  public final static char defaultCharIcon = 'A';
 
   /**
    * Pawns's behaviour. Aggressive means that it can take an opponent's pawn.
    */
   private boolean aggressive;
 
-  /**
-   * Pawn's state. A pawn can be good (allows the user to win by exiting the
-   * pawn) or evil.
-   */
-  private final boolean good;
+  /** Pawn's type. */
+  private PawnType type;
 
-
-  /**
-   * Constructs a new Pawn.
-   */
-  public Pawn() {
-    this(null);
-  }
-
-  /**
-   * Constructs a new good and aggressive pawn. Adds this pawn to the player
-   * pawn set.
-   *
-   * @param player Pawn's player.
-   */
-  public Pawn(Player player) {
-    this(player, true);
-  }
 
   /**
    * Constructs a new aggressive pawn.
    *
-   * @param good this pawn state, true if good. A pawn can be good (allows the
-   *     user to win by exiting the pawn) or evil.
+   * @param type this pawn's type.
    */
-  public Pawn(boolean good) {
-    this(null, good);
+  public Pawn(PawnType type) {
+    this(type, true);
   }
 
   /**
    * Constructs a new pawn.
    *
-   * @param good this pawn state, true if good. A pawn can be good (allows the
-   *     user to win by exiting the pawn) or evil.
+   * @param type this pawn's type.
    * @param aggressive this pawn's behaviour, true if aggressive. Aggressive
    *     means that it can take an opponent's pawn.
    */
-  public Pawn(boolean good, boolean aggressive) {
-    this(null, good, aggressive);
-  }
-
-  /**
-   * Constructs a new aggressive pawn. Adds this pawn to the player pawn set.
-   *
-   * @param player Pawn's player.
-   * @param good this pawn state, true if good. A pawn can be good (allows the
-   *     user to win by exiting the pawn) or evil.
-   */
-  public Pawn(Player player, boolean good) {
-    this(player, good, true);
-  }
-
-  /**
-   * Constructs a new pawn. Adds this pawn to the player pawn set.
-   *
-   * @param player Pawn's player.
-   * @param good this pawn state, true if good. A pawn can be good (allows the
-   *     user to win by exiting the pawn) or evil.
-   * @param aggressive this pawn's behaviour, true if aggressive. Aggressive
-   *     means that it can take an opponent's pawn.
-   */
-  public Pawn(Player player, boolean good, boolean aggressive) {
-    this.player = player;
-    if (player != null) {
-      player.add(this);
-    }
-    this.good = good;
+  public Pawn(PawnType type, boolean aggressive) {
+    this.type = type;
     this.aggressive = aggressive;
   }
 
@@ -112,27 +77,6 @@ public class Pawn {
    */
   public void setPlayer(Player player) {
     this.player = player;
-  }
-
-  /**
-   * Gets the pawn's char icon for CLI printing.
-   *
-   * @return pawn's char icon.
-   */
-  public char charIcon() {
-    if (good) {
-      if (player() == null) {
-        return 'G';
-      } else {
-        return player().charIcon();
-      }
-    } else {
-      if (player() == null) {
-        return 'B';
-      } else {
-        return (char)(player().charIcon() - 'a' + 'A');
-      }
-    }
   }
 
   /**
@@ -195,22 +139,29 @@ public class Pawn {
   }
 
   /**
-   * Tells if this pawn is good or not. Good allows the user to win by exiting
-   * this pawn.
+   * Gets this pawn's type.
    *
-   * @return true if it is good (default).
+   * @return this pawn's type.
    */
-  public boolean isGood() {
-    return good;
+  public PawnType type() {
+    return type;
   }
 
   /**
-   * Tells if this pawn is evil or not. Evil won't allow the user to win by
-   * exiting this pawn.
+   * Tells if this pawn is good or not.
    *
-   * @return true if it is good (default).
+   * @return true if it is good.
+   */
+  public boolean isGood() {
+    return type.equals(PawnType.GOOD);
+  }
+
+  /**
+   * Tells if this pawn is evil or not.
+   *
+   * @return true if it is evil.
    */
   public boolean isEvil() {
-    return !good;
+    return type.equals(PawnType.EVIL);
   }
 }

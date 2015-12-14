@@ -12,7 +12,6 @@ import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
 import com.vampirehemophile.ghosts.exceptions.FreeSquareException;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.math.Coordinates;
-import static com.vampirehemophile.ghosts.util.PawnFactory.makePawn;
 
 /**
  * CliGame class.
@@ -33,8 +32,25 @@ public class CliGame {
    * Constructs a game in CLI.
    */
   public CliGame() {
-    white = new Player('o');
-    black = new Player('x');
+    white = new Player();
+    black = new Player();
+  }
+
+  /**
+   * Converts a PawnType to a char to be printed.
+   *
+   * @param type the pawn's type.
+   * @return the char to print.
+   */
+  public char getChar(Pawn.PawnType type) {
+    if (type.equals(Pawn.PawnType.GOOD)) {
+      return 'g';
+    } else if (type.equals(Pawn.PawnType.EVIL)) {
+      return 'b';
+    } else if (type.equals(Pawn.PawnType.UNKNOWN)) {
+      return 'A';
+    }
+    return '?';
   }
 
   /**
@@ -49,16 +65,16 @@ public class CliGame {
     boolean hasWon = false;
     boolean hasLost = false;
     Player current = black;
-    do {
+    while (!hasWon && !hasLost) {
       current = boardManager.opponent(current);
       render(current);
       askMove(current);
       render(current);
-      try { Thread.sleep(3000); } catch (Exception expected) {}
-      clearScreen();
+      // try { Thread.sleep(3000); } catch (Exception expected) {}
+      // clearScreen();
       hasWon = boardManager.hasWon(current);
       hasLost = boardManager.hasLost(current);
-    } while (!hasWon && !hasLost);
+    }
 
     if (hasWon) {
       System.out.println(((current == white) ? "White" : "Black") + " wins !");
@@ -111,17 +127,16 @@ public class CliGame {
     }
 
     Board board = boardManager.board();
-    Pawn g = new Pawn(true);
-    Pawn e = new Pawn(false);
 
     StringBuilder question = new StringBuilder();
     StringBuilder end = new StringBuilder();
     end.append(" (");
-    end.append(g.charIcon());
+    end.append(getChar(Pawn.PawnType.GOOD));
     end.append("|");
-    end.append(e.charIcon());
+    end.append(getChar(Pawn.PawnType.EVIL));
     end.append("): ");
 
+    Pawn pawn = null;
     Coordinates c = null;
     int size = board.size();
     boolean isWhite = player == white;
@@ -138,15 +153,20 @@ public class CliGame {
         question.append(c.y());
         question.append(end);
 
-        clearScreen();
+        // clearScreen();
         render(player);
-        Pawn pawn = askPawn(question.toString(), player);
+
+        pawn = askPawn(question.toString(), player);
+        player.add(pawn);
         board.set(pawn, c);
+
         question.delete(0, question.length());
       }
 
       y += incY;
     } while (y != endY);
+    // clearScreen();
+    render(player);
   }
 
   /**
@@ -168,7 +188,12 @@ public class CliGame {
       if (sc.hasNext()) {
         line = sc.next();
         if (line.length() == 1) {
-          pawn = makePawn(player, line.charAt(0));
+          char type = line.charAt(0);
+          if (type == getChar(Pawn.PawnType.GOOD)) {
+            pawn = new Pawn(Pawn.PawnType.GOOD);
+          } else if (type == getChar(Pawn.PawnType.EVIL)) {
+            pawn = new Pawn(Pawn.PawnType.EVIL);
+          }
           keepAsking = pawn == null;
         }
       }
@@ -313,14 +338,14 @@ public class CliGame {
           } else {
             sbBoard.append((char)27 + "[1;30m");
           }
-          sbBoard.append(pawn.charIcon());
+          sbBoard.append(getChar(pawn.type()));
         } else {
           if (pawn.player() == white) {
             sbBoard.append((char)27 + "[1;37m");
           } else {
             sbBoard.append((char)27 + "[1;30m");
           }
-          sbBoard.append(Pawn.defaultCharIcon);
+          sbBoard.append(getChar(Pawn.PawnType.UNKNOWN));
         }
         sbBoard.append((char)27 + "[0m");
       }

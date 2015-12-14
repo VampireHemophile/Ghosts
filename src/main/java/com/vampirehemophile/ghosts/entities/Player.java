@@ -17,9 +17,6 @@ public class Player implements Iterable<Pawn> {
   /** Set of captured pawns. */
   private Set<Pawn> capturedPawns;
 
-  /** Player's char for CLI. */
-  private char charIcon;
-
   /** Number of good pawns. */
   private int goodPawnsNumber;
 
@@ -30,32 +27,13 @@ public class Player implements Iterable<Pawn> {
   /**
    * Constructs a new player.
    * Player has 8 pawns by default, 4 good pawns and evil pawns.
+   *
    */
   public Player() {
-    this('\0');
-  }
-
-  /**
-   * Constructs a new player.
-   * Player has 8 pawns by default, 4 good pawns and evil pawns.
-   *
-   * @param charIcon Player's char for CLI displaying.
-   */
-  public Player(char charIcon) {
     this.pawns = new HashSet<>();
     this.capturedPawns = new HashSet<>();
-    this.charIcon = charIcon;
     this.goodPawnsNumber = 0;
     this.evilPawnsNumber = 0;
-  }
-
-  /**
-   * Gets the player's char.
-   *
-   * @return player's char.
-   */
-  public char charIcon() {
-    return charIcon;
   }
 
   /**
@@ -68,6 +46,7 @@ public class Player implements Iterable<Pawn> {
     if (p == null) {
       throw new NullPointerException();
     }
+    p.setPlayer(this);
 
     if (p.isGood()) {
       goodPawnsNumber++;
