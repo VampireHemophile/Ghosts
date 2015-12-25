@@ -135,8 +135,12 @@ public class PlayState extends State implements MouseInputListener {
           if (parent.state == GameState.SETUP) {
             switch (e.getButton()) {
               case MouseEvent.BUTTON1:
+              Coordinates loc = hoveredSquare(100);
+              if (!parent.bm.canSet(parent.current, loc)) {
+                break;
+              }
               parent.current.add(selectedPawn);
-              board.set(selectedPawn, hoveredSquare(100));
+              board.set(selectedPawn, loc);
               if (selectedPawn == goodPawn) {
                 goodPawn = new Pawn(Pawn.PawnType.GOOD);
                 selectedPawn = goodPawn;

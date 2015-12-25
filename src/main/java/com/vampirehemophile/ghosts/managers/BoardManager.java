@@ -194,6 +194,23 @@ public class BoardManager {
   }
 
   /**
+   * Checks if a pawn can be set at coordinates. The function checks if the
+   * square is occupied and if the square is attributed to the player.
+   *
+   * @param player the player.
+   * @param loc the location.
+   * @return true if the pawn can be set.
+   */
+  public boolean canSet(Player player, Coordinates loc) {
+    return board.squareAt(loc).isFree()
+        && loc.xMatrix() > 0 && loc.xMatrix() < size - 1
+        && ((player.equals(white)
+          && (loc.yMatrix() == 0 || loc.yMatrix() == 1))
+        || (player.equals(black)
+          && (loc.yMatrix() == size - 2 || loc.yMatrix() == size - 1)));
+  }
+
+  /**
    * Checks if a player has won. The check should happen at the end of the
    * player's turn.
    * A player has won if it one of its pawns has reached the other side of the
