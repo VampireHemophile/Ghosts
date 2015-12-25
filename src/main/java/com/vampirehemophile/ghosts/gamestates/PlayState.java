@@ -100,7 +100,7 @@ public class PlayState extends State implements MouseInputListener {
           mouseY = e.getY();
           break;
         }
-        drawString(message, g2d);
+        drawString(g2d, message);
         e = eventQueue.poll();
       }
 
@@ -178,12 +178,12 @@ public class PlayState extends State implements MouseInputListener {
     }
 
     /**
-      * Draw a message.
+      * Draws a message.
       *
-      * @param string the message.
       * @param g2d the graphics object.
+      * @param string the message.
       */
-    protected void drawString(String string, Graphics2D g2d) {
+    protected void drawString(Graphics2D g2d, String string) {
       g2d.drawString(string != null ? string : "", 10, 615);
     }
   }
