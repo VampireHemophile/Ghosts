@@ -45,6 +45,9 @@ public class PlayState extends State implements MouseInputListener {
     private PlayState parent;
     private Board board;
 
+    private int mouseX;
+    private int mouseY;
+
 
     /** Constructs a PlayPanel object. */
     public PlayPanel() throws IOException {
@@ -89,8 +92,12 @@ public class PlayState extends State implements MouseInputListener {
           case MouseEvent.MOUSE_EXITED:
           break;
           case MouseEvent.MOUSE_DRAGGED:
+          mouseX = e.getX();
+          mouseY = e.getY();
           break;
           case MouseEvent.MOUSE_MOVED:
+          mouseX = e.getX();
+          mouseY = e.getY();
           break;
         }
         drawString(message, g2d);
@@ -161,6 +168,16 @@ public class PlayState extends State implements MouseInputListener {
     }
 
     /**
+     * Draws a pawn under the mouse cursor.
+     *
+     * @param string the message.
+     * @param g2d the graphics object.
+     */
+    protected void drawUnderMouse(Graphics2D g2d, BufferedImage image) {
+      g2d.drawImage(image, mouseX - 12, mouseY - 25, 25, 50, null);
+    }
+
+    /**
       * Draw a message.
       *
       * @param string the message.
@@ -192,6 +209,7 @@ public class PlayState extends State implements MouseInputListener {
 
     white = new Player();
     black = new Player();
+    current = white;
     bm = new BoardManager(white, black);
 
     Board board = bm.board();
