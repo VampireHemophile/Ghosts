@@ -6,9 +6,13 @@ import javax.swing.event.MouseInputListener;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
+import java.awt.Toolkit;
+import java.awt.Point;
+import java.awt.Cursor;
 import java.io.File;
 import java.io.IOException;
 import java.util.Queue;
@@ -39,6 +43,12 @@ public class PlayState extends State implements MouseInputListener {
     private BufferedImage blackEvilPawn;
     private BufferedImage blackNeutralPawn;
 
+    // cursors
+    private Cursor whiteGoodPawnCursor;
+    private Cursor whiteEvilPawnCursor;
+    private Cursor blackGoodPawnCursor;
+    private Cursor blackEvilPawnCursor;
+
     // mouse event queue
     public Queue<MouseEvent> eventQueue;
 
@@ -66,6 +76,27 @@ public class PlayState extends State implements MouseInputListener {
       blackGoodPawn    = ImageIO.read(State.getResource("/images/black/goodpawn.png"));
       blackEvilPawn    = ImageIO.read(State.getResource("/images/black/evilpawn.png"));
       blackNeutralPawn = ImageIO.read(State.getResource("/images/black/neutralpawn.png"));
+
+      whiteGoodPawnCursor = loadCursor(whiteGoodPawn);
+      whiteEvilPawnCursor = loadCursor(whiteEvilPawn);
+      blackGoodPawnCursor = loadCursor(blackGoodPawn);
+      blackEvilPawnCursor = loadCursor(blackEvilPawn);
+    }
+
+    /**
+     * Creates a cursor from a pawn image. The cursor can be used when dragging
+     * a pawn.
+     *
+     * @param image the pawn's image.
+     * @return the corresponding cursor.
+     */
+    private Cursor loadCursor(BufferedImage image) {
+      Image imageCursor = whiteGoodPawn.getScaledInstance(25, 50, Image.SCALE_DEFAULT);
+      return Toolkit.getDefaultToolkit().createCustomCursor(
+          imageCursor,
+          new Point(imageCursor.getWidth(null) / 2,
+                    imageCursor.getHeight(null) / 2),
+          null);
     }
 
     /** {@inheritDoc} */
