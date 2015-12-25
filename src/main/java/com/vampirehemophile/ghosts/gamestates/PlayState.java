@@ -58,6 +58,10 @@ public class PlayState extends State implements MouseInputListener {
     private int mouseX;
     private int mouseY;
 
+    private Pawn goodPawn;
+    private Pawn evilPawn;
+    private Pawn selectedPawn;
+
 
     /** Constructs a PlayPanel object. */
     public PlayPanel() throws IOException {
@@ -81,6 +85,9 @@ public class PlayState extends State implements MouseInputListener {
       whiteEvilPawnCursor = loadCursor(whiteEvilPawn);
       blackGoodPawnCursor = loadCursor(blackGoodPawn);
       blackEvilPawnCursor = loadCursor(blackEvilPawn);
+
+      goodPawn = new Pawn(Pawn.PawnType.GOOD);
+      evilPawn = new Pawn(Pawn.PawnType.EVIL);
     }
 
     /**
@@ -91,7 +98,7 @@ public class PlayState extends State implements MouseInputListener {
      * @return the corresponding cursor.
      */
     private Cursor loadCursor(BufferedImage image) {
-      Image imageCursor = whiteGoodPawn.getScaledInstance(25, 50, Image.SCALE_DEFAULT);
+      Image imageCursor = image.getScaledInstance(25, 50, Image.SCALE_DEFAULT);
       return Toolkit.getDefaultToolkit().createCustomCursor(
           imageCursor,
           new Point(imageCursor.getWidth(null) / 2,
@@ -107,12 +114,29 @@ public class PlayState extends State implements MouseInputListener {
 
       drawBoard(g2d);
 
+      if (parent.state == GameState.SETUP) {
+        if (selectedPawn == null) {
+          selectedPawn = goodPawn;
+          if (parent.current.equals(parent.white)) {
+            setCursor(whiteGoodPawnCursor);
+          } else if (parent.current.equals(parent.black)) {
+            setCursor(blackGoodPawnCursor);
+          }
+        }
+      }
+
       // Process mouse events
       MouseEvent e = eventQueue.poll();
       String message = null;
       while (e != null) {
         switch (e.getID()) {
           case MouseEvent.MOUSE_PRESSED:
+          if (parent.state == GameState.SETUP) {
+            if (e.getButton() == MouseEvent.BUTTON3) {
+              selectedPawn = selectedPawn == goodPawn ? evilPawn : goodPawn;
+              setCursor(cursorFromPawn(selectedPawn));
+            }
+          }
           break;
           case MouseEvent.MOUSE_RELEASED:
           break;
@@ -169,30 +193,8 @@ public class PlayState extends State implements MouseInputListener {
         for (int y = 0; y < board.size(); y++) {
           pawn = board.at(new Coordinates(x, y, board.size()));
           if (pawn == null) {
-          } else if (pawn.player().equals(white)) {
-            switch (pawn.type()) {
-              case GOOD:
-              g2d.drawImage(whiteGoodPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-              break;
-              case EVIL:
-              g2d.drawImage(whiteEvilPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-              break;
-              case UNKNOWN:
-              g2d.drawImage(whiteNeutralPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-              break;
-            }
-          } else if (pawn.player().equals(black)) {
-            switch (pawn.type()) {
-              case GOOD:
-              g2d.drawImage(blackGoodPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-              break;
-              case EVIL:
-              g2d.drawImage(blackEvilPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-              break;
-              case UNKNOWN:
-              g2d.drawImage(blackNeutralPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-              break;
-            }
+          } else {
+            g2d.drawImage(imageFromPawn(pawn), x*100 + 25 + 12, y*100 + 25, 25, 50, null);
           }
         }
       }
@@ -216,6 +218,76 @@ public class PlayState extends State implements MouseInputListener {
       */
     protected void drawString(Graphics2D g2d, String string) {
       g2d.drawString(string != null ? string : "", 10, 615);
+    }
+
+    /**
+     * Returns the image corresponding to a pawn. If the player's pawns is not
+     * set, returns the image corresponding to the current player. Returns null
+     * otherwise.
+     *
+     * @param pawn the pawn to render.
+     * @return the image.
+     */
+    protected BufferedImage imageFromPawn(Pawn pawn) {
+      Player player = pawn.player();
+      player = player != null ? player : parent.current;
+      if (player == null) {
+        return null;
+      }
+
+      if (player.equals(parent.white)) {
+        switch (pawn.type()) {
+          case GOOD:
+          return whiteGoodPawn;
+          case EVIL:
+          return whiteEvilPawn;
+          case UNKNOWN:
+          return whiteNeutralPawn;
+        }
+      } else if (player.equals(parent.black)) {
+        switch (pawn.type()) {
+          case GOOD:
+          return blackGoodPawn;
+          case EVIL:
+          return blackEvilPawn;
+          case UNKNOWN:
+          return blackNeutralPawn;
+        }
+      }
+      return null;
+    }
+
+    /**
+     * Returns the cursor corresponding to a pawn. If the player's pawns is not
+     * set, returns the cursor corresponding to the current player. Returns null
+     * otherwise.
+     *
+     * @param pawn the pawn to render.
+     * @return the cursor.
+     */
+    protected Cursor cursorFromPawn(Pawn pawn) {
+      Player player = pawn.player();
+      player = player != null ? player : parent.current;
+      if (player == null) {
+        return null;
+      }
+
+      if (player.equals(parent.white)) {
+        switch (pawn.type()) {
+          case GOOD:
+          return whiteGoodPawnCursor;
+          case EVIL:
+          return whiteEvilPawnCursor;
+        }
+      } else if (player.equals(parent.black)) {
+        switch (pawn.type()) {
+          case GOOD:
+          return blackGoodPawnCursor;
+          case EVIL:
+          return blackEvilPawnCursor;
+        }
+      }
+      return null;
     }
   }
 
