@@ -71,19 +71,7 @@ public class PlayState extends State implements MouseInputListener {
       super.paintComponent(g);
       Graphics2D g2d = (Graphics2D) g;
 
-      // Draw background
-      boolean dark = true;
-      for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 6; j++) {
-          if (dark) {
-            g2d.drawImage(darkTile, i*100, j*100, 100, 100, null);
-          } else {
-            g2d.drawImage(lightTile, i*100, j*100, 100, 100, null);
-          }
-          dark = !dark;
-        }
-        dark = !dark;
-      }
+      drawBoard(g2d);
 
       // Process mouse events
       MouseEvent e = eventQueue.poll();
@@ -113,7 +101,27 @@ public class PlayState extends State implements MouseInputListener {
     }
 
     /**
-     * Draws the pawns set on the board.
+     * Draws the board.
+     *
+     * @param g2d the graphics object.
+     */
+    protected void drawBoard(Graphics2D g2d) {
+      boolean dark = true;
+      for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 6; j++) {
+          if (dark) {
+            g2d.drawImage(darkTile, i*100, j*100, 100, 100, null);
+          } else {
+            g2d.drawImage(lightTile, i*100, j*100, 100, 100, null);
+          }
+          dark = !dark;
+        }
+        dark = !dark;
+      }
+    }
+
+    /**
+     * Draws the pawn set on the board.
      *
      * @param g2d the graphics object.
      */
