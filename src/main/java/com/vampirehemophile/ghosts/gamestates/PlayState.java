@@ -238,9 +238,14 @@ public class PlayState extends State implements MouseInputListener {
       for (int x = 0; x < board.size(); x++) {
         for (int y = 0; y < board.size(); y++) {
           pawn = board.at(new Coordinates(x, y, board.size()));
-          if (pawn == null) {
-          } else {
-            g2d.drawImage(imageFromPawn(pawn), x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+          if (pawn != null) {
+            if (pawn.player().equals(parent.current)) {
+              g2d.drawImage(imageFromPawn(pawn), x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+            } else if (pawn.player().equals(parent.white)) {
+              g2d.drawImage(whiteNeutralPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+            } else if (pawn.player().equals(parent.black)) {
+              g2d.drawImage(blackNeutralPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+            }
           }
         }
       }
