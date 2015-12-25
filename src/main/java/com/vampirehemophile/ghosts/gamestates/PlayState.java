@@ -13,9 +13,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Queue;
 import java.util.LinkedList;
+import com.vampirehemophile.ghosts.managers.BoardManager;
+import com.vampirehemophile.ghosts.entities.*;
+import com.vampirehemophile.ghosts.math.Coordinates;
 
 /** Main game state. */
 public class PlayState extends State implements MouseInputListener {
+
+  /** game state. */
+  private enum GameState {
+    SETUP, PLAY
+  }
 
   /** main game state's panel. */
   @SuppressWarnings("serial")
@@ -34,12 +42,18 @@ public class PlayState extends State implements MouseInputListener {
     // mouse event queue
     public Queue<MouseEvent> eventQueue;
 
+    private PlayState parent;
+    private Board board;
+
 
     /** Constructs a PlayPanel object. */
     public PlayPanel() throws IOException {
       super();
       setPreferredSize(new Dimension(600, 620));
       eventQueue = new LinkedList<>();
+
+      parent = PlayState.this;
+      board = parent.bm.board();
 
       lightTile        = ImageIO.read(State.getResource("/images/lighttile.png"));
       darkTile         = ImageIO.read(State.getResource("/images/darktile.png"));
@@ -73,34 +87,68 @@ public class PlayState extends State implements MouseInputListener {
 
       // Process mouse events
       MouseEvent e = eventQueue.poll();
-      String type = null;
+      String message = null;
       while (e != null) {
         switch (e.getID()) {
           case MouseEvent.MOUSE_PRESSED:
-          type = "MOUSE_PRESSED";
           break;
           case MouseEvent.MOUSE_RELEASED:
-          type = "MOUSE_RELEASED";
           break;
           case MouseEvent.MOUSE_CLICKED:
-          type = "MOUSE_CLICKED";
           break;
           case MouseEvent.MOUSE_ENTERED:
-          type = "MOUSE_ENTERED";
           break;
           case MouseEvent.MOUSE_EXITED:
-          type = "MOUSE_EXITED";
           break;
           case MouseEvent.MOUSE_DRAGGED:
-          type = "MOUSE_DRAGGED";
           break;
           case MouseEvent.MOUSE_MOVED:
-          type = "MOUSE_MOVED";
-          g2d.drawImage(whiteGoodPawn, e.getX() - 12, e.getY() - 25, 25, 50, null);
           break;
         }
-        drawString(type, g2d);
+        drawString(message, g2d);
         e = eventQueue.poll();
+      }
+
+      drawPawns(g2d);
+    }
+
+    /**
+     * Draws the pawns set on the board.
+     *
+     * @param g2d the graphics object.
+     */
+    protected void drawPawns(Graphics2D g2d) {
+      Pawn pawn;
+      for (int x = 0; x < board.size(); x++) {
+        for (int y = 0; y < board.size(); y++) {
+          pawn = board.at(new Coordinates(x, y, board.size()));
+          if (pawn == null) {
+          } else if (pawn.player().equals(white)) {
+            switch (pawn.type()) {
+              case GOOD:
+              g2d.drawImage(whiteGoodPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+              break;
+              case EVIL:
+              g2d.drawImage(whiteEvilPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+              break;
+              case UNKNOWN:
+              g2d.drawImage(whiteNeutralPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+              break;
+            }
+          } else if (pawn.player().equals(black)) {
+            switch (pawn.type()) {
+              case GOOD:
+              g2d.drawImage(blackGoodPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+              break;
+              case EVIL:
+              g2d.drawImage(blackEvilPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+              break;
+              case UNKNOWN:
+              g2d.drawImage(blackNeutralPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
+              break;
+            }
+          }
+        }
       }
     }
 
@@ -110,8 +158,8 @@ public class PlayState extends State implements MouseInputListener {
       * @param string the message.
       * @param g2d the graphics object.
       */
-    private void drawString(String string, Graphics2D g2d) {
-      g2d.drawString(string, 10, 615);
+    protected void drawString(String string, Graphics2D g2d) {
+      g2d.drawString(string != null ? string : "", 10, 615);
     }
   }
 
@@ -119,10 +167,26 @@ public class PlayState extends State implements MouseInputListener {
   /** states panel. */
   private PlayPanel panel;
 
+  private GameState state;
+
+  private BoardManager bm;
+
+  private Player white;
+  private Player black;
+  private Player current;
+
 
   /** Constructs a PlayState object. */
   public PlayState() {
     super();
+
+    state = GameState.SETUP;
+
+    white = new Player();
+    black = new Player();
+    bm = new BoardManager(white, black);
+
+    Board board = bm.board();
 
     try {
       panel = new PlayPanel();
