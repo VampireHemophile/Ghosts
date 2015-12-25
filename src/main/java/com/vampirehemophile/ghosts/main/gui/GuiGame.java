@@ -2,8 +2,8 @@ package com.vampirehemophile.ghosts.main.gui;
 
 import java.util.Observer;
 import java.util.Observable;
-import com.vampirehemophile.ghosts.gamestates.State;
-import com.vampirehemophile.ghosts.gamestates.MenuState;
+import com.vampirehemophile.ghosts.displaystates.State;
+import com.vampirehemophile.ghosts.displaystates.MenuState;
 
 /**
  * GuiGame class.

@@ -1,4 +1,4 @@
-package com.vampirehemophile.ghosts.gamestates;
+package com.vampirehemophile.ghosts.displaystates;
 
 import javax.swing.JPanel;
 import java.util.Observable;
