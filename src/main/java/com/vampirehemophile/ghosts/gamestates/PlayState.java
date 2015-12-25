@@ -289,6 +289,30 @@ public class PlayState extends State implements MouseInputListener {
       }
       return null;
     }
+
+    /**
+     * Gets coordinates of the hovered square.
+     *
+     * @param size the size of a square, in pixels.
+     * @return the corresponding coordinates.
+     */
+    private Coordinates hoveredSquare(int size) {
+      int mx = mouseX;
+      int x = 0;
+      while (mx > size) {
+        mx -= size;
+        x++;
+      }
+
+      int my = mouseY;
+      int y = 0;
+      while (my > size) {
+        my -= size;
+        y++;
+      }
+
+      return new Coordinates(x, y, board.size());
+    }
   }
 
 
