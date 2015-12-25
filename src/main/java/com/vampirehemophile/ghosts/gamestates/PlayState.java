@@ -130,26 +130,68 @@ public class PlayState extends State implements MouseInputListener {
       String message = null;
       while (e != null) {
         switch (e.getID()) {
+
           case MouseEvent.MOUSE_PRESSED:
           if (parent.state == GameState.SETUP) {
-            if (e.getButton() == MouseEvent.BUTTON3) {
-              selectedPawn = selectedPawn == goodPawn ? evilPawn : goodPawn;
-              setCursor(cursorFromPawn(selectedPawn));
+            switch (e.getButton()) {
+              case MouseEvent.BUTTON1:
+              parent.current.add(selectedPawn);
+              board.set(selectedPawn, hoveredSquare(100));
+              if (selectedPawn == goodPawn) {
+                goodPawn = new Pawn(Pawn.PawnType.GOOD);
+                selectedPawn = goodPawn;
+              } else if (selectedPawn == evilPawn) {
+                evilPawn = new Pawn(Pawn.PawnType.EVIL);
+                selectedPawn = evilPawn;
+              }
+              int good = parent.current.countGoodPawns();
+              int evil = parent.current.countEvilPawns();
+              if (good == 4 && evil == 4) {
+                if (parent.current.equals(parent.white)) {
+                  parent.current = parent.black;
+                  selectedPawn = null;
+                  repaint();
+                } else if (parent.current.equals(parent.black)) {
+                  parent.current = parent.white;
+                  parent.state = GameState.PLAY;
+                  setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                }
+              } else if (good == 4) {
+                selectedPawn = evilPawn;
+                setCursor(cursorFromPawn(selectedPawn));
+              } else if (evil == 4) {
+                selectedPawn = goodPawn;
+                setCursor(cursorFromPawn(selectedPawn));
+              }
+              break;
+              case MouseEvent.BUTTON3:
+              if (parent.current.countGoodPawns() < 4
+                  && parent.current.countEvilPawns() < 4) {
+                selectedPawn = selectedPawn == goodPawn ? evilPawn : goodPawn;
+                setCursor(cursorFromPawn(selectedPawn));
+              }
+              break;
             }
           }
           break;
+
           case MouseEvent.MOUSE_RELEASED:
           break;
+
           case MouseEvent.MOUSE_CLICKED:
           break;
+
           case MouseEvent.MOUSE_ENTERED:
           break;
+
           case MouseEvent.MOUSE_EXITED:
           break;
+
           case MouseEvent.MOUSE_DRAGGED:
           mouseX = e.getX();
           mouseY = e.getY();
           break;
+
           case MouseEvent.MOUSE_MOVED:
           mouseX = e.getX();
           mouseY = e.getY();
