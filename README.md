@@ -1,6 +1,8 @@
 # Ghosts [![Build Status](https://travis-ci.org/VampireHemophile/Ghosts.svg)](https://travis-ci.org/VampireHemophile/Ghosts)
 [Ghosts](https://en.wikipedia.org/wiki/Ghosts_%28board_game%29) board game, in Java 8.
 
+![Ghosts](artwork/ghost1.png)
+
 ## Build & Run
 This project uses [Maven](https://maven.apache.org) as its build tool.
 Read [Maven in five minutes](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html) to get a quick introduction to Maven.
