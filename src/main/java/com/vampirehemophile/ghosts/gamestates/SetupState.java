@@ -73,8 +73,8 @@ public class SetupState extends GameState {
         if (current.equals(white)) {
           blackSetup = true;
           resetCursor();
-          // setChanged();
-          // notifyObservers(new WaitingState(panel, bm));
+          setChanged();
+          notifyObservers(new WaitingState(panel, bm));
         } else if (current.equals(black)) {
           current = white;
           resetCursor();
