@@ -246,6 +246,24 @@ public class BoardManager {
   }
 
   /**
+   * Gets this manager's white player.
+   *
+   * @return the white player.
+   */
+  public Player white() {
+    return white;
+  }
+
+  /**
+   * Gets this manager's black player.
+   *
+   * @return the black player.
+   */
+  public Player black() {
+    return black;
+  }
+
+  /**
    * Gets the board size.
    *
    * @return board size.
