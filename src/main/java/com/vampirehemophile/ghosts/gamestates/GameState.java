@@ -5,6 +5,8 @@ import javax.swing.event.MouseInputListener;
 import javax.imageio.ImageIO;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -25,7 +27,8 @@ import com.vampirehemophile.ghosts.math.Coordinates;
  * A state is also made observable. It notifies its observers when the game
  * switches to a new state, and sends the new state.
  */
-public abstract class GameState extends Observable implements MouseInputListener {
+public abstract class GameState extends Observable
+    implements MouseInputListener, KeyListener {
 
   protected JPanel panel;
 
@@ -120,7 +123,9 @@ public abstract class GameState extends Observable implements MouseInputListener
   /**
    * Called when entering a state.
    */
-  public void enter() {}
+  public void enter() {
+    panel.repaint();
+  }
 
   /**
    * Called when exiting a state.
@@ -355,6 +360,27 @@ public abstract class GameState extends Observable implements MouseInputListener
   /** {@inheritDoc} */
   @Override
   public void mouseReleased (MouseEvent e) {
+
+  }
+
+
+  // Key events
+
+  /** {@inheritDoc} */
+  @Override
+  public void keyPressed(KeyEvent e) {
+
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void keyReleased(KeyEvent e) {
+
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void keyTyped(KeyEvent e) {
 
   }
 }

@@ -1,5 +1,6 @@
 package com.vampirehemophile.ghosts.main.gui;
 
+import javax.swing.JPanel;
 import java.util.Observer;
 import java.util.Observable;
 import com.vampirehemophile.ghosts.displaystates.State;
@@ -50,10 +51,15 @@ public class GuiGame implements Observer {
     state.deleteObserver(this);
     newState.addObserver(this);
 
-    display.setContentPane(newState.render());
+    JPanel contentPane = newState.render();
+    display.setContentPane(contentPane);
     display.validate();
     display.pack();
     display.setLocationRelativeTo(null);
+
+    contentPane.setFocusable(true);
+    contentPane.requestFocusInWindow();
+
     state = newState;
   }
 }

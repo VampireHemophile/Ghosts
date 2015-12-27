@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.KeyListener;
 import com.vampirehemophile.ghosts.playstates.*;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.entities.Player;
@@ -43,6 +44,7 @@ public class PlayState extends State implements Observer {
     public void addStateListener(GameState state) {
       addMouseListener((MouseListener)state);
       addMouseMotionListener((MouseMotionListener)state);
+      addKeyListener((KeyListener)state);
     }
 
     /**
@@ -53,6 +55,7 @@ public class PlayState extends State implements Observer {
     public void removeStateListener(GameState state) {
       removeMouseListener((MouseListener)state);
       removeMouseMotionListener((MouseMotionListener)state);
+      removeKeyListener((KeyListener)state);
     }
   }
 

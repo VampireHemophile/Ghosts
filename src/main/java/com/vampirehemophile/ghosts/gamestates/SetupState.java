@@ -17,6 +17,9 @@ public class SetupState extends GameState {
   protected Pawn evilPawn;
   protected Pawn selectedPawn;
 
+  private boolean blackSetup;
+
+
   /**
    * Constructs a new SetupState object.
    *
@@ -31,6 +34,18 @@ public class SetupState extends GameState {
 
     selectedPawn = goodPawn;
     panel.setCursor(whiteGoodPawnCursor);
+
+    blackSetup = false;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void enter() {
+    if (blackSetup) {
+      current = black;
+      selectedPawn = goodPawn;
+      panel.setCursor(blackGoodPawnCursor);
+    }
   }
 
   /** {@inheritDoc} */
@@ -56,9 +71,10 @@ public class SetupState extends GameState {
       int evil = current.countEvilPawns();
       if (good == 4 && evil == 4) {
         if (current.equals(white)) {
-          current = black;
-          selectedPawn = goodPawn;
-          panel.setCursor(blackGoodPawnCursor);
+          blackSetup = true;
+          resetCursor();
+          // setChanged();
+          // notifyObservers(new WaitingState(panel, bm));
         } else if (current.equals(black)) {
           current = white;
           resetCursor();
