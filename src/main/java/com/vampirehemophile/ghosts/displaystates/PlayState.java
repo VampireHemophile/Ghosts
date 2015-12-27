@@ -23,7 +23,7 @@ public class PlayState extends State implements Observer {
     /** Constructs a PlayPanel object. */
     public PlayPanel() {
       super();
-      setPreferredSize(new Dimension(600, 620));
+      setPreferredSize(new Dimension(600, 640));
     }
 
     /** {@inheritDoc} */

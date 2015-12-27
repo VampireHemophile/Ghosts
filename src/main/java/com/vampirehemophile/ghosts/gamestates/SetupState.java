@@ -89,5 +89,8 @@ public class SetupState extends GameState {
   public void paint(Graphics2D g2d) {
     drawBoard(g2d);
     drawPawns(g2d);
+    drawMessage(g2d, "Set your pawns up with left click, switch between pawns whith right click.", 1);
+    drawMessage(g2d, current.countGoodPawns() + " / 4 good pawns, "
+                   + current.countEvilPawns() + " / 4 evil pawns.", 2);
   }
 }

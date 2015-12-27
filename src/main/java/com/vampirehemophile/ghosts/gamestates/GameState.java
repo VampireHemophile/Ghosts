@@ -203,10 +203,11 @@ public abstract class GameState extends Observable implements MouseInputListener
     * Draws a message.
     *
     * @param g2d the graphics object.
-    * @param string the message.
+    * @param message the message.
+    * @param line the line number to print the message on. Line 1 or 2.
     */
-  protected void drawString(Graphics2D g2d, String string) {
-    g2d.drawString(string != null ? string : "", 10, 615);
+  protected void drawMessage(Graphics2D g2d, String message, int line) {
+    g2d.drawString(message != null ? message : "", 10, 600 + line * 15);
   }
 
   /**
