@@ -24,5 +24,5 @@ Ghosts options:
 ```
 
 ## Documentation
-To generate the documentation, run `mvn site`. Informations about the project are accessible at `target/site/index.html`, documentation of Ghosts and its tests can be found in the "Project Reports" section.  
+To generate the documentation and [checkstyle](http://checkstyle.sourceforge.net/) reports, run `mvn site`. Informations about the project are accessible at `target/site/index.html`, documentation of Ghosts and its tests can be found in the "Project Reports" section.  
 An UML diagram can be found in `target/site/apidocs/index.html`, the root of Ghosts' documentation. You need [GraphViz](http://www.graphviz.org/) installed to generate UML diagrams.
