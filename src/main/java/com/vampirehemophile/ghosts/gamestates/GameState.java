@@ -36,10 +36,10 @@ public abstract class GameState extends Observable
 
 
   // cursors
-  protected Cursor whiteGoodPawnCursor;
-  protected Cursor whiteEvilPawnCursor;
-  protected Cursor blackGoodPawnCursor;
-  protected Cursor blackEvilPawnCursor;
+  protected Cursor WHITE_GOOD_PAWNCursor;
+  protected Cursor WHITE_EVIL_PAWNCursor;
+  protected Cursor BLACK_GOOD_PAWNCursor;
+  protected Cursor BLACK_EVIL_PAWNCursor;
   private static Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
   // board
@@ -67,15 +67,10 @@ public abstract class GameState extends Observable
    * @param bm the game board manager.
    */
   public GameState(JPanel panel, BoardManager bm) {
-
-	  ImageLoader.init();
-
-
-
-    whiteGoodPawnCursor = loadCursor(ImageLoader.whiteGoodPawn);
-    whiteEvilPawnCursor = loadCursor(ImageLoader.whiteEvilPawn);
-    blackGoodPawnCursor = loadCursor(ImageLoader.blackGoodPawn);
-    blackEvilPawnCursor = loadCursor(ImageLoader.blackEvilPawn);
+    WHITE_GOOD_PAWNCursor = loadCursor(ImageLoader.WHITE_GOOD_PAWN);
+    WHITE_EVIL_PAWNCursor = loadCursor(ImageLoader.WHITE_EVIL_PAWN);
+    BLACK_GOOD_PAWNCursor = loadCursor(ImageLoader.BLACK_GOOD_PAWN);
+    BLACK_EVIL_PAWNCursor = loadCursor(ImageLoader.BLACK_EVIL_PAWN);
 
     this.panel = panel;
 
@@ -83,19 +78,6 @@ public abstract class GameState extends Observable
     white = bm.white();
     black = bm.black();
     board = bm.board();
-  }
-
-
-  // General functions
-
-  /**
-   * Finds a resource with a given name.
-   *
-   * @param name of the desired resource.
-   * @return A java.net.URL object or null if no resource with this name is found.
-   */
-  public static java.net.URL getResource(String name) {
-    return GameState.class.getResource(name);
   }
 
 
@@ -149,9 +131,9 @@ public abstract class GameState extends Observable
     for (int i = 0; i < 6; i++) {
       for (int j = 0; j < 6; j++) {
         if (dark) {
-          g2d.drawImage(ImageLoader.darkTile, i*ImageLoader.SQUARE_SIZE, j*ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, null);
+          g2d.drawImage(ImageLoader.DARK_TILE, i*ImageLoader.SQUARE_SIZE, j*ImageLoader.SQUARE_SIZE, null);
         } else {
-          g2d.drawImage(ImageLoader.lightTile, i*ImageLoader.SQUARE_SIZE, j*ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, null);
+          g2d.drawImage(ImageLoader.LIGHT_TILE, i*ImageLoader.SQUARE_SIZE, j*ImageLoader.SQUARE_SIZE, null);
         }
         dark = !dark;
       }
@@ -177,11 +159,11 @@ public abstract class GameState extends Observable
     		pawn = board.at(new Coordinates(x, y, board.size()));
 
     		if (isWhite) {
-    			i = x * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_X;
-    			j = (bm.size() - 1 - y) * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_Y;
+    			i = x * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_TOP_X;
+    			j = (bm.size() - 1 - y) * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_TOP_Y;
     		} else {
-    			i = (bm.size() - 1 - x) * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_X;
-    			j = y * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_Y;
+    			i = (bm.size() - 1 - x) * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_TOP_X;
+    			j = y * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_TOP_Y;
     		}
 
     		if (pawn != null) {
@@ -191,9 +173,9 @@ public abstract class GameState extends Observable
     				if (pawn.player().equals(current)) {
     					g2d.drawImage(imageFromPawn(pawn), i, j, null);
     				} else if (pawn.player().equals(white)) {
-    					g2d.drawImage(ImageLoader.whiteNeutralPawn, i, j, null);
+    					g2d.drawImage(ImageLoader.WHITE_NEUTRAL_PAWN, i, j, null);
     				} else if (pawn.player().equals(black)) {
-    					g2d.drawImage(ImageLoader.blackNeutralPawn, i, j, null);
+    					g2d.drawImage(ImageLoader.BLACK_NEUTRAL_PAWN, i, j, null);
     				}
     			}
     		}
@@ -203,13 +185,13 @@ public abstract class GameState extends Observable
 
 
   /**
-   * Draws a pawn under the mouse cursor.
+   * Draws an image under the mouse cursor.
    *
-   * @param string the message.
+   * @param image the image.
    * @param g2d the graphics object.
    */
-  protected void drawUnderMouse(Graphics2D g2d, BufferedImage image) {
-    g2d.drawImage(image, mouseX - 12, mouseY - 25, 25, 50, null);
+  protected void drawUnderMouse(Graphics2D g2d, Image image) {
+    g2d.drawImage(image, mouseX - image.getWidth(null) / 2, mouseY - image.getHeight(null) / 2, null);
   }
 
   /**
@@ -220,7 +202,7 @@ public abstract class GameState extends Observable
     * @param line the line number to print the message on. Line 1 or 2.
     */
   protected void drawMessage(Graphics2D g2d, String message, int line) {
-    g2d.drawString(message != null ? message : "", 10, 600 + line * 15);
+    g2d.drawString(message != null ? message : "", 10, bm.size() * ImageLoader.SQUARE_SIZE + line * 15);
   }
 
   /**
@@ -241,20 +223,20 @@ public abstract class GameState extends Observable
     if (player.equals(white)) {
       switch (pawn.type()) {
         case GOOD:
-        return ImageLoader.whiteGoodPawn;
+        return ImageLoader.WHITE_GOOD_PAWN;
         case EVIL:
-        return ImageLoader.whiteEvilPawn;
+        return ImageLoader.WHITE_EVIL_PAWN;
         case UNKNOWN:
-        return ImageLoader.whiteNeutralPawn;
+        return ImageLoader.WHITE_NEUTRAL_PAWN;
       }
     } else if (player.equals(black)) {
       switch (pawn.type()) {
         case GOOD:
-        return ImageLoader.blackGoodPawn;
+        return ImageLoader.BLACK_GOOD_PAWN;
         case EVIL:
-        return ImageLoader.blackEvilPawn;
+        return ImageLoader.BLACK_EVIL_PAWN;
         case UNKNOWN:
-        return ImageLoader.blackNeutralPawn;
+        return ImageLoader.BLACK_NEUTRAL_PAWN;
       }
     }
     return null;
@@ -278,16 +260,16 @@ public abstract class GameState extends Observable
     if (player.equals(white)) {
       switch (pawn.type()) {
         case GOOD:
-        return whiteGoodPawnCursor;
+        return WHITE_GOOD_PAWNCursor;
         case EVIL:
-        return whiteEvilPawnCursor;
+        return WHITE_EVIL_PAWNCursor;
       }
     } else if (player.equals(black)) {
       switch (pawn.type()) {
         case GOOD:
-        return blackGoodPawnCursor;
+        return BLACK_GOOD_PAWNCursor;
         case EVIL:
-        return blackEvilPawnCursor;
+        return BLACK_EVIL_PAWNCursor;
       }
     }
     return null;

@@ -33,7 +33,7 @@ public class SetupState extends GameState {
     evilPawn = new Pawn(Pawn.PawnType.EVIL);
 
     selectedPawn = goodPawn;
-    panel.setCursor(whiteGoodPawnCursor);
+    panel.setCursor(WHITE_GOOD_PAWNCursor);
 
     blackSetup = false;
   }
@@ -44,7 +44,7 @@ public class SetupState extends GameState {
     if (blackSetup) {
       current = black;
       selectedPawn = goodPawn;
-      panel.setCursor(blackGoodPawnCursor);
+      panel.setCursor(BLACK_GOOD_PAWNCursor);
     }
   }
 

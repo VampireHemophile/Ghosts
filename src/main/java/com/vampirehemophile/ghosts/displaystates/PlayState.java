@@ -23,6 +23,7 @@ import com.vampirehemophile.ghosts.gamestates.MainGameState;
 import com.vampirehemophile.ghosts.gamestates.SetupState;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.math.Coordinates;
+import com.vampirehemophile.ghosts.assets.ImageLoader;
 
 /** Main game state. */
 public class PlayState extends State implements Observer {
@@ -34,7 +35,8 @@ public class PlayState extends State implements Observer {
     /** Constructs a PlayPanel object. */
     public PlayPanel() {
       super();
-      setPreferredSize(new Dimension(600, 640));
+      int size = PlayState.this.bm.size() * ImageLoader.SQUARE_SIZE;
+      setPreferredSize(new Dimension(size, size + 40));
     }
 
     /** {@inheritDoc} */
@@ -82,13 +84,13 @@ public class PlayState extends State implements Observer {
   /** Constructs a PlayState object. */
   public PlayState(boolean cheatModeEnabled) {
     super();
-    
-    panel = new PlayPanel();
 
     bm = new BoardManager(new Player(), new Player());
-    
+
+    panel = new PlayPanel();
+
     this.cheatModeEnabled = cheatModeEnabled;
-    
+
     states = new Stack<>();
     GameState setupState = new SetupState(panel, bm);
     states.push(setupState);
@@ -98,29 +100,29 @@ public class PlayState extends State implements Observer {
     }
     setupState.addObserver(this);
   }
-  
+
   private enum ReadingState {
 	  SETUP, PLAY
   }
-  
+
   /**
    * Constructs a PlayState object based on a pre existing game file
    */
-  
+
   public PlayState(boolean cheatModeEnabled, File file) {
 	  super();
-	    
+
 	  panel = new PlayPanel();
 
 	  bm = new BoardManager(new Player(), new Player());
-	    
+
 	  this.cheatModeEnabled = cheatModeEnabled;
-	  
+
 
 	  ReadingState rs = ReadingState.SETUP;
 	  Player current = null;
 	  int setupLine = 0;
-	  
+
 	  try{
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line;
@@ -154,7 +156,7 @@ public class PlayState extends State implements Observer {
 		} catch(IOException e){
 			e.printStackTrace();
 		}
-	  
+
 	    states = new Stack<>();
 	    GameState setupState = new MainGameState(panel, bm);
 	    states.push(setupState);
@@ -164,8 +166,8 @@ public class PlayState extends State implements Observer {
 	    }
 	    setupState.addObserver(this);
   }
-  
-  
+
+
   public void processSetup(String line, Player current, int setupLine) {
 	  int y = 0;
 	  int x = 0;
@@ -188,36 +190,36 @@ public class PlayState extends State implements Observer {
 		  bm.board().set(p, new Coordinates(x, y, bm.size()));
 	  }
   }
-  
-  
+
+
   public void processPlay(String line) {
 	  String[] tokens = line.split("\\s");
 	  String[] tok1 = tokens[2].split(",");
 	  String[] tok2 = tokens[4].split(",");
-	  
+
 	  Coordinates start = null;
 	  Coordinates end = null;
-	  
+
 	  start = new Coordinates(tok1[0], bm.size());
 	  end = new Coordinates(tok1[1], bm.size());
-	  
+
 	  if (bm.canMove(start, end)) {
 		  bm.move(start, end);
 	  } else {
 		  throw new RuntimeException("Invalid file"); // TODO
 	  }
-	  
+
 	  start = new Coordinates(tok2[0], bm.size());
 	  end = new Coordinates(tok2[1], bm.size());
-	  
+
 	  if (bm.canMove(start, end)) {
 		  bm.move(start, end);
 	  } else {
 		  throw new RuntimeException("Invalid file"); // TODO
 	  }
   }
-  
-  
+
+
   /** {@inheritDoc} */
   @Override
   public JPanel render() {

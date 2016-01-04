@@ -19,14 +19,4 @@ public abstract class State extends Observable {
    * @return the panel.
    */
   public abstract JPanel render();
-
-  /**
-   * Finds a resource with a given name.
-   *
-   * @param name of the desired resource.
-   * @return A java.net.URL object or null if no resource with this name is found.
-   */
-  public static java.net.URL getResource(String name) {
-    return State.class.getResource(name);
-  }
 }
