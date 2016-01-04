@@ -34,7 +34,7 @@ public abstract class GameState extends Observable
 
   protected JPanel panel;
 
- 
+
   // cursors
   protected Cursor whiteGoodPawnCursor;
   protected Cursor whiteEvilPawnCursor;
@@ -54,8 +54,8 @@ public abstract class GameState extends Observable
   // mouse
   protected int mouseX;
   protected int mouseY;
-  
-  //cheatMode 
+
+  //cheatMode
   protected boolean cheatModeEnabled = false;
 
 
@@ -67,10 +67,10 @@ public abstract class GameState extends Observable
    * @param bm the game board manager.
    */
   public GameState(JPanel panel, BoardManager bm) {
-   
-	ImageLoader.init();
-    
-     
+
+	  ImageLoader.init();
+
+
 
     whiteGoodPawnCursor = loadCursor(ImageLoader.whiteGoodPawn);
     whiteEvilPawnCursor = loadCursor(ImageLoader.whiteEvilPawn);
@@ -130,7 +130,7 @@ public abstract class GameState extends Observable
    * @param image the pawn's image.
    * @return the corresponding cursor.
    */
-  private Cursor loadCursor(BufferedImage image) {
+  private Cursor loadCursor(Image image) {
     Image imageCursor = image.getScaledInstance(25, 50, Image.SCALE_DEFAULT);
     return Toolkit.getDefaultToolkit().createCustomCursor(
         imageCursor,
@@ -149,9 +149,9 @@ public abstract class GameState extends Observable
     for (int i = 0; i < 6; i++) {
       for (int j = 0; j < 6; j++) {
         if (dark) {
-          g2d.drawImage(ImageLoader.darkTile, i*ImageLoader.squareWidth, j*ImageLoader.squareHeight, ImageLoader.squareWidth, ImageLoader.squareHeight, null);
+          g2d.drawImage(ImageLoader.darkTile, i*ImageLoader.SQUARE_SIZE, j*ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, null);
         } else {
-          g2d.drawImage(ImageLoader.lightTile, i*ImageLoader.squareWidth, j*ImageLoader.squareHeight, ImageLoader.squareWidth, ImageLoader.squareHeight, null);
+          g2d.drawImage(ImageLoader.lightTile, i*ImageLoader.SQUARE_SIZE, j*ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, null);
         }
         dark = !dark;
       }
@@ -166,41 +166,41 @@ public abstract class GameState extends Observable
    */
   protected void drawPawns(Graphics2D g2d) {
     Pawn pawn;
-    
+
     int i = 0;
     int j = 0;
-    
+
     boolean isWhite = current.equals(white);
-    
+
     for (int x = 0; x < bm.size(); x++) {
     	for (int y = 0; y < bm.size(); y++) {
     		pawn = board.at(new Coordinates(x, y, board.size()));
 
     		if (isWhite) {
-    			i = x * 100 + 2;
-    			j = (bm.size() - 1 - y) * 100 + 2;
+    			i = x * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_X;
+    			j = (bm.size() - 1 - y) * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_Y;
     		} else {
-    			i = (bm.size() - 1 - x) * 100 + 2;
-    			j = y * 100 + 2;
+    			i = (bm.size() - 1 - x) * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_X;
+    			j = y * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_Y;
     		}
 
     		if (pawn != null) {
     			if(cheatModeEnabled) {
-    				g2d.drawImage(imageFromPawn(pawn), i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    				g2d.drawImage(imageFromPawn(pawn), i, j, null);
     			} else {
     				if (pawn.player().equals(current)) {
-    					g2d.drawImage(imageFromPawn(pawn), i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    					g2d.drawImage(imageFromPawn(pawn), i, j, null);
     				} else if (pawn.player().equals(white)) {
-    					g2d.drawImage(ImageLoader.whiteNeutralPawn, i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    					g2d.drawImage(ImageLoader.whiteNeutralPawn, i, j, null);
     				} else if (pawn.player().equals(black)) {
-    					g2d.drawImage(ImageLoader.blackNeutralPawn, i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    					g2d.drawImage(ImageLoader.blackNeutralPawn, i, j, null);
     				}
     			}
     		}
     	}
     }
   }
-  
+
 
   /**
    * Draws a pawn under the mouse cursor.
@@ -231,7 +231,7 @@ public abstract class GameState extends Observable
    * @param pawn the pawn to render.
    * @return the image.
    */
-  protected BufferedImage imageFromPawn(Pawn pawn) {
+  protected Image imageFromPawn(Pawn pawn) {
     Player player = pawn.player();
     player = player != null ? player : current;
     if (player == null) {
@@ -296,10 +296,10 @@ public abstract class GameState extends Observable
   /**
    * Gets coordinates of the hovered square.
    *
-   * @param size the size of a square, in pixels.
    * @return the corresponding coordinates.
    */
-  protected Coordinates hoveredSquare(int size) {
+  protected Coordinates hoveredSquare() {
+    int size = ImageLoader.SQUARE_SIZE;
 	  int x = 0;
 	  int y = 0;
 	  if (current.equals(white)) {
@@ -309,7 +309,7 @@ public abstract class GameState extends Observable
 			  mx -= size;
 			  x++;
 		  }
-		  
+
 		  int my = mouseY;
 		  y = bm.size() - 1;
 		  while (my > size) {
@@ -323,7 +323,7 @@ public abstract class GameState extends Observable
 			  mx -= size;
 			  x--;
 		  }
-		  
+
 		  int my = mouseY;
 		  y = 0;
 		  while (my > size) {
@@ -409,9 +409,9 @@ public abstract class GameState extends Observable
   public void keyTyped(KeyEvent e) {
 
   }
-  
+
   //getters and setters
-  
+
   public void enableCheatMode() {
 	  this.cheatModeEnabled = true;
   }

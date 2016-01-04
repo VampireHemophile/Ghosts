@@ -51,12 +51,12 @@ public class SetupState extends GameState {
   /** {@inheritDoc} */
   @Override
   public void mousePressed(MouseEvent e) {
-	  
+
     super.mousePressed(e);
     switch (e.getButton()) {
       case MouseEvent.BUTTON1:
-      Coordinates loc = hoveredSquare(100);
-      
+      Coordinates loc = hoveredSquare();
+
       if (!bm.canSet(current, loc)) {
         break;
       }

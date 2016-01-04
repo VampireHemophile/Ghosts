@@ -9,54 +9,47 @@ import javax.imageio.ImageIO;
 
 public class ImageLoader {
 
-	public static int squareWidth = 100, squareHeight = 100;
-	public static int imageWidth = 95, imageHeight = 90;
-	
-	//images
-	public static BufferedImage lightTile;
-	public static BufferedImage darkTile;
-	public static BufferedImage whiteGoodPawn;
-	public static BufferedImage whiteEvilPawn;
-	public static BufferedImage whiteNeutralPawn;
-	public static BufferedImage blackGoodPawn;
-	public static BufferedImage blackEvilPawn;
-	public static BufferedImage blackNeutralPawn;
-	
-	public static void init() { 
-		lightTile        = ImageLoader.loadImage("/lighttile.png");
-		darkTile         = ImageLoader.loadImage("/darktile.png");
-		
-		whiteGoodPawn    = ImageLoader.loadImage("/white/fantome3.png");
-		whiteEvilPawn    = ImageLoader.loadImage("/white/fantome4.png");
-		whiteNeutralPawn = ImageLoader.loadImage("/white/neutralpawn.png");
-		blackGoodPawn    = ImageLoader.loadImage("/black/fantome3.png");
-		blackEvilPawn    = ImageLoader.loadImage("/black/fantome4.png");
-		blackNeutralPawn = ImageLoader.loadImage("/black/neutralpawn.png");
+	public static int SQUARE_SIZE = 100;
+	public static int IMAGE_WIDTH = 43;
+	public static int IMAGE_HEIGHT = 90;
+	public static int IMAGE_CENTER_X = SQUARE_SIZE / 2 - IMAGE_WIDTH  / 2;
+	public static int IMAGE_CENTER_Y = SQUARE_SIZE / 2 - IMAGE_HEIGHT / 2;
+
+	// images
+	public static Image lightTile;
+	public static Image darkTile;
+	public static Image whiteGoodPawn;
+	public static Image whiteEvilPawn;
+	public static Image whiteNeutralPawn;
+	public static Image blackGoodPawn;
+	public static Image blackEvilPawn;
+	public static Image blackNeutralPawn;
+
+	public static void init() {
+		lightTile        = ImageLoader.loadResizedImage("/images/lighttile.png");
+		darkTile         = ImageLoader.loadResizedImage("/images/darktile.png");
+
+		whiteGoodPawn    = ImageLoader.loadResizedImage("/images/white/goodpawn.png");
+		whiteEvilPawn    = ImageLoader.loadResizedImage("/images/white/evilpawn.png");
+		whiteNeutralPawn = ImageLoader.loadResizedImage("/images/white/neutralpawn.png");
+		blackGoodPawn    = ImageLoader.loadResizedImage("/images/black/goodpawn.png");
+		blackEvilPawn    = ImageLoader.loadResizedImage("/images/black/evilpawn.png");
+		blackNeutralPawn = ImageLoader.loadResizedImage("/images/black/neutralpawn.png");
 	}
-	
-	
+
+
 	public static BufferedImage loadImage(String path){
 		try  {
 			return ImageIO.read(ImageLoader.class.getResource(path));
-			//return ImageIO.read(this.getClass().getResource("res/textures/beam.png"));
-		
 		} catch (IOException e) {
+			System.out.println(path);
 			e.printStackTrace();
 			System.exit(1);
 		}
 		return null;
 	}
-	
-	public static BufferedImage loadImageResized(String path) {
-		try {
-			
-			BufferedImage temp = ImageIO.read(ImageLoader.class.getResource(path));
-			return (BufferedImage) temp.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
+
+	public static Image loadResizedImage(String path) {
+		return loadImage(path).getScaledInstance(IMAGE_WIDTH, IMAGE_HEIGHT, Image.SCALE_SMOOTH);
 	}
 }

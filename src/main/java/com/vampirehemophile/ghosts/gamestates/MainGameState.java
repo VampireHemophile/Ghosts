@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import com.vampirehemophile.ghosts.entities.*;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.math.Coordinates;
+import com.vampirehemophile.ghosts.assets.ImageLoader;
 
 /**
  * State for the main game process.
@@ -14,20 +15,20 @@ import com.vampirehemophile.ghosts.math.Coordinates;
 public class MainGameState extends GameState {
 
 
-	  
-	  
+
+
   private boolean hasSelectedPawn = false;
   private Coordinates selectedCoord = null;
   private String errorMessage = null;
-	  
-	
+
+
   /**
    * Constructs a new MainGameState object.
    *
    * @param panel the game panel.
    * @param bm the game board manager.
    */
-	
+
   public MainGameState(JPanel panel, BoardManager bm) {
     super(panel, bm);
     current = white;
@@ -40,23 +41,23 @@ public class MainGameState extends GameState {
 	  drawPawns(g2d);
 	  if(selectedCoord != null) {
 		  if (current.equals(white))
-			  g2d.drawRect(selectedCoord.xMatrix() * 100, (bm.size() - 1 - selectedCoord.yMatrix())*100, 100, 100);
+			  g2d.drawRect(selectedCoord.xMatrix() * ImageLoader.SQUARE_SIZE, (bm.size() - 1 - selectedCoord.yMatrix())*ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE);
 		  else if (current.equals(black))
-			  g2d.drawRect((bm.size() - 1 - selectedCoord.xMatrix()) * 100, selectedCoord.yMatrix()*100, 100, 100);
+			  g2d.drawRect((bm.size() - 1 - selectedCoord.xMatrix()) * ImageLoader.SQUARE_SIZE, selectedCoord.yMatrix()*ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE);
 	  }
 	  if(errorMessage != null) {
 		  drawMessage(g2d, errorMessage, 1);
 	  }
   }
-  
+
   public void mousePressed(MouseEvent e) {
 	  super.mousePressed(e);
-	  
-	  
+
+
 	  switch (e.getButton()) {
 
 	    case MouseEvent.BUTTON1:
-	    	Coordinates loc = hoveredSquare(100);
+	    	Coordinates loc = hoveredSquare();
 	    	if(!hasSelectedPawn) {
 	    		Pawn temp = bm.board().at(loc);
     			if(temp != null && temp.player().equals(current)) {
@@ -96,16 +97,16 @@ public class MainGameState extends GameState {
 	    	}
 
     		break;
-	    case MouseEvent.BUTTON3: 
+	    case MouseEvent.BUTTON3:
 	    	if(hasSelectedPawn) {
 	    		hasSelectedPawn = false;
 	    		selectedCoord = null;
 	    	}
 
     		break;
-		
+
 	  }
 	  panel.repaint();
   }
-  
+
 }

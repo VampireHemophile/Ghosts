@@ -31,7 +31,7 @@ public class WaitingState extends GameState {
     drawPawns(g2d);
     drawMessage(g2d, "Press ENTER to switch to the next player.", 1);
   }
-  
+
   /**
    * Draws the pawn set on the board.
    *
@@ -40,32 +40,32 @@ public class WaitingState extends GameState {
   @Override
   protected void drawPawns(Graphics2D g2d) {
     Pawn pawn;
-    
+
     int i = 0;
     int j = 0;
-    
+
     boolean isWhite = current.equals(white);
-    
+
     for (int x = 0; x < bm.size(); x++) {
     	for (int y = 0; y < bm.size(); y++) {
     		pawn = board.at(new Coordinates(x, y, board.size()));
 
-    		if (isWhite) {
-    			i = x * 100 + 2;
-    			j = (bm.size() - 1 - y) * 100 + 2;
+        if (isWhite) {
+    			i = x * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_X;
+    			j = (bm.size() - 1 - y) * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_Y;
     		} else {
-    			i = (bm.size() - 1 - x) * 100 + 2;
-    			j = y * 100 + 2;
+    			i = (bm.size() - 1 - x) * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_X;
+    			j = y * ImageLoader.SQUARE_SIZE + ImageLoader.IMAGE_CENTER_Y;
     		}
 
     		if (pawn != null) {
     			if(cheatModeEnabled) {
-    				g2d.drawImage(imageFromPawn(pawn), i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    				g2d.drawImage(imageFromPawn(pawn), i, j, null);
     			} else {
     				if (pawn.player().equals(white)) {
-    					g2d.drawImage(ImageLoader.whiteNeutralPawn, i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    					g2d.drawImage(ImageLoader.whiteNeutralPawn, i, j, null);
     				} else if (pawn.player().equals(black)) {
-    					g2d.drawImage(ImageLoader.blackNeutralPawn, i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    					g2d.drawImage(ImageLoader.blackNeutralPawn, i, j, null);
     				}
     			}
     		}
@@ -81,7 +81,7 @@ public class WaitingState extends GameState {
       notifyObservers();
     }
   }
-  
+
   @Override
   public void enableCheatMode() {
 	  setChanged();
