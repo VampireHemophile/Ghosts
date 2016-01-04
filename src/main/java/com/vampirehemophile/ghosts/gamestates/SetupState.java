@@ -1,4 +1,4 @@
-package com.vampirehemophile.ghosts.playstates;
+package com.vampirehemophile.ghosts.gamestates;
 
 import javax.swing.JPanel;
 import java.awt.event.InputEvent;
@@ -51,10 +51,12 @@ public class SetupState extends GameState {
   /** {@inheritDoc} */
   @Override
   public void mousePressed(MouseEvent e) {
+	  
     super.mousePressed(e);
     switch (e.getButton()) {
       case MouseEvent.BUTTON1:
       Coordinates loc = hoveredSquare(100);
+      
       if (!bm.canSet(current, loc)) {
         break;
       }
@@ -74,7 +76,9 @@ public class SetupState extends GameState {
           blackSetup = true;
           resetCursor();
           setChanged();
-          notifyObservers(new WaitingState(panel, bm));
+          GameState gs = new WaitingState(panel, bm);
+          gs.current = black;
+          notifyObservers(gs);
         } else if (current.equals(black)) {
           current = white;
           resetCursor();

@@ -1,18 +1,28 @@
 package com.vampirehemophile.ghosts.displaystates;
 
-import javax.swing.JPanel;
-import java.util.Stack;
-import java.util.Observable;
-import java.util.Observer;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Dimension;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.KeyListener;
-import com.vampirehemophile.ghosts.playstates.*;
-import com.vampirehemophile.ghosts.managers.BoardManager;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Stack;
+
+import javax.swing.JPanel;
+
+import com.vampirehemophile.ghosts.entities.Pawn;
 import com.vampirehemophile.ghosts.entities.Player;
+import com.vampirehemophile.ghosts.gamestates.GameState;
+import com.vampirehemophile.ghosts.gamestates.MainGameState;
+import com.vampirehemophile.ghosts.gamestates.SetupState;
+import com.vampirehemophile.ghosts.managers.BoardManager;
+import com.vampirehemophile.ghosts.math.Coordinates;
 
 /** Main game state. */
 public class PlayState extends State implements Observer {
@@ -67,22 +77,147 @@ public class PlayState extends State implements Observer {
 
   private BoardManager bm;
 
+  private boolean cheatModeEnabled;
 
   /** Constructs a PlayState object. */
-  public PlayState() {
+  public PlayState(boolean cheatModeEnabled) {
     super();
-
+    
     panel = new PlayPanel();
 
     bm = new BoardManager(new Player(), new Player());
-
+    
+    this.cheatModeEnabled = cheatModeEnabled;
+    
     states = new Stack<>();
     GameState setupState = new SetupState(panel, bm);
     states.push(setupState);
     panel.addStateListener(setupState);
+    if(cheatModeEnabled){
+    	setupState.enableCheatMode();
+    }
     setupState.addObserver(this);
   }
+  
+  private enum ReadingState {
+	  SETUP, PLAY
+  }
+  
+  /**
+   * Constructs a PlayState object based on a pre existing game file
+   */
+  
+  public PlayState(boolean cheatModeEnabled, File file) {
+	  super();
+	    
+	  panel = new PlayPanel();
 
+	  bm = new BoardManager(new Player(), new Player());
+	    
+	  this.cheatModeEnabled = cheatModeEnabled;
+	  
+
+	  ReadingState rs = ReadingState.SETUP;
+	  Player current = null;
+	  int setupLine = 0;
+	  
+	  try{
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line;
+			while((line = br.readLine()) != null) {
+				if (line.isEmpty()) {
+					continue;
+				}
+				if (line.charAt(0) == '#') {
+					if (line.equals("# Player1")) {
+						current = bm.white();
+						setupLine = 0;
+					} else if (line.equals("# Player2")) {
+						current = bm.black();
+						setupLine = 0;
+					} else if (line.equals("# Move")) {
+						current = null;
+						rs = ReadingState.PLAY;
+					}
+					continue;
+				}
+				switch (rs) {
+				case SETUP:
+					processSetup(line, current, setupLine);
+					setupLine++;
+				break;
+				case PLAY:
+					processPlay(line);
+				break;
+				}
+			}
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+	  
+	    states = new Stack<>();
+	    GameState setupState = new MainGameState(panel, bm);
+	    states.push(setupState);
+	    panel.addStateListener(setupState);
+	    if(cheatModeEnabled){
+	    	setupState.enableCheatMode();
+	    }
+	    setupState.addObserver(this);
+  }
+  
+  
+  public void processSetup(String line, Player current, int setupLine) {
+	  int y = 0;
+	  int x = 0;
+	  if (current.equals(bm.white())) {
+		  y = setupLine;
+	  } else if (current.equals(bm.black())) {
+		  y = bm.size() - setupLine - 1;
+	  }
+	  for (int i = 0; i < line.length(); i++) {
+		  if (i % 2 == 1) continue;
+		  x++;
+		  char c = line.charAt(i);
+		  Pawn p = null;
+		  if (c == 'G') {
+			  p = new Pawn(Pawn.PawnType.GOOD);
+		  } else if (c == 'B') {
+			  p = new Pawn(Pawn.PawnType.EVIL);
+		  }
+		  current.add(p);
+		  bm.board().set(p, new Coordinates(x, y, bm.size()));
+	  }
+  }
+  
+  
+  public void processPlay(String line) {
+	  String[] tokens = line.split("\\s");
+	  String[] tok1 = tokens[2].split(",");
+	  String[] tok2 = tokens[4].split(",");
+	  
+	  Coordinates start = null;
+	  Coordinates end = null;
+	  
+	  start = new Coordinates(tok1[0], bm.size());
+	  end = new Coordinates(tok1[1], bm.size());
+	  
+	  if (bm.canMove(start, end)) {
+		  bm.move(start, end);
+	  } else {
+		  throw new RuntimeException("Invalid file"); // TODO
+	  }
+	  
+	  start = new Coordinates(tok2[0], bm.size());
+	  end = new Coordinates(tok2[1], bm.size());
+	  
+	  if (bm.canMove(start, end)) {
+		  bm.move(start, end);
+	  } else {
+		  throw new RuntimeException("Invalid file"); // TODO
+	  }
+  }
+  
+  
   /** {@inheritDoc} */
   @Override
   public JPanel render() {
@@ -117,6 +252,8 @@ public class PlayState extends State implements Observer {
       states.push(newState);
       panel.addStateListener(newState);
       newState.addObserver(this);
+      if(this.cheatModeEnabled)
+    	  newState.enableCheatMode();
       newState.enter();
     }
   }

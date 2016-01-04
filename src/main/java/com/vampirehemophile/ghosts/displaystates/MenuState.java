@@ -1,13 +1,23 @@
 package com.vampirehemophile.ghosts.displaystates;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.BoxLayout;
+
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+
+import javax.swing.AbstractButton;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /** Main menu state. */
 public class MenuState extends State {
@@ -16,12 +26,14 @@ public class MenuState extends State {
   @SuppressWarnings("serial")
   private class MenuPanel extends JPanel {
 
+	private File chosenFile;  
+	  
     /** Constructs a MenuPanel object. */
     public MenuPanel() {
       super();
 
       JLabel label;
-      JButton button;
+      AbstractButton button;
 
       // Layout
       setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -45,11 +57,57 @@ public class MenuState extends State {
       button.addActionListener(new ActionListener() {
         @Override public void actionPerformed(ActionEvent e) {
           MenuState.this.setChanged();
-          MenuState.this.notifyObservers(new PlayState());
+          if(chosenFile == null)
+        	  MenuState.this.notifyObservers(new PlayState(cheatModeEnabled));
+          else 
+        	  MenuState.this.notifyObservers(new PlayState(cheatModeEnabled, chosenFile));
         }
       });
       add(button);
 
+      //cheat mode button
+      button = new JCheckBox("Cheat Mode ?");
+      button.setSelected(MenuState.this.cheatModeEnabled);
+      button.setAlignmentX(Component.CENTER_ALIGNMENT);
+      button.addItemListener(new ItemListener() {
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			if(MenuState.this.cheatModeEnabled) {
+				cheatModeEnabled = false;
+			} else {
+				cheatModeEnabled = true;
+			}
+		}
+		
+      });
+      
+      add(button);
+      
+      //File Chooser
+     JTextField textArea = new JTextField();
+     textArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+     textArea.setEditable(false);
+     add(textArea);
+     
+     JFileChooser fc = new JFileChooser();
+     
+     button = new JButton("open a file");
+     button.addActionListener(new ActionListener() {
+
+		public void actionPerformed(ActionEvent e) {
+
+	        int returnVal = fc.showOpenDialog(MenuState.this.panel);
+	 
+	        if (returnVal == JFileChooser.APPROVE_OPTION) {
+	        	chosenFile = fc.getSelectedFile();
+	        	textArea.setText(chosenFile.getAbsolutePath());
+	        }
+		}
+	 });
+     	button.setAlignmentX(Component.CENTER_ALIGNMENT);
+     	add(button);
+
+      
       // Source
       if (java.awt.Desktop.isDesktopSupported()) {
         button = new JButton("Source");
@@ -70,7 +128,7 @@ public class MenuState extends State {
 
   /** states panel. */
   private JPanel panel;
-
+  private boolean cheatModeEnabled = false;
 
   /** Constructs a MenuState object. */
   public MenuState() {

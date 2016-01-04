@@ -1,21 +1,23 @@
-package com.vampirehemophile.ghosts.playstates;
+package com.vampirehemophile.ghosts.gamestates;
+
+import java.awt.Cursor;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.util.Observable;
 
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
-import javax.imageio.ImageIO;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.io.IOException;
-import java.util.Observable;
-import com.vampirehemophile.ghosts.entities.*;
+
+import com.vampirehemophile.ghosts.assets.ImageLoader;
+import com.vampirehemophile.ghosts.entities.Board;
+import com.vampirehemophile.ghosts.entities.Pawn;
+import com.vampirehemophile.ghosts.entities.Player;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.math.Coordinates;
 
@@ -32,16 +34,7 @@ public abstract class GameState extends Observable
 
   protected JPanel panel;
 
-  // images
-  protected BufferedImage lightTile;
-  protected BufferedImage darkTile;
-  protected BufferedImage whiteGoodPawn;
-  protected BufferedImage whiteEvilPawn;
-  protected BufferedImage whiteNeutralPawn;
-  protected BufferedImage blackGoodPawn;
-  protected BufferedImage blackEvilPawn;
-  protected BufferedImage blackNeutralPawn;
-
+ 
   // cursors
   protected Cursor whiteGoodPawnCursor;
   protected Cursor whiteEvilPawnCursor;
@@ -61,6 +54,10 @@ public abstract class GameState extends Observable
   // mouse
   protected int mouseX;
   protected int mouseY;
+  
+  //cheatMode 
+  protected boolean cheatModeEnabled = false;
+
 
 
   /**
@@ -70,24 +67,15 @@ public abstract class GameState extends Observable
    * @param bm the game board manager.
    */
   public GameState(JPanel panel, BoardManager bm) {
-    try {
-      lightTile        = ImageIO.read(GameState.getResource("/images/lighttile.png"));
-      darkTile         = ImageIO.read(GameState.getResource("/images/darktile.png"));
-      whiteGoodPawn    = ImageIO.read(GameState.getResource("/images/white/goodpawn.png"));
-      whiteEvilPawn    = ImageIO.read(GameState.getResource("/images/white/evilpawn.png"));
-      whiteNeutralPawn = ImageIO.read(GameState.getResource("/images/white/neutralpawn.png"));
-      blackGoodPawn    = ImageIO.read(GameState.getResource("/images/black/goodpawn.png"));
-      blackEvilPawn    = ImageIO.read(GameState.getResource("/images/black/evilpawn.png"));
-      blackNeutralPawn = ImageIO.read(GameState.getResource("/images/black/neutralpawn.png"));
-    } catch (IOException e) {
-      System.out.println(e.getMessage());
-      System.exit(1);
-    }
+   
+	ImageLoader.init();
+    
+     
 
-    whiteGoodPawnCursor = loadCursor(whiteGoodPawn);
-    whiteEvilPawnCursor = loadCursor(whiteEvilPawn);
-    blackGoodPawnCursor = loadCursor(blackGoodPawn);
-    blackEvilPawnCursor = loadCursor(blackEvilPawn);
+    whiteGoodPawnCursor = loadCursor(ImageLoader.whiteGoodPawn);
+    whiteEvilPawnCursor = loadCursor(ImageLoader.whiteEvilPawn);
+    blackGoodPawnCursor = loadCursor(ImageLoader.blackGoodPawn);
+    blackEvilPawnCursor = loadCursor(ImageLoader.blackEvilPawn);
 
     this.panel = panel;
 
@@ -161,9 +149,9 @@ public abstract class GameState extends Observable
     for (int i = 0; i < 6; i++) {
       for (int j = 0; j < 6; j++) {
         if (dark) {
-          g2d.drawImage(darkTile, i*100, j*100, 100, 100, null);
+          g2d.drawImage(ImageLoader.darkTile, i*ImageLoader.squareWidth, j*ImageLoader.squareHeight, ImageLoader.squareWidth, ImageLoader.squareHeight, null);
         } else {
-          g2d.drawImage(lightTile, i*100, j*100, 100, 100, null);
+          g2d.drawImage(ImageLoader.lightTile, i*ImageLoader.squareWidth, j*ImageLoader.squareHeight, ImageLoader.squareWidth, ImageLoader.squareHeight, null);
         }
         dark = !dark;
       }
@@ -178,21 +166,41 @@ public abstract class GameState extends Observable
    */
   protected void drawPawns(Graphics2D g2d) {
     Pawn pawn;
-    for (int x = 0; x < board.size(); x++) {
-      for (int y = 0; y < board.size(); y++) {
-        pawn = board.at(new Coordinates(x, y, board.size()));
-        if (pawn != null) {
-          if (pawn.player().equals(current)) {
-            g2d.drawImage(imageFromPawn(pawn), x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-          } else if (pawn.player().equals(white)) {
-            g2d.drawImage(whiteNeutralPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-          } else if (pawn.player().equals(black)) {
-            g2d.drawImage(blackNeutralPawn, x*100 + 25 + 12, y*100 + 25, 25, 50, null);
-          }
-        }
-      }
+    
+    int i = 0;
+    int j = 0;
+    
+    boolean isWhite = current.equals(white);
+    
+    for (int x = 0; x < bm.size(); x++) {
+    	for (int y = 0; y < bm.size(); y++) {
+    		pawn = board.at(new Coordinates(x, y, board.size()));
+
+    		if (isWhite) {
+    			i = x * 100 + 2;
+    			j = (bm.size() - 1 - y) * 100 + 2;
+    		} else {
+    			i = (bm.size() - 1 - x) * 100 + 2;
+    			j = y * 100 + 2;
+    		}
+
+    		if (pawn != null) {
+    			if(cheatModeEnabled) {
+    				g2d.drawImage(imageFromPawn(pawn), i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    			} else {
+    				if (pawn.player().equals(current)) {
+    					g2d.drawImage(imageFromPawn(pawn), i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    				} else if (pawn.player().equals(white)) {
+    					g2d.drawImage(ImageLoader.whiteNeutralPawn, i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    				} else if (pawn.player().equals(black)) {
+    					g2d.drawImage(ImageLoader.blackNeutralPawn, i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    				}
+    			}
+    		}
+    	}
     }
   }
+  
 
   /**
    * Draws a pawn under the mouse cursor.
@@ -233,20 +241,20 @@ public abstract class GameState extends Observable
     if (player.equals(white)) {
       switch (pawn.type()) {
         case GOOD:
-        return whiteGoodPawn;
+        return ImageLoader.whiteGoodPawn;
         case EVIL:
-        return whiteEvilPawn;
+        return ImageLoader.whiteEvilPawn;
         case UNKNOWN:
-        return whiteNeutralPawn;
+        return ImageLoader.whiteNeutralPawn;
       }
     } else if (player.equals(black)) {
       switch (pawn.type()) {
         case GOOD:
-        return blackGoodPawn;
+        return ImageLoader.blackGoodPawn;
         case EVIL:
-        return blackEvilPawn;
+        return ImageLoader.blackEvilPawn;
         case UNKNOWN:
-        return blackNeutralPawn;
+        return ImageLoader.blackNeutralPawn;
       }
     }
     return null;
@@ -292,19 +300,37 @@ public abstract class GameState extends Observable
    * @return the corresponding coordinates.
    */
   protected Coordinates hoveredSquare(int size) {
-    int mx = mouseX;
-    int x = 0;
-    while (mx > size) {
-      mx -= size;
-      x++;
-    }
-
-    int my = mouseY;
-    int y = 0;
-    while (my > size) {
-      my -= size;
-      y++;
-    }
+	  int x = 0;
+	  int y = 0;
+	  if (current.equals(white)) {
+		  int mx = mouseX;
+		  x = 0;
+		  while (mx > size) {
+			  mx -= size;
+			  x++;
+		  }
+		  
+		  int my = mouseY;
+		  y = bm.size() - 1;
+		  while (my > size) {
+			  my -= size;
+			  y--;
+		  }
+	  } else if (current.equals(black)) {
+		  int mx = mouseX;
+		  x = bm.size() - 1;
+		  while (mx > size) {
+			  mx -= size;
+			  x--;
+		  }
+		  
+		  int my = mouseY;
+		  y = 0;
+		  while (my > size) {
+			  my -= size;
+			  y++;
+		  }
+	  }
 
     return new Coordinates(x, y, board.size());
   }
@@ -382,5 +408,11 @@ public abstract class GameState extends Observable
   @Override
   public void keyTyped(KeyEvent e) {
 
+  }
+  
+  //getters and setters
+  
+  public void enableCheatMode() {
+	  this.cheatModeEnabled = true;
   }
 }

@@ -1,8 +1,10 @@
-package com.vampirehemophile.ghosts.playstates;
+package com.vampirehemophile.ghosts.gamestates;
 
 import javax.swing.JPanel;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+
+import com.vampirehemophile.ghosts.assets.ImageLoader;
 import com.vampirehemophile.ghosts.entities.*;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.math.Coordinates;
@@ -20,7 +22,6 @@ public class WaitingState extends GameState {
    */
   public WaitingState(JPanel panel, BoardManager bm) {
     super(panel, bm);
-    current = null;
   }
 
   /** {@inheritDoc} */
@@ -30,6 +31,47 @@ public class WaitingState extends GameState {
     drawPawns(g2d);
     drawMessage(g2d, "Press ENTER to switch to the next player.", 1);
   }
+  
+  /**
+   * Draws the pawn set on the board.
+   *
+   * @param g2d the graphics object.
+   */
+  @Override
+  protected void drawPawns(Graphics2D g2d) {
+    Pawn pawn;
+    
+    int i = 0;
+    int j = 0;
+    
+    boolean isWhite = current.equals(white);
+    
+    for (int x = 0; x < bm.size(); x++) {
+    	for (int y = 0; y < bm.size(); y++) {
+    		pawn = board.at(new Coordinates(x, y, board.size()));
+
+    		if (isWhite) {
+    			i = x * 100 + 2;
+    			j = (bm.size() - 1 - y) * 100 + 2;
+    		} else {
+    			i = (bm.size() - 1 - x) * 100 + 2;
+    			j = y * 100 + 2;
+    		}
+
+    		if (pawn != null) {
+    			if(cheatModeEnabled) {
+    				g2d.drawImage(imageFromPawn(pawn), i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    			} else {
+    				if (pawn.player().equals(white)) {
+    					g2d.drawImage(ImageLoader.whiteNeutralPawn, i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    				} else if (pawn.player().equals(black)) {
+    					g2d.drawImage(ImageLoader.blackNeutralPawn, i, j, ImageLoader.imageWidth, ImageLoader.imageHeight, null);
+    				}
+    			}
+    		}
+    	}
+    }
+  }
 
   /** {@inheritDoc} */
   @Override
@@ -38,5 +80,11 @@ public class WaitingState extends GameState {
       setChanged();
       notifyObservers();
     }
+  }
+  
+  @Override
+  public void enableCheatMode() {
+	  setChanged();
+	  notifyObservers();
   }
 }
