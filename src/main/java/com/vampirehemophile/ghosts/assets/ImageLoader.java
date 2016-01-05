@@ -45,7 +45,7 @@ public class ImageLoader {
 
   /** Image of the neutral white pawn. */
   public static final Image WHITE_NEUTRAL_PAWN = ImageLoader.loadResizedImage(
-      "/images/neutral/neutralpawn.png");
+      "/images/neutral/neutralwhitepawn.png");
 
   /** Image of the good black pawn. */
   public static final Image BLACK_GOOD_PAWN = ImageLoader.loadResizedImage(
@@ -57,7 +57,7 @@ public class ImageLoader {
 
   /** Image of the neutral black pawn. */
   public static final Image BLACK_NEUTRAL_PAWN = ImageLoader.loadResizedImage(
-      "/images/neutral/neutralpawn.png");
+      "/images/neutral/neutralblackpawn.png");
 
 
   /**
