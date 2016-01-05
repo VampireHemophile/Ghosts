@@ -48,6 +48,7 @@ public class MainGameState extends GameState {
             selectedCoord.xMatrix() * ImageLoader.SQUARE_SIZE,
             (bm.size() - 1 - selectedCoord.yMatrix()) * ImageLoader.SQUARE_SIZE,
             ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE);
+        
       } else if (current.equals(black)) {
         g2d.drawRect(
             (bm.size() - 1 - selectedCoord.xMatrix()) * ImageLoader.SQUARE_SIZE,
@@ -58,6 +59,7 @@ public class MainGameState extends GameState {
     if (errorMessage != null) {
       drawMessage(g2d, errorMessage, 1);
     }
+    drawEatenPawns(g2d);
   }
 
   /** {@inheritDoc} */

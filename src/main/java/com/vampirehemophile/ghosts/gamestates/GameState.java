@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
 import com.vampirehemophile.ghosts.assets.ImageLoader;
+import com.vampirehemophile.ghosts.displaystates.PlayState;
 import com.vampirehemophile.ghosts.entities.Board;
 import com.vampirehemophile.ghosts.entities.Pawn;
 import com.vampirehemophile.ghosts.entities.Player;
@@ -211,7 +212,16 @@ public abstract class GameState extends Observable
     }
   }
 
+  protected void drawEatenPawns(final Graphics2D g2d) {
+	 
+	  g2d.drawString("Good/Evil taken : " , 6 * ImageLoader.SQUARE_SIZE, 50);
+	   
+	  g2d.drawString(String.valueOf(4 - this.current.countGoodPawns()) + " / " + String.valueOf(4 - this.current.countEvilPawns()),6 * ImageLoader.SQUARE_SIZE + 10, 150);
+	  g2d.drawString(String.valueOf(4 - bm.opponent(current).countGoodPawns()) + " / " + String.valueOf(4 - bm.opponent(current).countEvilPawns()),6 * ImageLoader.SQUARE_SIZE + 10, 450);
+	  	  
+  }
 
+  
   /**
    * Draws an image under the mouse cursor.
    *
