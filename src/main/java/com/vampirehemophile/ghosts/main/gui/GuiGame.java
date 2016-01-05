@@ -1,10 +1,13 @@
 package com.vampirehemophile.ghosts.main.gui;
 
-import javax.swing.JPanel;
 import java.util.Observer;
 import java.util.Observable;
+
+import javax.swing.JPanel;
+
 import com.vampirehemophile.ghosts.displaystates.State;
 import com.vampirehemophile.ghosts.displaystates.MenuState;
+
 
 /**
  * GuiGame class.
@@ -45,7 +48,7 @@ public class GuiGame implements Observer {
    * @param arg the state to switch to.
    */
   @Override
-  public void update(Observable o, Object arg) {
+  public void update(final Observable o, final Object arg) {
     State newState = (State)arg;
 
     state.deleteObserver(this);

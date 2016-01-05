@@ -2,6 +2,7 @@ package com.vampirehemophile.ghosts.main.gui;
 
 import javax.swing.JFrame;
 
+
 /**
  * Display class.
  */

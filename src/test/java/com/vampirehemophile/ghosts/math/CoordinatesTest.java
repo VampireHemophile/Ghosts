@@ -1,17 +1,18 @@
 package com.vampirehemophile.ghosts.math;
 
-import org.junit.Test;
 import org.junit.Ignore;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 
 import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
 import com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException;
 import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
+
 
 /**
  * Unit test for @{link com.vampirehemophile.ghosts.math.Coordinates} class.

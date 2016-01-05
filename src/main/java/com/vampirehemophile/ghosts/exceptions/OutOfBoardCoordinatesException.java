@@ -1,5 +1,6 @@
 package com.vampirehemophile.ghosts.exceptions;
 
+
 /**
  * Thrown when the coordinates points a location outside of the board.
  */
@@ -10,7 +11,7 @@ public class OutOfBoardCoordinatesException extends RuntimeException {
    *
    * @param index an int.
    */
-  public OutOfBoardCoordinatesException(int index) {
+  public OutOfBoardCoordinatesException(final int index) {
     super("(" + index + ") is out of the array.");
   }
 
@@ -19,7 +20,7 @@ public class OutOfBoardCoordinatesException extends RuntimeException {
    *
    * @param xy a {@link java.lang.String} object.
    */
-  public OutOfBoardCoordinatesException(String xy) {
+  public OutOfBoardCoordinatesException(final String xy) {
     super("(" + xy + ") is out of the board.");
   }
 
@@ -29,7 +30,7 @@ public class OutOfBoardCoordinatesException extends RuntimeException {
    * @param x a {@link java.lang.String} object.
    * @param y an int.
    */
-  public OutOfBoardCoordinatesException(String x, int y) {
+  public OutOfBoardCoordinatesException(final String x, final int y) {
     super("(" + x + ", " + y + ") is out of the board.");
   }
 
@@ -39,7 +40,7 @@ public class OutOfBoardCoordinatesException extends RuntimeException {
    * @param x an int.
    * @param y an int.
    */
-  public OutOfBoardCoordinatesException(int x, int y) {
+  public OutOfBoardCoordinatesException(final int x, final int y) {
     super("(" + x + ", " + y + ") is out the matrix.");
   }
 }

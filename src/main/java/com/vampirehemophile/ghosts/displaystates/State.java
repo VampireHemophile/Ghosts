@@ -1,7 +1,9 @@
 package com.vampirehemophile.ghosts.displaystates;
 
-import javax.swing.JPanel;
 import java.util.Observable;
+
+import javax.swing.JPanel;
+
 
 /**
  * Provides an abstract class for game states.

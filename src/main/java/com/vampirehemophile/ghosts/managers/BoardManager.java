@@ -8,6 +8,7 @@ import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
 import com.vampirehemophile.ghosts.exceptions.FreeSquareException;
 import com.vampirehemophile.ghosts.math.Coordinates;
 
+
 /**
  * Provides a manager to handle a board, the pawns movements functions on it,
  * and a set of functions to analyse the game's state.
@@ -26,6 +27,7 @@ public class BoardManager {
   /** Black player. */
   private Player black;
 
+
   /**
    * Constructs a new BoardManager where the board size is 6.
    *
@@ -34,11 +36,9 @@ public class BoardManager {
    * @throws java.lang.NullPointerException if one or both of the players are
    *     null.
    * @throws java.lang.RuntimeException if players represents the same instance.
-   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
-   *     the size is inferior to 6.
    */
-  public BoardManager(Player white, Player black) {
-    this(white, black, 6);
+  public BoardManager(final Player white, final Player black) {
+    this(white, black, Board.DEFAULT_BOARD_SIZE);
   }
 
   /**
@@ -50,16 +50,12 @@ public class BoardManager {
    * @throws java.lang.NullPointerException if one or both of the players are
    *     null.
    * @throws java.lang.RuntimeException if players represents the same instance.
-   * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
-   *     the size is inferior to 6.
    */
-  public BoardManager(Player white, Player black, int size) {
+  public BoardManager(final Player white, final Player black, final int size) {
     if (white == null || black == null) {
       throw new NullPointerException();
     } else if (white == black) {
       throw new RuntimeException("Players represents the same instance.");
-    } else if (size < 6) {
-      throw new BoardTooSmallException(size);
     }
 
     this.white = white;
@@ -74,7 +70,7 @@ public class BoardManager {
    * @param player the player.
    * @return its opponent.
    */
-  public Player opponent(Player player) {
+  public Player opponent(final Player player) {
     return player == white ? black : white;
   }
 
@@ -90,7 +86,7 @@ public class BoardManager {
    * @throws com.vampirehemophile.ghosts.exceptions.FreeSquareException if there
    *     is no pawn at the specified location.
    */
-  public boolean canMove(Coordinates start, Coordinates end) {
+  public boolean canMove(final Coordinates start, final Coordinates end) {
     if (start.equals(end)) {
       throw new RuntimeException("Coordinates match the same location.");
     }
@@ -123,7 +119,7 @@ public class BoardManager {
    * @param end the new location.
    * @return the opponent's pawn that may have been taken, or null.
    */
-  public Pawn move(Coordinates start, Coordinates end) {
+  public Pawn move(final Coordinates start, final Coordinates end) {
     if (start == null || end == null) {
       throw new NullPointerException();
     }
@@ -149,7 +145,7 @@ public class BoardManager {
    * @return true if the player can exit one of his pawns.
    * @throws java.lang.NullPointerException if player is null.
    */
-  public boolean canExitPawn(Player player) {
+  public boolean canExitPawn(final Player player) {
     if (player == null) {
       throw new NullPointerException();
     }
@@ -201,7 +197,7 @@ public class BoardManager {
    * @param loc the location.
    * @return true if the pawn can be set.
    */
-  public boolean canSet(Player player, Coordinates loc) {
+  public boolean canSet(final Player player, final Coordinates loc) {
     return board.squareAt(loc).isFree()
         && loc.xMatrix() > 0 && loc.xMatrix() < size - 1
         && ((player.equals(white)
@@ -220,7 +216,7 @@ public class BoardManager {
    * @param player potential winner ?
    * @return true if the player has won.
    */
-  public boolean hasWon(Player player) {
+  public boolean hasWon(final Player player) {
     return canExitPawn(player) || opponent(player).countGoodPawns() == 0;
   }
 
@@ -232,7 +228,7 @@ public class BoardManager {
    * @param player potential looser ?
    * @return true if the player has lost.
    */
-  public boolean hasLost(Player player) {
+  public boolean hasLost(final Player player) {
     return opponent(player).countEvilPawns() == 0;
   }
 

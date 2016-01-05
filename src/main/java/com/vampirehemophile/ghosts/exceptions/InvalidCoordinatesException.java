@@ -1,5 +1,6 @@
 package com.vampirehemophile.ghosts.exceptions;
 
+
 /**
  * Thrown when the coordinates format is invalid.
  */
@@ -11,7 +12,7 @@ public class InvalidCoordinatesException extends RuntimeException {
    *
    * @param xy a {@link java.lang.String} object.
    */
-  public InvalidCoordinatesException(String xy) {
+  public InvalidCoordinatesException(final String xy) {
     super("(" + xy + ") are invalid coordinates.");
   }
 
@@ -21,7 +22,7 @@ public class InvalidCoordinatesException extends RuntimeException {
    * @param x a {@link java.lang.String} object.
    * @param y an int.
    */
-  public InvalidCoordinatesException(String x, int y) {
+  public InvalidCoordinatesException(final String x, final int y) {
     super("(" + x + ", " + y + ") are invalid coordinates.");
   }
 
@@ -31,7 +32,7 @@ public class InvalidCoordinatesException extends RuntimeException {
    * @param x an int.
    * @param y an int.
    */
-  public InvalidCoordinatesException(int x, int y) {
+  public InvalidCoordinatesException(final int x, final int y) {
     super("(" + x + ", " + y + ") are invalid coordinates.");
   }
 }

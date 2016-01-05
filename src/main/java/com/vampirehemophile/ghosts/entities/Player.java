@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Spliterator;
 
+
 /**
  * Represents a player.
  */
@@ -23,6 +24,11 @@ public class Player implements Iterable<Pawn> {
   /** Number of evil pawns. */
   private int evilPawnsNumber;
 
+  /** Number of good pawns by default. */
+  public static final int DEFAULT_GOOD_NUMBER = 4;
+
+  /** Number of evil pawns by default. */
+  public static final int DEFAULT_EVIL_NUMBER = 4;
 
   /**
    * Constructs a new player.
@@ -42,7 +48,7 @@ public class Player implements Iterable<Pawn> {
    * @param p pawn to add.
    * @return true if the pawn set contained the specified pawn.
    */
-  public boolean add(Pawn p) {
+  public boolean add(final Pawn p) {
     if (p == null) {
       throw new NullPointerException();
     }
@@ -62,7 +68,7 @@ public class Player implements Iterable<Pawn> {
    *
    * @param p captured pawn.
    */
-  public void capture(Pawn p) {
+  public void capture(final Pawn p) {
     if (p == null) {
       throw new NullPointerException();
     }
@@ -76,7 +82,7 @@ public class Player implements Iterable<Pawn> {
    * @param p pawn to remove.
    * @return true if the pawn set contained the specified pawn.
    */
-  public boolean remove(Pawn p) {
+  public boolean remove(final Pawn p) {
     if (p == null) {
       throw new NullPointerException();
     }
@@ -108,7 +114,7 @@ public class Player implements Iterable<Pawn> {
   }
 
   /** {@inheritDoc} */
-  @Override public void forEach(Consumer<? super Pawn> action) {
+  @Override public void forEach(final Consumer<? super Pawn> action) {
     pawns.forEach(action);
   }
 

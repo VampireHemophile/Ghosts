@@ -1,7 +1,11 @@
 package com.vampirehemophile.ghosts.exceptions;
 
+import static com.vampirehemophile.ghosts.entities.Board.DEFAULT_BOARD_SIZE;
+
+
 /**
- * Thrown when the board size is inferior to 6.
+ * Thrown when the board size is inferior to
+ * {@link com.vampirehemophile.ghosts.entities.Board#DEFAULT_BOARD_SIZE}.
  */
 @SuppressWarnings("serial")
 public class BoardTooSmallException extends RuntimeException {
@@ -11,7 +15,8 @@ public class BoardTooSmallException extends RuntimeException {
    *
    * @param size size of the board.
    */
-  public BoardTooSmallException(int size) {
-    super("Board size was " + size + " but board minimum size allowed is 6.");
+  public BoardTooSmallException(final int size) {
+    super("Board size was " + size + " but board minimum size allowed is "
+        + DEFAULT_BOARD_SIZE + ".");
   }
 }

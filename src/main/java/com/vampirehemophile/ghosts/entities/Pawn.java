@@ -45,7 +45,7 @@ public class Pawn {
    *
    * @param type this pawn's type.
    */
-  public Pawn(PawnType type) {
+  public Pawn(final PawnType type) {
     this(type, true);
   }
 
@@ -56,7 +56,7 @@ public class Pawn {
    * @param aggressive this pawn's behaviour, true if aggressive. Aggressive
    *     means that it can take an opponent's pawn.
    */
-  public Pawn(PawnType type, boolean aggressive) {
+  public Pawn(final PawnType type, final boolean aggressive) {
     this.type = type;
     this.aggressive = aggressive;
   }
@@ -75,7 +75,7 @@ public class Pawn {
    *
    * @param player pawn's player.
    */
-  public void setPlayer(Player player) {
+  public void setPlayer(final Player player) {
     this.player = player;
   }
 
@@ -86,7 +86,7 @@ public class Pawn {
    * @return Set of all possible movements. If the set is empty, no movements
    *     are possible.
    */
-  public Set<Coordinates> range(Coordinates coord) {
+  public Set<Coordinates> range(final Coordinates coord) {
     Set<Coordinates> set = new HashSet<>();
     Coordinates north = coord.north();
     Coordinates south = coord.south();
@@ -134,7 +134,7 @@ public class Pawn {
    *
    * @param aggressive Pawn's behaviour.
    */
-  public void setBehaviour(boolean aggressive) {
+  public void setBehaviour(final boolean aggressive) {
     this.aggressive = aggressive;
   }
 

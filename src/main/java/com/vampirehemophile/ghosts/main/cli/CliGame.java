@@ -13,6 +13,7 @@ import com.vampirehemophile.ghosts.exceptions.FreeSquareException;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 import com.vampirehemophile.ghosts.math.Coordinates;
 
+
 /**
  * CliGame class.
  */
@@ -42,7 +43,7 @@ public class CliGame {
    * @param type the pawn's type.
    * @return the char to print.
    */
-  public char getChar(Pawn.PawnType type) {
+  public char getChar(final Pawn.PawnType type) {
     if (type.equals(Pawn.PawnType.GOOD)) {
       return 'g';
     } else if (type.equals(Pawn.PawnType.EVIL)) {
@@ -57,7 +58,7 @@ public class CliGame {
    * Starts the game.
    */
   public void start() {
-    boardManager = new BoardManager(white, black, 6);
+    boardManager = new BoardManager(white, black);
 
     askPawns(white);
     askPawns(black);
@@ -89,18 +90,20 @@ public class CliGame {
    * @return board size.
    */
   private int askBoardSize() {
-    int size = 6;
+    int size = Board.DEFAULT_BOARD_SIZE;
     String line = null;
     boolean keepAsking = true;
-    BufferedReader buf = new BufferedReader (new InputStreamReader (System.in));
+    BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
 
     while (keepAsking) {
-      System.out.print("Board size (>=6) [6]: ");
+      System.out.print("Board size (>=" + Board.DEFAULT_BOARD_SIZE + ") ["
+                     + Board.DEFAULT_BOARD_SIZE + "]: ");
       try {
         line = buf.readLine();
-      } catch (IOException expected) {};
+      } catch (IOException expected) {
+      }
       if (line.isEmpty()) {
-        size = 6;
+        size = Board.DEFAULT_BOARD_SIZE;
         keepAsking = false;
       } else {
         try {
@@ -108,8 +111,10 @@ public class CliGame {
           try {
             new Coordinates(0, 0, size);
             keepAsking = false;
-          } catch (BoardTooSmallException expected) {}
-        } catch (NumberFormatException expected) {}
+          } catch (BoardTooSmallException expected) {
+          }
+        } catch (NumberFormatException expected) {
+        }
       }
     }
 
@@ -117,11 +122,11 @@ public class CliGame {
   }
 
   /**
-   * Ask a player to set its pawns.
+   * Asks a player to set its pawns.
    *
    * @param player the player.
    */
-  private void askPawns(Player player) {
+  private void askPawns(final Player player) {
     if (player == null) {
       throw new NullPointerException();
     }
@@ -176,7 +181,7 @@ public class CliGame {
    * @param player the player.
    * @return created pawn.
    */
-  private Pawn askPawn(String q, Player player) {
+  private Pawn askPawn(final String q, final Player player) {
     Pawn pawn = null;
     char pawnChar = '\0';
     String line = null;
@@ -202,7 +207,12 @@ public class CliGame {
     return pawn;
   }
 
-  private void askMove(Player player) {
+  /**
+   * Aks the player to move a specific pawn, and moves the pawn.
+   *
+   * @param player the player.
+   */
+  private void askMove(final Player player) {
     String line = null;
     String[] coords = null;
     Coordinates start = null;
@@ -261,7 +271,7 @@ public class CliGame {
    *
    * @param player Player to render the board for.
    */
-  private void render(Player player) {
+  private void render(final Player player) {
     Board board = boardManager.board();
     int size = board.size();
 
@@ -302,7 +312,7 @@ public class CliGame {
     int offsetMaxSize = 1;
     int yNumber = 0;
     int sizeNumber = size;
-    while(sizeNumber >= 10) {
+    while (sizeNumber >= 10) {
       sizeNumber /= 10;
       offsetMaxSize++;
     }
@@ -334,20 +344,20 @@ public class CliGame {
           }
         } else if (pawn.player() == player) {
           if (pawn.player() == white) {
-            sbBoard.append((char)27 + "[1;37m");
+            sbBoard.append((char) 27 + "[1;37m");
           } else {
-            sbBoard.append((char)27 + "[1;30m");
+            sbBoard.append((char) 27 + "[1;30m");
           }
           sbBoard.append(getChar(pawn.type()));
         } else {
           if (pawn.player() == white) {
-            sbBoard.append((char)27 + "[1;37m");
+            sbBoard.append((char) 27 + "[1;37m");
           } else {
-            sbBoard.append((char)27 + "[1;30m");
+            sbBoard.append((char) 27 + "[1;30m");
           }
           sbBoard.append(getChar(Pawn.PawnType.UNKNOWN));
         }
-        sbBoard.append((char)27 + "[0m");
+        sbBoard.append((char) 27 + "[0m");
       }
       sbBoard.append("| ");
       sbBoard.append(y + 1);

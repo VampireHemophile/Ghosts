@@ -7,19 +7,35 @@ import javax.swing.JPanel;
 import com.vampirehemophile.ghosts.entities.Player;
 import com.vampirehemophile.ghosts.managers.BoardManager;
 
+
+/**
+ * State used when one of the players has won.
+ */
 public class FinalState extends GameState {
 
-	private Player winner;
-	
-	public FinalState(JPanel panel, BoardManager bm, Player winner) {
-		super(panel, bm);
-		this.winner = winner;
-	}
+  /** This game's winner. */
+  private Player winner;
 
-	@Override
-	public void paint(Graphics2D g2d) {
-		drawBoard(g2d);
-		drawMessage(g2d, "Thanks for playing, the winner is " + (winner==white?"white":"black"), 1);
-	}
 
+  /**
+   * Constructs a new FinalState object.
+   *
+   * @param panel The game panel.
+   * @param bm The game board manager.
+   * @param winner The winner.
+   */
+  public FinalState(final JPanel panel,
+                    final BoardManager bm,
+                    final Player winner) {
+    super(panel, bm);
+    this.winner = winner;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void paint(final Graphics2D g2d) {
+    drawBoard(g2d);
+    drawMessage(g2d, "Thanks for playing, the winner is "
+        + (winner == white ? "white" : "black"), 1);
+  }
 }

@@ -1,6 +1,5 @@
 package com.vampirehemophile.ghosts.displaystates;
 
-
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,8 +15,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
 
 /** Main menu state. */
 public class MenuState extends State {
@@ -26,10 +25,14 @@ public class MenuState extends State {
   @SuppressWarnings("serial")
   private class MenuPanel extends JPanel {
 
-	private File chosenFile;  
-	  
+    /** The title font size. */
+    private static final int FONT_SIZE = 20;
+
+    /** The file to read the game from.*/
+    private File chosenFile;
+
     /** Constructs a MenuPanel object. */
-    public MenuPanel() {
+    MenuPanel() {
       super();
 
       JLabel label;
@@ -42,7 +45,7 @@ public class MenuState extends State {
       label = new JLabel("Ghosts!", JLabel.CENTER);
       label.setHorizontalTextPosition(JLabel.CENTER);
       label.setAlignmentX(Component.CENTER_ALIGNMENT);
-      label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));
+      label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, FONT_SIZE));
       add(label);
 
       // Credits
@@ -55,69 +58,65 @@ public class MenuState extends State {
       button = new JButton("Play !");
       button.setAlignmentX(Component.CENTER_ALIGNMENT);
       button.addActionListener(new ActionListener() {
-        @Override public void actionPerformed(ActionEvent e) {
+        @Override public void actionPerformed(final ActionEvent e) {
           MenuState.this.setChanged();
-          if(chosenFile == null)
-        	  MenuState.this.notifyObservers(new PlayState(cheatModeEnabled));
-          else 
-        	  MenuState.this.notifyObservers(new PlayState(cheatModeEnabled, chosenFile));
+          if (chosenFile == null) {
+            MenuState.this.notifyObservers(new PlayState(cheatModeEnabled));
+          } else {
+            MenuState.this.notifyObservers(
+            new PlayState(cheatModeEnabled, chosenFile));
+          }
         }
       });
       add(button);
 
-      //cheat mode button
+      // Cheat mode button
       button = new JCheckBox("Cheat Mode ?");
       button.setSelected(MenuState.this.cheatModeEnabled);
       button.setAlignmentX(Component.CENTER_ALIGNMENT);
       button.addItemListener(new ItemListener() {
-		@Override
-		public void itemStateChanged(ItemEvent e) {
-			if(MenuState.this.cheatModeEnabled) {
-				cheatModeEnabled = false;
-			} else {
-				cheatModeEnabled = true;
-			}
-		}
-		
+        @Override public void itemStateChanged(final ItemEvent e) {
+          if (MenuState.this.cheatModeEnabled) {
+            cheatModeEnabled = false;
+          } else {
+            cheatModeEnabled = true;
+          }
+        }
       });
-      
       add(button);
-      
-      //File Chooser
-     JTextField textArea = new JTextField();
-     textArea.setAlignmentX(Component.CENTER_ALIGNMENT);
-     textArea.setEditable(false);
-     add(textArea);
-     
-     JFileChooser fc = new JFileChooser();
-     
-     button = new JButton("open a file");
-     button.addActionListener(new ActionListener() {
 
-		public void actionPerformed(ActionEvent e) {
+      // File Chooser
+      JTextField textArea = new JTextField();
+      textArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+      textArea.setEditable(false);
+      add(textArea);
 
-	        int returnVal = fc.showOpenDialog(MenuState.this.panel);
-	 
-	        if (returnVal == JFileChooser.APPROVE_OPTION) {
-	        	chosenFile = fc.getSelectedFile();
-	        	textArea.setText(chosenFile.getAbsolutePath());
-	        }
-		}
-	 });
-     	button.setAlignmentX(Component.CENTER_ALIGNMENT);
-     	add(button);
+      JFileChooser fc = new JFileChooser();
 
-      
+      button = new JButton("open a file");
+      button.addActionListener(new ActionListener() {
+        @Override public void actionPerformed(final ActionEvent e) {
+          int returnVal = fc.showOpenDialog(MenuState.this.panel);
+          if (returnVal == JFileChooser.APPROVE_OPTION) {
+            chosenFile = fc.getSelectedFile();
+            textArea.setText(chosenFile.getAbsolutePath());
+          }
+        }
+      });
+      button.setAlignmentX(Component.CENTER_ALIGNMENT);
+      add(button);
+
+
       // Source
       if (java.awt.Desktop.isDesktopSupported()) {
         button = new JButton("Source");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(new ActionListener() {
-          @Override public void actionPerformed(ActionEvent e) {
+          @Override public void actionPerformed(final ActionEvent e) {
             try {
               java.awt.Desktop.getDesktop().browse(
-                new java.net.URI("https://github.com/VampireHemophile/Ghosts"));
-            } catch (Exception ex) {}
+              new java.net.URI("https://github.com/VampireHemophile/Ghosts"));
+            } catch (Exception ex) { }
           }
         });
         add(button);
@@ -128,6 +127,8 @@ public class MenuState extends State {
 
   /** states panel. */
   private JPanel panel;
+
+  /** If the cheat mode is enabled. */
   private boolean cheatModeEnabled = false;
 
   /** Constructs a MenuState object. */

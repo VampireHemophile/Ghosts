@@ -7,6 +7,8 @@ import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
 import com.vampirehemophile.ghosts.exceptions.InvalidCoordinatesException;
 import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
 
+import static com.vampirehemophile.ghosts.entities.Board.DEFAULT_BOARD_SIZE;
+
 /**
  * <p>Coordinates provides a way of storing and manipulating coordinates.
  * Coordinates are immutable and always makes sure its coordinates are valid.
@@ -15,7 +17,8 @@ import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
  * free or not. Assumes the board is a square.</p>
  *
  * <p>Let size be the size of one side of the board (size = 6 if board is 6x6).
- * The size must always be superior or equals to 6.
+ * The size must always be superior or equals to
+ * {@link com.vampirehemophile.ghosts.entities.Board#DEFAULT_BOARD_SIZE}.
  * There are three types of coordinates :</p><ul>
  * <li>"real-world" coordinates indexing the board like a chessboard,</li>
  * <li>"matrix" coordinates indexing the board like a matrix,
@@ -25,7 +28,7 @@ import com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException;
  */
 public class Coordinates {
 
-  /** board size */
+  /** board size. */
   private int size;
 
   /** x-axis coordinate. */
@@ -42,11 +45,11 @@ public class Coordinates {
 
 
   /** Pattern to match coordinates. */
-  private static final Pattern pattern = Pattern.compile(
+  private static final Pattern PATTERN = Pattern.compile(
       "^([a-z]+)(\\d+)$");
 
   /** Pattern to match only x-axis coordinate. */
-  private static final Pattern xPattern = Pattern.compile("^[a-z]+$");
+  private static final Pattern PATTERN_X = Pattern.compile("^[a-z]+$");
 
 
   /**
@@ -54,7 +57,7 @@ public class Coordinates {
    *
    * @param c the Coordinates to duplicate.
    */
-  public Coordinates(Coordinates c) {
+  public Coordinates(final Coordinates c) {
     this.size = c.size;
     this.xWorld = new String(c.xWorld);
     this.yWorld = c.yWorld;
@@ -71,9 +74,9 @@ public class Coordinates {
    * @throws com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException
    *     if the coordinates are outside of the board.
    * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
-   *     the size is inferior to 6.
+   *     the size is inferior to {@link com.vampirehemophile.ghosts.entities.Board#DEFAULT_BOARD_SIZE}.
    */
-  public Coordinates(int x, int y, int size) {
+  public Coordinates(final int x, final int y, final int size) {
     testMinimumSize(size);
 
     if (x < 0 || size <= x || y < 0 || size <= y) {
@@ -97,12 +100,12 @@ public class Coordinates {
    * @throws com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException
    *     if the coordnates are outside f the board.
    * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
-   *     the size is inferior to 6.
+   *     the size is inferior to {@link com.vampirehemophile.ghosts.entities.Board#DEFAULT_BOARD_SIZE}.
    */
-  public Coordinates(String xy, int size) {
+  public Coordinates(final String xy, final int size) {
     testMinimumSize(size);
 
-    Matcher matcher = pattern.matcher(xy);
+    Matcher matcher = PATTERN.matcher(xy);
     if (!matcher.matches()) {
       throw new InvalidCoordinatesException(xy);
     }
@@ -129,12 +132,12 @@ public class Coordinates {
    * @throws com.vampirehemophile.ghosts.exceptions.OutOfBoardCoordinatesException
    *     if the coordnates are outside of the board.
    * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
-   *     the size is inferior to 6.
+   *     the size is inferior to {@link com.vampirehemophile.ghosts.entities.Board#DEFAULT_BOARD_SIZE}.
    */
-  public Coordinates(String x, int y, int size) {
+  public Coordinates(final String x, final int y, final int size) {
     testMinimumSize(size);
 
-    Matcher xMatcher = xPattern.matcher(x);
+    Matcher xMatcher = PATTERN_X.matcher(x);
     if (!xMatcher.matches()) {
       throw new InvalidCoordinatesException(x, y);
     }
@@ -155,10 +158,10 @@ public class Coordinates {
    *
    * @param size size of the board.
    * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
-   *     the size is inferior to 6.
+   *     the size is inferior to {@link com.vampirehemophile.ghosts.entities.Board#DEFAULT_BOARD_SIZE}.
    */
-  private void testMinimumSize(int size) {
-    if (size < 6) {
+  private void testMinimumSize(final int size) {
+    if (size < DEFAULT_BOARD_SIZE) {
       throw new BoardTooSmallException(size);
     }
   }
@@ -173,7 +176,7 @@ public class Coordinates {
     while (x > 0) {
       digit = x % 26;
       x /= 26;
-      xWorld = (char)(digit + 'a' - 1) + xWorld;
+      xWorld = (char) (digit + 'a' - 1) + xWorld;
     }
   }
 
@@ -207,7 +210,7 @@ public class Coordinates {
    * @param coord second coordinate.
    * @return true if they points the same location.
    */
-  public boolean equals(Coordinates coord) {
+  public boolean equals(final Coordinates coord) {
     return coord.xMatrix == this.xMatrix && coord.yMatrix == this.yMatrix;
   }
 
@@ -417,7 +420,9 @@ public class Coordinates {
    * Move this north. Won't move if this can't.
    */
   private void moveNorth() {
-    if (!canMoveNorth()) { return; }
+    if (!canMoveNorth()) {
+      return;
+    }
     yMatrix--;
     genYWorld();
   }
@@ -426,7 +431,9 @@ public class Coordinates {
    * Move this south. Won't move if this can't.
    */
   private void moveSouth() {
-    if (!canMoveSouth()) { return; }
+    if (!canMoveSouth()) {
+      return;
+    }
     yMatrix++;
     genYWorld();
   }
@@ -435,7 +442,9 @@ public class Coordinates {
    * Move this east. Won't move if this can't.
    */
   private void moveEast() {
-    if (!canMoveEast()) { return ; }
+    if (!canMoveEast()) {
+      return;
+     }
     xMatrix++;
     genXWorld();
   }
@@ -444,7 +453,9 @@ public class Coordinates {
    * Move this west. Won't move if this can't.
    */
   private void moveWest() {
-    if (!canMoveWest()) { return; }
+    if (!canMoveWest()) {
+      return;
+    }
     xMatrix--;
     genXWorld();
   }
@@ -453,7 +464,9 @@ public class Coordinates {
    * Move this nort-east. Won't move if this can't.
    */
   private void moveNorthEast() {
-    if (!(canMoveNorth() && canMoveEast())) { return; }
+    if (!(canMoveNorth() && canMoveEast())) {
+      return;
+    }
     moveNorth();
     moveEast();
   }
@@ -462,7 +475,9 @@ public class Coordinates {
    * Move this nort-west. Won't move if this can't.
    */
   private void moveNorthWest() {
-    if (!(canMoveNorth() && canMoveWest())) { return; }
+    if (!(canMoveNorth() && canMoveWest())) {
+      return;
+    }
     moveNorth();
     moveWest();
   }
@@ -471,7 +486,9 @@ public class Coordinates {
    * Move this south-east. Won't move if this can't.
    */
   private void moveSouthEast() {
-    if (!(canMoveSouth() && canMoveEast())) { return; }
+    if (!(canMoveSouth() && canMoveEast())) {
+      return;
+    }
     moveSouth();
     moveEast();
   }
@@ -480,7 +497,9 @@ public class Coordinates {
    * Move this south-west. Won't move if this can't.
    */
   private void moveSouthWest() {
-    if (!(canMoveNorth() && canMoveWest())) { return; }
+    if (!(canMoveNorth() && canMoveWest())) {
+      return;
+    }
     moveSouth();
     moveWest();
   }

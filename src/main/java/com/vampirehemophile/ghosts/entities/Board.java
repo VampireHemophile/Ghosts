@@ -1,9 +1,8 @@
 package com.vampirehemophile.ghosts.entities;
 
-import java.util.ArrayList;
-
 import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
 import com.vampirehemophile.ghosts.math.Coordinates;
+
 
 /**
  * Provides a board to play on.
@@ -20,6 +19,16 @@ public class Board {
    */
   private final int size;
 
+  /** Default board size. */
+  public static final int DEFAULT_BOARD_SIZE = 6;
+
+
+  /**
+   * Constructs a new 6 x 6 square Board.
+   */
+  public Board() {
+    this(DEFAULT_BOARD_SIZE);
+  }
 
   /**
    * Constructs a new size x size square Board.
@@ -28,9 +37,9 @@ public class Board {
    * @throws com.vampirehemophile.ghosts.exceptions.BoardTooSmallException if
    *     the size is inferior to 6.
    */
-  public Board(int size) {
+  public Board(final int size) {
     this.size = size;
-    if (size < 6) {
+    if (size < DEFAULT_BOARD_SIZE) {
       throw new BoardTooSmallException(size);
     }
 
@@ -48,7 +57,7 @@ public class Board {
    * @param c the location.
    * @return the square.
    */
-  public Square squareAt(Coordinates c) {
+  public Square squareAt(final Coordinates c) {
     return board[c.xMatrix()][c.yMatrix()];
   }
 
@@ -58,7 +67,7 @@ public class Board {
    * @param c the location.
    * @return the pawn.
    */
-  public Pawn at(Coordinates c) {
+  public Pawn at(final Coordinates c) {
     return squareAt(c).pawn();
   }
 
@@ -69,7 +78,7 @@ public class Board {
    * @param loc the location.
    * @return the previous pawn on the square, or null if this was free.
    */
-  public Pawn set(Pawn pawn, Coordinates loc) {
+  public Pawn set(final Pawn pawn, final Coordinates loc) {
     return squareAt(loc).setPawn(pawn);
   }
 
@@ -79,7 +88,7 @@ public class Board {
    * @param c the location.
    * @return the removed pawn.
    */
-  public Pawn remove(Coordinates c) {
+  public Pawn remove(final Coordinates c) {
     return squareAt(c).free();
   }
 

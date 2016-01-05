@@ -1,8 +1,10 @@
 package com.vampirehemophile.ghosts.main;
 
 import javax.swing.SwingUtilities;
+
 import com.vampirehemophile.ghosts.main.gui.GuiGame;
 import com.vampirehemophile.ghosts.main.cli.CliGame;
+
 
 /**
  * Main starting class.
@@ -10,11 +12,20 @@ import com.vampirehemophile.ghosts.main.cli.CliGame;
 public class Main {
 
   /**
+   * Prevents calls from subclass.
+   *
+   * @throws UnsupportedOperationException if called.
+   */
+  protected Main() {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
    * Ghosts point of entry.
    *
    * @param args console arguments.
    */
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
 
     boolean help = false;
     boolean gui = true;
