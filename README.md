@@ -3,6 +3,9 @@
 
 ![Ghosts](artwork/ghost1.png)
 
+## Report
+All the functionality required by the subject have been implemented successfully. There are CLI & GUI interfaces, the game is fully playable, there is a cheat mode and a read-from-file mode.
+
 ## Build & Run
 This project uses [Maven](https://maven.apache.org) as its build tool.
 Read [Maven in five minutes](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html) to get a quick introduction to Maven.
