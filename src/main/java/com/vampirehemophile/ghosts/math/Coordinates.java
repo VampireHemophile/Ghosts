@@ -205,12 +205,27 @@ public class Coordinates {
   }
 
   /**
+   * Returns this coordinates hash code.
+   *
+   * @return the hashCode
+   */
+  @Override
+  public int hashCode() {
+    return yMatrix * size + xMatrix;
+  }
+
+  /**
    * Returns true if the two coordinates point the same location.
    *
-   * @param coord second coordinate.
+   * @param o second coordinate.
    * @return true if they points the same location.
    */
-  public boolean equals(final Coordinates coord) {
+  @Override
+  public boolean equals(final Object o) {
+    if (o == null || !(o instanceof Coordinates)) {
+      return false;
+    }
+    Coordinates coord = (Coordinates) o;
     return coord.xMatrix == this.xMatrix && coord.yMatrix == this.yMatrix;
   }
 

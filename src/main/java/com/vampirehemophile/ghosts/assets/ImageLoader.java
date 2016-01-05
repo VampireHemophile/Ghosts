@@ -29,11 +29,11 @@ public class ImageLoader {
 
   /** Image of the light square tile. */
   public static final Image LIGHT_TILE = ImageLoader.loadResizedTile(
-      "/images/neutral/lighttile.png");
+      "/images/lighttile.png");
 
   /** Image of the dark square tile. */
   public static final Image DARK_TILE = ImageLoader.loadResizedTile(
-      "/images/neutral/darktile.png");
+      "/images/darktile.png");
 
   /** Image of the good white pawn. */
   public static final Image WHITE_GOOD_PAWN = ImageLoader.loadResizedImage(
@@ -45,7 +45,7 @@ public class ImageLoader {
 
   /** Image of the neutral white pawn. */
   public static final Image WHITE_NEUTRAL_PAWN = ImageLoader.loadResizedImage(
-      "/images/neutral/neutralwhitepawn.png");
+      "/images/white/neutralpawn.png");
 
   /** Image of the good black pawn. */
   public static final Image BLACK_GOOD_PAWN = ImageLoader.loadResizedImage(
@@ -57,7 +57,7 @@ public class ImageLoader {
 
   /** Image of the neutral black pawn. */
   public static final Image BLACK_NEUTRAL_PAWN = ImageLoader.loadResizedImage(
-      "/images/neutral/neutralblackpawn.png");
+      "/images/black/neutralpawn.png");
 
 
   /**

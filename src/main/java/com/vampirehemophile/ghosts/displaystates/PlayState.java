@@ -39,8 +39,9 @@ public class PlayState extends State implements Observer {
     /** Constructs a PlayPanel object. */
     PlayPanel() {
       super();
-      int size = (PlayState.this.bm.size() + 1) * ImageLoader.SQUARE_SIZE;
-      setPreferredSize(new Dimension(size, (size - ImageLoader.SQUARE_SIZE) + MESSAGE_BOX_HEIGHT));
+      int size = PlayState.this.bm.size() * ImageLoader.SQUARE_SIZE;
+      setPreferredSize(new Dimension(size + ImageLoader.SQUARE_SIZE,
+                                     size + MESSAGE_BOX_HEIGHT));
     }
 
     /** {@inheritDoc} */

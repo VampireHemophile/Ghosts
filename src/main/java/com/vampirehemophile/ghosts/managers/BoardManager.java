@@ -4,7 +4,6 @@ import com.vampirehemophile.ghosts.entities.Board;
 import com.vampirehemophile.ghosts.entities.Player;
 import com.vampirehemophile.ghosts.entities.Pawn;
 import com.vampirehemophile.ghosts.entities.Square;
-import com.vampirehemophile.ghosts.exceptions.BoardTooSmallException;
 import com.vampirehemophile.ghosts.exceptions.FreeSquareException;
 import com.vampirehemophile.ghosts.math.Coordinates;
 

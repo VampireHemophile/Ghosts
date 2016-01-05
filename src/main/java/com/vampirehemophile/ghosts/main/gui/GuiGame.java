@@ -49,7 +49,7 @@ public class GuiGame implements Observer {
    */
   @Override
   public void update(final Observable o, final Object arg) {
-    State newState = (State)arg;
+    State newState = (State) arg;
 
     state.deleteObserver(this);
     newState.addObserver(this);

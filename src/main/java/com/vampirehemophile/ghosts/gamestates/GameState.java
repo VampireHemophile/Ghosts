@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
 import com.vampirehemophile.ghosts.assets.ImageLoader;
-import com.vampirehemophile.ghosts.displaystates.PlayState;
 import com.vampirehemophile.ghosts.entities.Board;
 import com.vampirehemophile.ghosts.entities.Pawn;
 import com.vampirehemophile.ghosts.entities.Player;
@@ -124,10 +123,10 @@ public abstract class GameState extends Observable
   // Graphics functions
 
   /** The cursor width. */
-  private static final int CURSOR_WIDTH = 25;
+  private static final int CURSOR_WIDTH = 64;
 
   /** THe cursor height. */
-  private static final int CURSOR_HEIGHT = 50;
+  private static final int CURSOR_HEIGHT = 64;
 
   /**
    * Creates a cursor from a pawn image. The cursor can be used when dragging
@@ -212,16 +211,32 @@ public abstract class GameState extends Observable
     }
   }
 
+  /**
+   * Draws the number of captured pawns by both players.
+   *
+   * @param g2d the graphics object.
+   */
   protected void drawEatenPawns(final Graphics2D g2d) {
-	 
-	  g2d.drawString("Good/Evil taken : " , 6 * ImageLoader.SQUARE_SIZE, 50);
-	   
-	  g2d.drawString(String.valueOf(4 - this.current.countGoodPawns()) + " / " + String.valueOf(4 - this.current.countEvilPawns()),6 * ImageLoader.SQUARE_SIZE + 10, 150);
-	  g2d.drawString(String.valueOf(4 - bm.opponent(current).countGoodPawns()) + " / " + String.valueOf(4 - bm.opponent(current).countEvilPawns()),6 * ImageLoader.SQUARE_SIZE + 10, 450);
-	  	  
+    g2d.drawString("Good/Evil taken : ",
+                   bm.size() * ImageLoader.SQUARE_SIZE,
+                   ImageLoader.SQUARE_SIZE / 2);
+
+    g2d.drawString(String.valueOf(Player.DEFAULT_GOOD_NUMBER
+                                - this.current.countGoodPawns())
+                 + " / "
+                 + String.valueOf(Player.DEFAULT_EVIL_NUMBER
+                                - this.current.countEvilPawns()),
+                   bm.size() * ImageLoader.SQUARE_SIZE + 10,
+                   ImageLoader.SQUARE_SIZE * 1.5f);
+    g2d.drawString(String.valueOf(Player.DEFAULT_GOOD_NUMBER
+                                - bm.opponent(current).countGoodPawns())
+                 + " / "
+                 + String.valueOf(Player.DEFAULT_EVIL_NUMBER
+                                - bm.opponent(current).countEvilPawns()),
+                   bm.size() * ImageLoader.SQUARE_SIZE + 10,
+                   ImageLoader.SQUARE_SIZE * bm.size() / 1.333f);
   }
 
-  
   /**
    * Draws an image under the mouse cursor.
    *
@@ -237,7 +252,7 @@ public abstract class GameState extends Observable
   /** Offset in pixel from where to start drawing a message.*/
   private static final int OFFSET = 10;
 
-  /** The height of the font to add some vertical spacing between the two lines. */
+  /** Height of the font, adds some vertical spacing between the two lines. */
   private static final int FONT_HEIGHT = 15;
 
   /**
