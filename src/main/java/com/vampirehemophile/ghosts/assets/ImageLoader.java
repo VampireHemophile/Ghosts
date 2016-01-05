@@ -16,10 +16,10 @@ public class ImageLoader {
   public static final int SQUARE_SIZE = 100;
 
   /** Displayed width of a pawn's image. */
-  public static final int IMAGE_WIDTH = 43;
+  public static final int IMAGE_WIDTH = 90;
 
   /** Displayed width of a pawn's image. */
-  public static final int IMAGE_HEIGHT = 90;
+  public static final int IMAGE_HEIGHT = 95;
 
   /** X-offset to display a pawn image relative to a square tile. */
   public static final int IMAGE_TOP_X = SQUARE_SIZE / 2 - IMAGE_WIDTH  / 2;
@@ -29,11 +29,11 @@ public class ImageLoader {
 
   /** Image of the light square tile. */
   public static final Image LIGHT_TILE = ImageLoader.loadResizedTile(
-      "/images/lighttile.png");
+      "/images/neutral/lighttile.png");
 
   /** Image of the dark square tile. */
   public static final Image DARK_TILE = ImageLoader.loadResizedTile(
-      "/images/darktile.png");
+      "/images/neutral/darktile.png");
 
   /** Image of the good white pawn. */
   public static final Image WHITE_GOOD_PAWN = ImageLoader.loadResizedImage(
@@ -45,7 +45,7 @@ public class ImageLoader {
 
   /** Image of the neutral white pawn. */
   public static final Image WHITE_NEUTRAL_PAWN = ImageLoader.loadResizedImage(
-      "/images/white/neutralpawn.png");
+      "/images/neutral/neutralpawn.png");
 
   /** Image of the good black pawn. */
   public static final Image BLACK_GOOD_PAWN = ImageLoader.loadResizedImage(
@@ -57,7 +57,7 @@ public class ImageLoader {
 
   /** Image of the neutral black pawn. */
   public static final Image BLACK_NEUTRAL_PAWN = ImageLoader.loadResizedImage(
-      "/images/black/neutralpawn.png");
+      "/images/neutral/neutralpawn.png");
 
 
   /**
