@@ -12,6 +12,8 @@ import javax.imageio.ImageIO;
  */
 public class ImageLoader {
 
+  // Image dimensions constants
+
   /** Displayed size of a square tile. */
   public static final int SQUARE_SIZE = 100;
 
@@ -21,11 +23,23 @@ public class ImageLoader {
   /** Displayed width of a pawn's image. */
   public static final int IMAGE_HEIGHT = 95;
 
+
+  // Utility constants
+
+  /** X-center of a pawn image. */
+  public static final int IMAGE_CENTER_X = IMAGE_WIDTH / 2;
+
+  /** Y-center of a pawn image. */
+  public static final int IMAGE_CENTER_Y = IMAGE_HEIGHT / 2;
+
   /** X-offset to display a pawn image relative to a square tile. */
-  public static final int IMAGE_TOP_X = SQUARE_SIZE / 2 - IMAGE_WIDTH  / 2;
+  public static final int IMAGE_TOP_X = SQUARE_SIZE / 2 - IMAGE_CENTER_X;
 
   /** Y-offset to display a pawn image relative to a square tile. */
-  public static final int IMAGE_TOP_Y = SQUARE_SIZE / 2 - IMAGE_HEIGHT / 2;
+  public static final int IMAGE_TOP_Y = SQUARE_SIZE / 2 - IMAGE_CENTER_Y;
+
+
+  // Images
 
   /** Image of the light square tile. */
   public static final Image LIGHT_TILE = ImageLoader.loadResizedTile(

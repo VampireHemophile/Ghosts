@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -34,25 +35,12 @@ public abstract class GameState extends Observable
   /** The main content panel. */
   protected JPanel panel;
 
-  /** A cursor corresponding to the white good pawn's image. */
-  protected static final Cursor WHITE_GOOD_PAWN_CURSOR =
-      loadCursor(ImageLoader.WHITE_GOOD_PAWN);
-
-  /** A cursor corresponding to the white evil pawn's image. */
-  protected static final Cursor WHITE_EVIL_PAWN_CURSOR =
-      loadCursor(ImageLoader.WHITE_EVIL_PAWN);
-
-  /** A cursor corresponding to the black good pawn's image. */
-  protected static final Cursor BLACK_GOOD_PAWN_CURSOR =
-      loadCursor(ImageLoader.BLACK_GOOD_PAWN);
-
-  /** A cursor corresponding to the black evil pawn's image. */
-  protected static final Cursor BLACK_EVIL_PAWN_CURSOR =
-      loadCursor(ImageLoader.BLACK_EVIL_PAWN);
-
-  /** The default cursor. */
-  private static final Cursor DEFAULT_CURSOR =
-      new Cursor(Cursor.DEFAULT_CURSOR);
+  /** A transparent cursor. */
+  private static final Cursor BLANK_CURSOR =
+      Toolkit.getDefaultToolkit().createCustomCursor(
+        new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB),
+        new Point(0, 0),
+        "blank cursor");
 
   /** The board manager. */
   protected BoardManager bm;
@@ -109,7 +97,7 @@ public abstract class GameState extends Observable
    * Called when entering a state.
    */
   public void enter() {
-    panel.repaint();
+
   }
 
   /**
@@ -127,23 +115,6 @@ public abstract class GameState extends Observable
 
   /** THe cursor height. */
   private static final int CURSOR_HEIGHT = 64;
-
-  /**
-   * Creates a cursor from a pawn image. The cursor can be used when dragging
-   * a pawn.
-   *
-   * @param image the pawn's image.
-   * @return the corresponding cursor.
-   */
-  private static Cursor loadCursor(final Image image) {
-    Image imageCursor = image.getScaledInstance(
-        CURSOR_WIDTH, CURSOR_HEIGHT, Image.SCALE_DEFAULT);
-    return Toolkit.getDefaultToolkit().createCustomCursor(
-        imageCursor,
-        new Point(imageCursor.getWidth(null) / 2,
-                  imageCursor.getHeight(null) / 2),
-        null);
-  }
 
   /**
    * Draws the board.
@@ -245,7 +216,8 @@ public abstract class GameState extends Observable
    */
   protected void drawUnderMouse(final Graphics2D g2d, final Image image) {
     g2d.drawImage(image,
-        mouseX - image.getWidth(null) / 2, mouseY - image.getHeight(null) / 2,
+        mouseX - ImageLoader.IMAGE_CENTER_X,
+        mouseY - ImageLoader.IMAGE_CENTER_Y,
         null);
   }
 
@@ -311,43 +283,6 @@ public abstract class GameState extends Observable
   }
 
   /**
-   * Returns the cursor corresponding to a pawn. If the player's pawns is not
-   * set, returns the cursor corresponding to the current player. Returns null
-   * otherwise.
-   *
-   * @param pawn the pawn to render.
-   * @return the cursor.
-   */
-  protected Cursor cursorFromPawn(final Pawn pawn) {
-    Player player = pawn.player();
-    player = player != null ? player : current;
-    if (player == null) {
-      return null;
-    }
-
-    if (player.equals(white)) {
-      switch (pawn.type()) {
-        case GOOD:
-          return WHITE_GOOD_PAWN_CURSOR;
-        case EVIL:
-          return WHITE_EVIL_PAWN_CURSOR;
-        default:
-          throw new RuntimeException();
-      }
-    } else if (player.equals(black)) {
-      switch (pawn.type()) {
-        case GOOD:
-          return BLACK_GOOD_PAWN_CURSOR;
-        case EVIL:
-          return BLACK_EVIL_PAWN_CURSOR;
-        default:
-          throw new RuntimeException();
-      }
-    }
-    return null;
-  }
-
-  /**
    * Gets coordinates of the hovered square.
    *
    * @return the corresponding coordinates.
@@ -390,10 +325,17 @@ public abstract class GameState extends Observable
   }
 
   /**
-   * Resets the cursor.
+   * Shows the default cursor.
    */
-  protected void resetCursor() {
-    panel.setCursor(DEFAULT_CURSOR);
+  protected void showCursor() {
+    panel.setCursor(Cursor.getDefaultCursor());
+  }
+
+  /**
+   * Hides the cursor.
+   */
+  protected void hideCursor() {
+    panel.setCursor(BLANK_CURSOR);
   }
 
 

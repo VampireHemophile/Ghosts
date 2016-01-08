@@ -41,7 +41,6 @@ public class SetupState extends GameState {
     evilPawn = new Pawn(Pawn.PawnType.EVIL);
 
     selectedPawn = goodPawn;
-    panel.setCursor(WHITE_GOOD_PAWN_CURSOR);
 
     blackSetup = false;
   }
@@ -49,11 +48,32 @@ public class SetupState extends GameState {
   /** {@inheritDoc} */
   @Override
   public void enter() {
+    hideCursor();
     if (blackSetup) {
       current = black;
       selectedPawn = goodPawn;
-      panel.setCursor(BLACK_GOOD_PAWN_CURSOR);
     }
+    panel.repaint();
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void exit() {
+    showCursor();
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void mouseDragged(final MouseEvent e) {
+    super.mouseDragged(e);
+    panel.repaint();
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void mouseMoved(final MouseEvent e) {
+    super.mouseMoved(e);
+    panel.repaint();
   }
 
   /** {@inheritDoc} */
@@ -83,36 +103,32 @@ public class SetupState extends GameState {
             && evil == Player.DEFAULT_EVIL_NUMBER) {
           if (current.equals(white)) {
             blackSetup = true;
-            resetCursor();
             setChanged();
             GameState gs = new WaitingState(panel, bm);
             gs.current = black;
             notifyObservers(gs);
           } else if (current.equals(black)) {
             current = white;
-            resetCursor();
             setChanged();
             notifyObservers(new MainGameState(panel, bm));
           }
         } else if (good == Player.DEFAULT_GOOD_NUMBER) {
           selectedPawn = evilPawn;
-          panel.setCursor(cursorFromPawn(selectedPawn));
         } else if (evil == Player.DEFAULT_EVIL_NUMBER) {
           selectedPawn = goodPawn;
-          panel.setCursor(cursorFromPawn(selectedPawn));
         }
-        panel.repaint();
         break;
       case MouseEvent.BUTTON3:
         if (current.countGoodPawns() < Player.DEFAULT_GOOD_NUMBER
             && current.countEvilPawns() < Player.DEFAULT_EVIL_NUMBER) {
           selectedPawn = selectedPawn == goodPawn ? evilPawn : goodPawn;
-          panel.setCursor(cursorFromPawn(selectedPawn));
+          // panel.setCursor(cursorFromPawn(selectedPawn));
         }
         break;
       default:
         break;
     }
+    panel.repaint();
   }
 
   /** {@inheritDoc} */
@@ -120,6 +136,9 @@ public class SetupState extends GameState {
   public void paint(final Graphics2D g2d) {
     drawBoard(g2d);
     drawPawns(g2d);
+
+    drawUnderMouse(g2d, imageFromPawn(selectedPawn));
+
     drawMessage(g2d,
         "Set your pawns up with left click, "
       + "switch between pawns whith right click.", 1);
