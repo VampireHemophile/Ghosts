@@ -2,7 +2,6 @@ package com.vampirehemophile.ghosts.assets;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -90,14 +89,11 @@ public class ImageLoader {
    * @return the image.
    */
   public static BufferedImage loadImage(final String path) {
-    try  {
+    try {
       return ImageIO.read(ImageLoader.class.getResource(path));
-    } catch (IOException e) {
-      System.out.println(path);
-      e.printStackTrace();
-      System.exit(1);
+    } catch (java.io.IOException e) {
+      throw new RuntimeException(e);
     }
-    return null;
   }
 
   /**

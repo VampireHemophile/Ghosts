@@ -116,7 +116,9 @@ public class MenuState extends State {
             try {
               java.awt.Desktop.getDesktop().browse(
               new java.net.URI("https://github.com/VampireHemophile/Ghosts"));
-            } catch (Exception ex) { }
+            } catch (java.net.URISyntaxException ex) {
+            } catch (java.io.IOException ex) {
+            }
           }
         });
         add(button);

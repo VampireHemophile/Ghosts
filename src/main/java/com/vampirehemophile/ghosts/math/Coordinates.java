@@ -59,7 +59,7 @@ public class Coordinates {
    */
   public Coordinates(final Coordinates c) {
     this.size = c.size;
-    this.xWorld = new String(c.xWorld);
+    this.xWorld = c.xWorld;
     this.yWorld = c.yWorld;
     this.xMatrix = c.xMatrix;
     this.yMatrix = c.yMatrix;
@@ -170,7 +170,7 @@ public class Coordinates {
    * Creates x-axis world coordinate from matrix coordinates.
    */
   private void genXWorld() {
-    xWorld = new String();
+    xWorld = "";
     int x = xMatrix + 1;
     int digit = 0;
     while (x > 0) {

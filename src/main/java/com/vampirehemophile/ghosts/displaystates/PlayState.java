@@ -112,6 +112,7 @@ public class PlayState extends State implements Observer {
       setupState.enableCheatMode();
     }
     setupState.addObserver(this);
+    setupState.enter();
   }
 
   /** The state of the parsing of the file. */
@@ -134,9 +135,9 @@ public class PlayState extends State implements Observer {
   public PlayState(final boolean cheatModeEnabled, final File file) {
     super();
 
-    panel = new PlayPanel();
-
     bm = new BoardManager(new Player(), new Player());
+
+    panel = new PlayPanel();
 
     this.cheatModeEnabled = cheatModeEnabled;
 
@@ -145,8 +146,7 @@ public class PlayState extends State implements Observer {
     Player current = null;
     int setupLine = 0;
 
-    try {
-      BufferedReader br = new BufferedReader(new FileReader(file));
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = br.readLine()) != null) {
         if (line.isEmpty()) {
@@ -178,7 +178,7 @@ public class PlayState extends State implements Observer {
         }
       }
     } catch (IOException e) {
-      e.printStackTrace();
+        e.printStackTrace();
     }
 
     states = new Stack<>();
@@ -189,6 +189,7 @@ public class PlayState extends State implements Observer {
       setupState.enableCheatMode();
     }
     setupState.addObserver(this);
+    setupState.enter();
   }
 
   /**
@@ -221,8 +222,10 @@ public class PlayState extends State implements Observer {
       } else if (c == 'B') {
         p = new Pawn(Pawn.PawnType.EVIL);
       }
-      current.add(p);
-      bm.board().set(p, new Coordinates(x, y, bm.size()));
+      if (p != null) {
+        current.add(p);
+        bm.board().set(p, new Coordinates(x, y, bm.size()));
+      }
     }
   }
 

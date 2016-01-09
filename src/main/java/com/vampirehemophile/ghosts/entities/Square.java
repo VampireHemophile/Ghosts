@@ -1,7 +1,5 @@
 package com.vampirehemophile.ghosts.entities;
 
-import com.vampirehemophile.ghosts.math.Coordinates;
-
 
 /**
  * A Square in the {@link Board Board}.
@@ -13,21 +11,12 @@ public class Square {
    */
   private Pawn pawn;
 
-  /** The square coordinates. */
-  private Coordinates coord;
-
 
   /**
-   * Constructs a new Square at coordinates.
+   * Constructs a new Square.
    *
-   * @param coord this coordinates.
-   * @throws java.lang.NullPointerException if coord is null.
    */
-  public Square(final Coordinates coord) {
-    if (coord == null) {
-      throw new NullPointerException();
-    }
-    this.coord = coord;
+  public Square() {
     this.pawn = null;
   }
 

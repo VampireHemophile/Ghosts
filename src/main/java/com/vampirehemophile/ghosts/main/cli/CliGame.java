@@ -102,7 +102,7 @@ public class CliGame {
         line = buf.readLine();
       } catch (IOException expected) {
       }
-      if (line.isEmpty()) {
+      if (line != null && line.isEmpty()) {
         size = Board.DEFAULT_BOARD_SIZE;
         keepAsking = false;
       } else {
