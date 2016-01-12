@@ -84,6 +84,10 @@ public class MainGameState extends GameState {
     switch (e.getButton()) {
       case MouseEvent.BUTTON1:
         Coordinates loc = hoveredSquare();
+        if (loc == null) {
+          return;
+        }
+
         if (!hasSelectedPawn) {
           Pawn temp = bm.board().at(loc);
           if (temp != null && temp.player().equals(current)) {

@@ -84,6 +84,9 @@ public class SetupState extends GameState {
     switch (e.getButton()) {
       case MouseEvent.BUTTON1:
         Coordinates loc = hoveredSquare();
+        if (loc == null) {
+          return;
+        }
 
         if (!bm.canSet(current, loc)) {
           break;

@@ -285,9 +285,14 @@ public abstract class GameState extends Observable
   /**
    * Gets coordinates of the hovered square.
    *
-   * @return the corresponding coordinates.
+   * @return the corresponding coordinates or null if no square is hovered.
    */
   protected Coordinates hoveredSquare() {
+    if (mouseX > bm.size() * ImageLoader.SQUARE_SIZE
+        || mouseY > bm.size() * ImageLoader.SQUARE_SIZE) {
+      return null;
+    }
+
     int squareSize = ImageLoader.SQUARE_SIZE;
     int x = 0;
     int y = 0;
