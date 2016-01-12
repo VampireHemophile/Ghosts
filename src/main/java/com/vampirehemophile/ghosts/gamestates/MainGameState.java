@@ -19,11 +19,14 @@ public class MainGameState extends GameState {
   /** True is the user has selected a pawn. */
   private boolean hasSelectedPawn = false;
 
-  /** The coordinates of the square where the selected pawn is located.*/
+  /** The coordinates of the square where the selected pawn is located. */
   private Coordinates selectedCoord = null;
 
-  /** An optional error message, printed in the message box.*/
+  /** An optional error message, printed in the message box. */
   private String errorMessage = null;
+
+  /** First launch. */
+  private boolean firstLaunch = true;
 
 
   /**
@@ -35,6 +38,19 @@ public class MainGameState extends GameState {
   public MainGameState(final JPanel panel, final BoardManager bm) {
     super(panel, bm);
     current = white;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void enter() {
+    if (firstLaunch) {
+      firstLaunch = false;
+      setChanged();
+      GameState gs = new WaitingState(panel, bm);
+      gs.current = white;
+      notifyObservers(gs);
+    }
+    panel.repaint();
   }
 
   /** {@inheritDoc} */
@@ -98,9 +114,9 @@ public class MainGameState extends GameState {
             } else {
               current = bm.opponent(current);
               setChanged();
-                  GameState gs = new WaitingState(panel, bm);
-                  gs.current = current;
-                  notifyObservers(gs);
+              GameState gs = new WaitingState(panel, bm);
+              gs.current = current;
+              notifyObservers(gs);
             }
           } else {
             errorMessage = "This move is unauthorized";

@@ -97,7 +97,7 @@ public abstract class GameState extends Observable
    * Called when entering a state.
    */
   public void enter() {
-
+    panel.repaint();
   }
 
   /**
