@@ -48,6 +48,10 @@ public class ImageLoader {
   public static final Image DARK_TILE = ImageLoader.loadResizedTile(
       "/images/darktile.png");
 
+  /** Image of the corner square tile. */
+  public static final Image CORNER_TILE = ImageLoader.loadResizedTile(
+      "/images/cornertile.png");
+
   /** Image of the good white pawn. */
   public static final Image WHITE_GOOD_PAWN = ImageLoader.loadResizedImage(
       "/images/white/goodpawn.png");

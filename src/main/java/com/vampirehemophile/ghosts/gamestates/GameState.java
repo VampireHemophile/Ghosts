@@ -136,6 +136,14 @@ public abstract class GameState extends Observable
       }
       dark = !dark;
     }
+    g2d.drawImage(ImageLoader.CORNER_TILE, 0, 0, null);
+    g2d.drawImage(ImageLoader.CORNER_TILE,
+        (board.size() - 1) * ImageLoader.SQUARE_SIZE, 0, null);
+    g2d.drawImage(ImageLoader.CORNER_TILE, 0,
+        (board.size() - 1) * ImageLoader.SQUARE_SIZE, null);
+    g2d.drawImage(ImageLoader.CORNER_TILE,
+        (board.size() - 1) * ImageLoader.SQUARE_SIZE,
+        (board.size() - 1) * ImageLoader.SQUARE_SIZE, null);
   }
 
   /**
