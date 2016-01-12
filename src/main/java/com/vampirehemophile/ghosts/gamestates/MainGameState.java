@@ -58,13 +58,56 @@ public class MainGameState extends GameState {
   public void paint(final Graphics2D g2d) {
     drawBoard(g2d);
     drawPawns(g2d);
+
+    Pawn rectPawn = null;
+    Coordinates rectCoord = null;
     if (selectedCoord != null) {
-      rectSquare(g2d, selectedCoord);
+      rectCoord = selectedCoord;
+      rectPawn = board.at(rectCoord);
+      g2d.setColor(java.awt.Color.GRAY);
+      rectSquare(g2d, rectCoord);
+    } else {
+      rectCoord = hoveredSquare();
+      if (rectCoord != null) {
+        rectPawn = board.at(rectCoord);
+        if (rectPawn != null && current.equals(rectPawn.player())) {
+          g2d.setColor(java.awt.Color.GRAY);
+          rectSquare(g2d, rectCoord);
+        }
+      }
     }
+    if (rectPawn != null) {
+      g2d.setColor(java.awt.Color.GREEN);
+      for (Coordinates c : rectPawn.range(rectCoord)) {
+        if (bm.canMove(rectCoord, c)) {
+          rectSquare(g2d, c);
+        }
+      }
+    }
+    g2d.setColor(java.awt.Color.BLACK);
+
     if (errorMessage != null) {
       drawMessage(g2d, errorMessage, 1);
     }
     drawEatenPawns(g2d);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void mouseDragged(final MouseEvent e) {
+    super.mouseDragged(e);
+    if (selectedCoord == null) {
+      panel.repaint();
+    }
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void mouseMoved(final MouseEvent e) {
+    super.mouseDragged(e);
+    if (selectedCoord == null) {
+      panel.repaint();
+    }
   }
 
   /** {@inheritDoc} */
