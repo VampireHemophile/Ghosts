@@ -283,6 +283,31 @@ public abstract class GameState extends Observable
   }
 
   /**
+   * Draws a rectangle around the square indicated by the coordinates.
+   *
+   * @param g2d the graphics object.
+   * @param c the square's coordinates.
+   */
+  protected void rectSquare(final Graphics2D g2d, final Coordinates c) {
+    int x, y, size;
+    if (current.equals(white)) {
+      x = c.xMatrix() * ImageLoader.SQUARE_SIZE;
+      y = (bm.size() - 1 - c.yMatrix()) * ImageLoader.SQUARE_SIZE;
+      size = ImageLoader.SQUARE_SIZE;
+    } else if (current.equals(black)) {
+      x = (bm.size() - 1 - c.xMatrix()) * ImageLoader.SQUARE_SIZE;
+      y = c.yMatrix() * ImageLoader.SQUARE_SIZE;
+      size = ImageLoader.SQUARE_SIZE;
+    } else {
+      throw new RuntimeException();
+    }
+    g2d.fillRect(x, y, size, 5);
+    g2d.fillRect(x + size - 5, y, 5, size);
+    g2d.fillRect(x, y, 5, size);
+    g2d.fillRect(x, y + size - 5, size, 5);
+  }
+
+  /**
    * Gets coordinates of the hovered square.
    *
    * @return the corresponding coordinates or null if no square is hovered.

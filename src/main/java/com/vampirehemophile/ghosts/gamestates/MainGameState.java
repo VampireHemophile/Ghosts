@@ -59,17 +59,7 @@ public class MainGameState extends GameState {
     drawBoard(g2d);
     drawPawns(g2d);
     if (selectedCoord != null) {
-      if (current.equals(white)) {
-        g2d.drawRect(
-            selectedCoord.xMatrix() * ImageLoader.SQUARE_SIZE,
-            (bm.size() - 1 - selectedCoord.yMatrix()) * ImageLoader.SQUARE_SIZE,
-            ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE);
-      } else if (current.equals(black)) {
-        g2d.drawRect(
-            (bm.size() - 1 - selectedCoord.xMatrix()) * ImageLoader.SQUARE_SIZE,
-            selectedCoord.yMatrix() * ImageLoader.SQUARE_SIZE,
-            ImageLoader.SQUARE_SIZE, ImageLoader.SQUARE_SIZE);
-      }
+      rectSquare(g2d, selectedCoord);
     }
     if (errorMessage != null) {
       drawMessage(g2d, errorMessage, 1);
